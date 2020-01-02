@@ -10,6 +10,7 @@ function logoutFirebase() {
   var userAuthContainer = document.getElementById("user-auth-container");
   var userNameContainer = document.getElementById("userNameContainer");
   var mainContainer = document.getElementById("main");
+  var GPGTextAreaContainer = document.getElementById("GPGTextArea");
 
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -24,6 +25,7 @@ function logoutFirebase() {
         userAuthContainer.style.display = "block";
         main.style.display = 'block';
         userNameContainer.innerText = user.email
+        firestoreGetListener(GPGTextAreaContainer)
       } else {
         firebaseuiAuthContainer.style.display = "block";
         userAuthContainer.style.display = "none";
@@ -39,12 +41,13 @@ function logoutFirebase() {
 
     try {
       let app = firebase.app();
-      let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+      let features = ['auth', 'database', 'messaging', 'storage', 'firestore'].filter(feature => typeof app[feature] === 'function');
       document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
     } catch (e) {
       console.error(e);
       document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
     }
+
 
 // Initialize the FirebaseUI Widget using Firebase.
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -83,4 +86,33 @@ signInSuccessUrl: window.location.href,
     };
 ui.start('#firebaseui-auth-container', uiConfig)
 
+
 });
+
+
+function firestoreGetListener(destContainer) {
+    var currUser = firebase.auth().currentUser
+    db.collection("free").doc(currUser.email)
+        .onSnapshot(function(doc) {
+            destContainer.innerText = doc.data().gpg;
+            console.log("Current data: ", doc.data());
+        });
+}
+
+function firestorePut(data) {
+    // Add a new document in collection "cities"
+    var currUser = firebase.auth().currentUser
+    db.collection("free").doc(currUser.email).set({
+        gpg: data,
+    })
+    .then(function() {
+        console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+}
+
+firebase.analytics();
+var db = firebase.firestore();
+
