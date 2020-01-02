@@ -10,7 +10,7 @@ function logoutFirebase() {
   var userAuthContainer = document.getElementById("user-auth-container");
   var userNameContainer = document.getElementById("userNameContainer");
   var mainContainer = document.getElementById("main");
-  var GPGTextAreaContainer = document.getElementById("GPGTextArea");
+  var CurrGPGTextAreaContainer = document.getElementById("CurrGPGTextArea");
 
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -25,7 +25,7 @@ function logoutFirebase() {
         userAuthContainer.style.display = "block";
         main.style.display = 'block';
         userNameContainer.innerText = user.email
-        firestoreGetListener(GPGTextAreaContainer)
+        firestoreGet(CurrGPGTextAreaContainer, user.email)
       } else {
         firebaseuiAuthContainer.style.display = "block";
         userAuthContainer.style.display = "none";
@@ -42,10 +42,10 @@ function logoutFirebase() {
     try {
       let app = firebase.app();
       let features = ['auth', 'database', 'messaging', 'storage', 'firestore'].filter(feature => typeof app[feature] === 'function');
-      document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+      console.log(`Firebase SDK loaded with ${features.join(', ')}`);
     } catch (e) {
-      console.error(e);
-      document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+        console.error(e);
+        console.error('Error loading the Firebase SDK, check the console.');
     }
 
 
@@ -90,12 +90,20 @@ ui.start('#firebaseui-auth-container', uiConfig)
 });
 
 
-function firestoreGetListener(destContainer) {
-    var currUser = firebase.auth().currentUser
-    db.collection("free").doc(currUser.email)
-        .onSnapshot(function(doc) {
-            destContainer.innerText = doc.data().gpg;
-            console.log("Current data: ", doc.data());
+function firestoreGet(destContainer, email) {
+    console.log("firestore single query", email)
+    db.collection("free").doc(email)
+        .get().then(function(doc) {
+            if (doc.exists) {
+                destContainer.innerText = window.atob(doc.data().gpg);
+            } else {
+                // doc.data() will be undefined in this case
+                destContainer.innerText = "Key doesn't exist";
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+            destContainer.innerText = "Unexpected error";
+
         });
 }
 
@@ -103,7 +111,7 @@ function firestorePut(data) {
     // Add a new document in collection "cities"
     var currUser = firebase.auth().currentUser
     db.collection("free").doc(currUser.email).set({
-        gpg: data,
+        gpg: window.btoa(data),
     })
     .then(function() {
         console.log("Document successfully written!");

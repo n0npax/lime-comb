@@ -54,8 +54,8 @@
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search TODO" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <input id="searchBar" class="form-control mr-sm-2" type="search" placeholder="foo@bar.baz" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" onclick='firestoreGet(CurrGPGTextAreaContainer, document.getElementById("searchBar").value);return false;'>Search</button>
         </form>
         <ul class="navbar-nav mt-2 mt-lg-0">
           <li class="nav-item"> <!-- active-->
@@ -71,9 +71,15 @@
       </div>    </nav>
 
     <div id="main">
-      <div class="form-group">
-        <textarea class="form-control" id="GPGTextArea" rows="20"  aria-describedby="GPGTextArea" placeholder="Please paste your GPG PUB KEY"></textarea>
-        <button type="button" class="btn btn-secondary" onclick='firestorePut(document.getElementById("GPGTextArea").value)'>Upload KEY</button>
+      <div class="form-group container">
+        <div class="row">
+
+          <textarea class="col form-control" id="CurrGPGTextArea" rows="20"  aria-describedby="CurrGPGTextArea" placeholder="Your current GPG key" readonly></textarea>
+
+          <textarea class="col form-control" id="NewGPGTextArea" rows="20"  aria-describedby="NewGPGTextArea" placeholder="Please paste your GPG PUB KEY"></textarea>
+      </div>
+      <button type="button" class="btn btn-secondary" onclick='firestorePut(document.getElementById("NewGPGTextArea").value)'>Upload KEY</button>
+
       </div>
       </div>
     <p id="load"></p>
