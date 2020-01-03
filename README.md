@@ -23,3 +23,15 @@ What was the syntax for gpg? Sould I use `base64` or armour mode? It's not you p
 The only thing you need to know is receiver email and message itself.
 
 ### GUI - TODO
+
+# Install
+
+## key registry
+it's [here](https://lime-comb.web.app/). Please register yourself directly or via cmdline tool.
+
+## cmdline tools
+
+### requirements
+* docker
+
+
