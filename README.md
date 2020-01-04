@@ -1,6 +1,8 @@
 # WORK in PROGRESS - Code here won't work so far
 
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://lime-comb.web.app/)
+[![codecov](https://codecov.io/gh/n0npax/lime-comb/branch/master/graph/badge.svg)](https://codecov.io/gh/n0npax/lime-comb)
+
 
 # Lets treat secrets like we should and don't be to nerdy
 
