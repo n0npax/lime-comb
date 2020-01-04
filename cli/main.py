@@ -1,9 +1,24 @@
 #!/usr/bin/env python3
 import argparse
 import logging
+import os
 import sys
 
+import email_validator
+
 import cli
+
+
+def validate_filepath(fp):
+    if not os.path.isfile(fp):
+        raise argparse.ArgumentTypeError(f"have to be file")
+    return fp
+
+
+def validate_email(email):
+    email_validator.validate_email(email)
+    return email
+
 
 parser = argparse.ArgumentParser(description="lime comb tool.")
 parser.add_argument(
@@ -12,16 +27,9 @@ parser.add_argument(
     dest="receipments",
     required=False,
     action="append",
-    help="receipment of the message",
-)
-parser.add_argument(
-    "-m",
-    "--message",
-    dest="messages",
-    required=False,
-    action="append",
-    help="message",
     default=[],
+    help="receipment of the message",
+    type=validate_email,
 )
 parser.add_argument(
     "-f",
@@ -30,6 +38,16 @@ parser.add_argument(
     required=False,
     action="append",
     help="file",
+    default=[],
+    type=validate_filepath,
+)
+parser.add_argument(
+    "-m",
+    "--message",
+    dest="messages",
+    required=False,
+    action="append",
+    help="message",
     default=[],
 )
 parser.add_argument(
@@ -43,7 +61,7 @@ parser.add_argument(
     "--log-lvl",
     dest="log_lvl",
     required=False,
-    default="DEBUG",
+    default="WARNING",
     action="store",
     choices=("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"),
     help="log level",
@@ -55,9 +73,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(name=cli.__app_name__)
 
 
-def main():
+def parse_args():
     logger.setLevel(args.log_lvl)
-    logger.debug(f"log lvl {logger.getEffectiveLevel()}")
+    logger.info(f"log lvl {logger.getEffectiveLevel()}")
     if args.version:
         print(f"version: {cli.__version__}")
         sys.exit(0)
@@ -69,7 +87,12 @@ def main():
             logger.debug(f"adding content of {fn} to messages")
             with open(fn, "r") as f:
                 args.messages.append(f.read())
+    if not args.messages:
+        logger.warning("no message to encrypt")
+        print("No message to encrypt")
+        sys.exit(1)
+    return args.messages, args.receipments
 
 
 if __name__ == "__main__":
-    main()
+    msrs, rcpts = parse_args()
