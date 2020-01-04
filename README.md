@@ -1,3 +1,5 @@
+# WORK in PROGRESS - Code here won't work so far
+
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://lime-comb.web.app/)
 
 # Lets treat secrets like we should and don't be to nerdy
