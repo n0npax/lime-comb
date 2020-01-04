@@ -40,4 +40,14 @@ it's [here](https://lime-comb.web.app/). Please register yourself directly or vi
 ### requirements
 * python
 
+# Design
 
+![Design diagram](https://github.com/n0npax/lime-comb/blob/master/images/arch_diagram.svg)
+
+## Flow
+
+All clients are connecting to firestore database using oauth2. By default unauth user is allowed to read any key, and auth user is allowed to modify just his own key.
+
+## infra
+
+Deployment is done via cloud build jobs which are triggered by github.
