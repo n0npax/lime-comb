@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 import argparse
-import sys
 import logging
+import sys
 
 import cli
 
-parser = argparse.ArgumentParser(
-    description="lime comb tool.")
+parser = argparse.ArgumentParser(description="lime comb tool.")
 parser.add_argument(
     "-t",
     "--to",
@@ -16,10 +15,22 @@ parser.add_argument(
     help="receipment of the message",
 )
 parser.add_argument(
-    "-m", "--message", dest="messages", required=False, action="append", help="message", default=[]
+    "-m",
+    "--message",
+    dest="messages",
+    required=False,
+    action="append",
+    help="message",
+    default=[],
 )
 parser.add_argument(
-    "-f", "--file", dest="files", required=False, action="append", help="file", default=[]
+    "-f",
+    "--file",
+    dest="files",
+    required=False,
+    action="append",
+    help="file",
+    default=[],
 )
 parser.add_argument(
     "--version",
@@ -34,7 +45,7 @@ parser.add_argument(
     required=False,
     default="DEBUG",
     action="store",
-    choices=('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'),
+    choices=("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"),
     help="log level",
 )
 
@@ -42,7 +53,8 @@ args = parser.parse_args()
 logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger(name=cli.__app_name__)
-    
+
+
 def main():
     logger.setLevel(args.log_lvl)
     logger.debug(f"log lvl {logger.getEffectiveLevel()}")
@@ -50,11 +62,12 @@ def main():
         print(f"version: {cli.__version__}")
         sys.exit(0)
     if not args.receipments:
-        logger.debug("No receipmens. Asking userto type in")
+        logger.info("No receipmens. Asking userto type in")
         args.receipments = input("please specify receipments(space separated)\n")
     if args.files:
         for fn in args.files:
-            with open(fn, 'r') as f:
+            logger.debug(f"adding content of {fn} to messages")
+            with open(fn, "r") as f:
                 args.messages.append(f.read())
 
 

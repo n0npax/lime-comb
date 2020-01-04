@@ -1,8 +1,9 @@
 import firebase_admin
-from google.cloud import firestore
-from auth import get_cred
-from google.auth.transport.requests import AuthorizedSession
 import google
+from google.auth.transport.requests import AuthorizedSession
+from google.cloud import firestore
+
+from auth import get_cred
 
 CONF = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
 

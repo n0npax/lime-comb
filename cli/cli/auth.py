@@ -1,7 +1,7 @@
 __author__ = "marcin.niemira@gmail.com (n0npax)"
 
-from google_auth_oauthlib.flow import InstalledAppFlow
 import google
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform openid"
 
