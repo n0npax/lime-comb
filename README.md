@@ -2,6 +2,8 @@
 
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://lime-comb.web.app/)
 [![codecov](https://codecov.io/gh/n0npax/lime-comb/branch/master/graph/badge.svg)](https://codecov.io/gh/n0npax/lime-comb)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 
 # Lets treat secrets like we should and don't be to nerdy
@@ -36,6 +38,6 @@ it's [here](https://lime-comb.web.app/). Please register yourself directly or vi
 ## cmdline tools
 
 ### requirements
-* docker
+* python
 
 

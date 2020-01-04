@@ -1,5 +1,6 @@
 client-lime-comb.json
-dist
+dist/**
 .codecov_token
 .coverage
 codecov_upload.sh
+cli.egg-info/**

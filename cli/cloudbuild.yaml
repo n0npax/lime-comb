@@ -1,0 +1,17 @@
+---
+steps:
+  - name: 'python:3.7.5-buster'
+    id: 'test, build, release'
+    dir: 'cli'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -x
+        pip install poetry
+        poetry self:update --preview
+        source ~/.poetry/env
+        apt-get update
+        apt-get install -y make
+        poetry shell
+        make CI=true

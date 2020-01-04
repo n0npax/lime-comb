@@ -1,9 +1,13 @@
-EXECUTABLES := poetry black
+EXECUTABLES := poetry curl
 K := $(foreach exec,$(EXECUTABLES),\
         $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))
 
+.PHONY: deps
+deps:
+	poetry install
+
 .PHONY: lint
-lint:
+lint: deps
 	poetry run black .
 	isort $(shell find . -name "*.py") -qy
 	bandit -r . -x $(shell find . -name "test_*.py" | tr "\n" ",")
@@ -19,16 +23,17 @@ endif
 
 
 .PHONY: test
-test:
+test: deps
 	poetry run pytest -v --cov-report=xml --cov . .
 
 .PHONY: build
-build: clean test cover lint
+build: deps clean test cover lint
 	poetry build
 
 .PHONY: clean
 clean:
 	rm -fr dist
+	rm -fr cli.egg-info
 	find . -name __pycache__ | xargs rm -fr
 	find . -name '*.pyc' -delete
 
@@ -38,8 +43,9 @@ install:
 
 BUMP:=patch
 .PHONY: release
-release:
+release: build
 	poetry version $(BUMP) | awk '{print $$NF}'
 	$(MAKE) build
 	poetry version | awk '{print $$NF}' | xargs git tag -f
 	echo TODO release to pypi
+
