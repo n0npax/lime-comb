@@ -1,17 +1,14 @@
 ---
 steps:
-  - name: 'python:3.7.5-buster'
+  - name: 'python:3.7.5-alpine'
     id: 'test, build, release'
     dir: 'cli'
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
         set -x
+        apk add make build-base python3-dev libc-dev libffi-dev libressl-dev openssl-dev linux-headers curl
+        pip install --upgrade pip
         pip install poetry
-        poetry self:update --preview
-        source ~/.poetry/env
-        apt-get update
-        apt-get install -y make
-        poetry shell
         make CI=true
