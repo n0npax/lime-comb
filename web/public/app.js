@@ -92,10 +92,10 @@ ui.start('#firebaseui-auth-container', uiConfig)
 
 function firestoreGet(destContainer, email) {
     console.log("firestore single query", email)
-    db.collection("free").doc(email)
+    db.collection("gmail.com").doc(email).collection("pub").doc("default")
         .get().then(function(doc) {
             if (doc.exists) {
-                destContainer.innerText = window.atob(doc.data().gpg);
+                destContainer.innerText = window.atob(doc.data().data);
             } else {
                 // doc.data() will be undefined in this case
                 destContainer.innerText = "Key doesn't exist";
@@ -110,8 +110,8 @@ function firestoreGet(destContainer, email) {
 function firestorePut(data) {
     // Add a new document in collection "cities"
     var currUser = firebase.auth().currentUser
-    db.collection("free").doc(currUser.email).set({
-        gpg: window.btoa(data),
+    db.collection("gmail.com").doc(currUser.email).collection("pub").doc("default").set({
+        data: window.btoa(data),
     })
     .then(function() {
         console.log("Document successfully written!");
