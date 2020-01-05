@@ -193,14 +193,6 @@ gitdb2 = ">=2.0.0"
 
 [[package]]
 category = "main"
-description = "A Python wrapper for GnuPG"
-name = "gnupg"
-optional = false
-python-versions = "*"
-version = "2.3.1"
-
-[[package]]
-category = "main"
 description = "Google API client core library"
 name = "google-api-core"
 optional = false
@@ -543,6 +535,14 @@ testing = ["fields", "hunter", "process-tests (2.0.2)", "six", "virtualenv"]
 
 [[package]]
 category = "main"
+description = "A wrapper for the Gnu Privacy Guard (GPG or GnuPG)"
+name = "python-gnupg"
+optional = false
+python-versions = "*"
+version = "0.4.5"
+
+[[package]]
+category = "main"
 description = "World timezone definitions, modern and historical"
 name = "pytz"
 optional = false
@@ -718,7 +718,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "contextlib2", "unittest2"]
 
 [metadata]
-content-hash = "a0457f00c1a2fed0460d7bac5234ec0bb29cf3796a0be07a33c4065a7a226a87"
+content-hash = "52a13c7bf1c52ab1c6f8630cf57cc7dd5dbf1842f2df855f5cb6610bdd9f11f7"
 python-versions = "3.7"
 
 [metadata.files]
@@ -817,11 +817,6 @@ gitdb2 = [
 gitpython = [
     {file = "GitPython-3.0.5-py3-none-any.whl", hash = "sha256:c155c6a2653593ccb300462f6ef533583a913e17857cfef8fc617c246b6dc245"},
     {file = "GitPython-3.0.5.tar.gz", hash = "sha256:9c2398ffc3dcb3c40b27324b316f08a4f93ad646d5a6328cafbb871aa79f5e42"},
-]
-gnupg = [
-    {file = "gnupg-2.3.1-py2.7.egg", hash = "sha256:d2e16c486aaeecbb65633f8493ccab025e2487c0e1dc59a83c520b6f81dff9b8"},
-    {file = "gnupg-2.3.1-py3.4.egg", hash = "sha256:be656a2f693dbac4362537c1b6cfd03131ac5ce7a4b2bb21bff7e3145f94f7ea"},
-    {file = "gnupg-2.3.1.tar.gz", hash = "sha256:8db5a05c369dbc231dab4c98515ce828f2dffdc14f1534441a6c59b71c6d2031"},
 ]
 google-api-core = [
     {file = "google-api-core-1.15.0.tar.gz", hash = "sha256:2d661c8d650a1df5805d0e360121cb55c55d8bd29f858fa62cbe943e59ce89f7"},
@@ -1028,6 +1023,10 @@ pytest = [
 pytest-cov = [
     {file = "pytest-cov-2.8.1.tar.gz", hash = "sha256:cc6742d8bac45070217169f5f72ceee1e0e55b0221f54bcf24845972d3a47f2b"},
     {file = "pytest_cov-2.8.1-py2.py3-none-any.whl", hash = "sha256:cdbdef4f870408ebdbfeb44e63e07eb18bb4619fae852f6e760645fa36172626"},
+]
+python-gnupg = [
+    {file = "python-gnupg-0.4.5.tar.gz", hash = "sha256:3353e59949cd2c15efbf1fca45e347d8a22f4bed0d93e9b89b2657bda19cec05"},
+    {file = "python_gnupg-0.4.5-py2.py3-none-any.whl", hash = "sha256:c095a41f310ad7a4fd393406660ac9bd6c175ccaa0f072f9c18f33be8130a27a"},
 ]
 pytz = [
     {file = "pytz-2019.3-py2.py3-none-any.whl", hash = "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d"},
