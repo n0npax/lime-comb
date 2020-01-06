@@ -41,11 +41,13 @@ clean:
 install:
 	echo TODO
 
-BUMP:=patch
 .PHONY: release
 release: build
-	poetry version $(BUMP) | awk '{print $$NF}'
+ifdef BUMP
+	poetry version $(BUMP)
+endif
 	$(MAKE) build
 	poetry version | awk '{print $$NF}' | xargs git tag -f
+	git push --tags
 	echo TODO release to pypi
 

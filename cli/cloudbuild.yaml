@@ -11,4 +11,5 @@ steps:
         apk add make build-base python3-dev libc-dev libffi-dev libressl-dev openssl-dev linux-headers curl
         pip install --upgrade pip
         pip install poetry
-        make CI=true
+        make CI=true BUMP=$(git log -1 --pretty=%B | grep "^Bumps: " | cut -f2 -d ':')
+        git push --tags
