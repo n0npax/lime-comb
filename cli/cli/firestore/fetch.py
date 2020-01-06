@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import subprocess
@@ -16,20 +17,21 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2, timestamp_pb2
 
 from cli.auth.google import get_anon_cred, get_cred
-import base64
+
 CONF = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
-#cred = get_anon_cred()
+# cred = get_anon_cred()
 
 
 def get_gpg(cred, email):
-    project_id = "lime-comb" #TODO from config
+    project_id = "lime-comb"  # TODO from config
     database_id = "(default)"
-    _, domain = email.split('@')
+    _, domain = email.split("@")
     document_path = f"{domain}/{email}/pub/default"
     name = f"projects/{project_id}/databases/{database_id}/documents/{document_path}"
     mask = common_pb2.DocumentMask(field_paths=["data"])
     pub_key = get_document(cred, name, mask)
     return _decode_base64(pub_key["data"].string_value)
+
 
 def get_document(cred, name, mask=None):
     http_request = google.auth.transport.requests.Request()
@@ -42,8 +44,10 @@ def get_document(cred, name, mask=None):
     get_document_response = stub.GetDocument(get_document_request)
     return get_document_response.fields
 
+
 def _decode_base64(s):
-    return base64.b64decode(s).decode("utf-8") 
+    return base64.b64decode(s).decode("utf-8")
+
 
 with get_cred(CONF) as cred:
     print(get_gpg(cred, "marcin.niemira@gmail.com"))
