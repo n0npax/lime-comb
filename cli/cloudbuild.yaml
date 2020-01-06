@@ -8,7 +8,14 @@ steps:
       - '-c'
       - |
         set -x
-        apk add make build-base python3-dev libc-dev libffi-dev libressl-dev openssl-dev linux-headers curl
+        apk add make build-base python3-dev libc-dev libffi-dev libressl-dev openssl-dev linux-headers curl git
         pip install --upgrade pip
         pip install poetry
-        make CI=true
+        make CI=true $(git log -1 --pretty=%B | grep "^Bumps: " | cut -f2 -d ':' | xargs -n1 -I ITEM echo BUMP=ITEM)
+
+  - name: gcr.io/cloud-builders/git
+    id: "push tags"
+    dir: 'cli'
+    args:
+      - push
+      - --tags
