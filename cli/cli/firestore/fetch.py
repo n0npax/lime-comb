@@ -17,9 +17,8 @@ from google.protobuf import empty_pb2, timestamp_pb2
 
 from cli.auth.google import get_anon_cred, get_cred
 import base64
-#CONF = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
-#cred = get_cred(CONF)
-cred = get_anon_cred()
+CONF = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
+#cred = get_anon_cred()
 
 
 def get_gpg(cred, email):
@@ -46,4 +45,5 @@ def get_document(cred, name, mask=None):
 def _decode_base64(s):
     return base64.b64decode(s).decode("utf-8") 
 
-print(get_gpg(cred, "marcin.niemira@gmail.com"))
+with get_cred(CONF) as cred:
+    print(get_gpg(cred, "marcin.niemira@gmail.com"))
