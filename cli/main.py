@@ -96,3 +96,9 @@ def parse_args():
 
 if __name__ == "__main__":
     msrs, rcpts = parse_args()
+
+    from cli.auth.google import get_cred
+    from cli.firestore.fetch import get_gpg
+    from cli.config import OAUTH_GCP_CONF
+    with get_cred(OAUTH_GCP_CONF) as cred:
+        print(get_gpg(cred, "marcin.niemira@gmail.com"))

@@ -3,6 +3,7 @@ __author__ = "marcin.niemira@gmail.com (n0npax)"
 import pickle
 from contextlib import contextmanager
 
+from cli.config import credentials_file
 import google
 from google_auth_oauthlib.flow import InstalledAppFlow
 
@@ -44,8 +45,8 @@ def get_anon_cred() -> google.auth.credentials.Credentials:
 
 
 def save_creds(cred):
-    pickle.dump(cred, open("/home/n0npax/.lime-comb/creds", "wb"))
+    pickle.dump(cred, open(credentials_file, "wb"))
 
 
 def read_creds():
-    return pickle.load(open("/home/n0npax/.lime-comb/creds", "rb"))
+    return pickle.load(open(credentials_file, "rb"))
