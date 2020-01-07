@@ -1,6 +1,17 @@
 ---
 steps:
-  - name: 'python:3.7.5-alpine'
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    id: build builder
+    dir: cli
+    args:
+      - --destination=gcr.io/$PROJECT_ID/${_BUILDER}
+      - --cache=true
+      - --context
+      - /workspace/cli
+      - --dockerfile
+      - Dockerfile.builder
+
+  - name: 'gcr.io/$PROJECT_ID/${_BUILDER}'
     id: 'test, build, release'
     dir: 'cli'
     entrypoint: 'sh'
@@ -8,14 +19,21 @@ steps:
       - '-c'
       - |
         set -x
-        apk add make build-base python3-dev libc-dev libffi-dev libressl-dev openssl-dev linux-headers curl git
-        pip install --upgrade pip
-        pip install poetry
-        make CI=true $(git log -1 --pretty=%B | grep "^Bumps: " | cut -f2 -d ':' | xargs -n1 -I ITEM echo BUMP=ITEM)
+        poetry env use python
+        make CI=true $(git log -1 --pretty=raw | grep "Bumps:" | cut -f2 -d ':' | xargs -n1 -I ITEM echo BUMP=ITEM)
+    env:
+      - 'GIT_DISCOVERY_ACROSS_FILESYSTEM=1'
 
   - name: gcr.io/cloud-builders/git
     id: "push tags"
-    dir: 'cli'
     args:
       - push
       - --tags
+    env:
+      - 'GIT_DISCOVERY_ACROSS_FILESYSTEM=1'
+
+substitutions:
+  _BUILDER: lime-comb-builder
+images:
+  - 'gcr.io/$PROJECT_ID/${_BUILDER}'
+timeout: 900s

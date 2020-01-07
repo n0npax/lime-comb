@@ -1,2 +1,4 @@
 [virtualenvs]
 create = true
+cache-dir = "/build"
+path = "/build/virtualenvs"
