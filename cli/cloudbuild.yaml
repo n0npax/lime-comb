@@ -2,7 +2,7 @@
 steps:
   - name: 'gcr.io/kaniko-project/executor:latest'
     id: build builder
-    dir: cli
+    dir: /workspace/cli
     args:
       - --destination=gcr.io/$PROJECT_ID/${_BUILDER}
       - --cache=true
@@ -13,24 +13,17 @@ steps:
 
   - name: 'gcr.io/$PROJECT_ID/${_BUILDER}'
     id: 'test, build, release'
-    dir: 'cli'
-    entrypoint: 'sh'
+    dir: '/workspace/cli'
+    entrypoint: 'bash'
     args:
       - '-c'
       - |
         set -x
-        poetry env use python
-        make CI=true $(git log -1 --pretty=raw | grep "Bumps:" | cut -f2 -d ':' | xargs -n1 -I ITEM echo BUMP=ITEM)
+        . /build/virtualenvs/*/bin/activate
+        poetry env info
+        make release
     env:
-      - 'GIT_DISCOVERY_ACROSS_FILESYSTEM=1'
-
-  - name: gcr.io/cloud-builders/git
-    id: "push tags"
-    args:
-      - push
-      - --tags
-    env:
-      - 'GIT_DISCOVERY_ACROSS_FILESYSTEM=1'
+      - CODECOV_TOKEN=${_CODECOV_TOKEN}
 
 substitutions:
   _BUILDER: lime-comb-builder

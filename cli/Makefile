@@ -4,7 +4,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 .PHONY: deps
 deps:
-	poetry install
+	poetry install --no-root
 
 .PHONY: lint
 lint: deps
@@ -12,11 +12,10 @@ lint: deps
 	isort $(shell find . -name "*.py") -qy
 	bandit -r . -x $(shell find . -name "test_*.py" | tr "\n" ",")
 
-# make test CI=true
 cover: test
 	curl -s https://codecov.io/bash -o codecov_upload.sh
-ifdef CI
-	bash codecov_upload.sh -cF cli
+ifeq ("$(wildcard .codecov_token)","")
+	bash codecov_upload.sh -cF cli -t $$CODECOV_TOKEN
 else
 	bash codecov_upload.sh -cF cli -t $(shell cat .codecov_token)
 endif
@@ -39,15 +38,9 @@ clean:
 
 .PHONY: install
 install:
-	echo TODO
+	poetry install
 
 .PHONY: release
-release: build
-ifdef BUMP
-	poetry version $(BUMP)
-endif
+release:
 	$(MAKE) build
-	poetry version | awk '{print $$NF}' | xargs git tag -f
-	git push --tags
 	echo TODO release to pypi
-

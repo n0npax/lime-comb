@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import argparse
-import logging
 import os
 import sys
 
 import email_validator
 
 import cli
+from cli.logger.logger import logger
 
 
 def validate_filepath(fp):
@@ -68,13 +68,11 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-logging.basicConfig(level=logging.DEBUG)
-
-logger = logging.getLogger(name=cli.__app_name__)
-
+import logging
 
 def parse_args():
     logger.setLevel(args.log_lvl)
+
     logger.info(f"log lvl {logger.getEffectiveLevel()}")
     if args.version:
         print(f"version: {cli.__version__}")
@@ -100,5 +98,6 @@ if __name__ == "__main__":
     from cli.auth.google import get_cred
     from cli.firestore.fetch import get_gpg
     from cli.config import OAUTH_GCP_CONF
+
     with get_cred(OAUTH_GCP_CONF) as cred:
         print(get_gpg(cred, "marcin.niemira@gmail.com"))

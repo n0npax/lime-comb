@@ -3,12 +3,13 @@ __author__ = "marcin.niemira@gmail.com (n0npax)"
 import pickle
 from contextlib import contextmanager
 
-from cli.config import credentials_file
 import google
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform openid"
-# https://www.googleapis.com/auth/datastore
+from cli.config import Config
+from cli.logger.logger import logger
+
+__scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform openid"
 
 
 @contextmanager
@@ -20,14 +21,16 @@ def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
             request = google.auth.transport.requests.Request()
             cred.refresh(request)
             if cred.expired:
-                # TODO WARN
+                logger.warning(
+                    "existing credentials are expired and cannot be refreshed"
+                )
                 raise Exception("cannot refresh creds")
             yield cred
         yield cred
 
-    except:
-        flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=scopes)
-
+    except Exception as err:
+        logger.warning(f"Error: {err}, fallback to fresh login")
+        flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
         cred = flow.run_local_server(
             host="localhost",
             port=5000,
@@ -45,8 +48,8 @@ def get_anon_cred() -> google.auth.credentials.Credentials:
 
 
 def save_creds(cred):
-    pickle.dump(cred, open(credentials_file, "wb"))
+    pickle.dump(cred, open(Config.credentials_file, "wb"))
 
 
 def read_creds():
-    return pickle.load(open(credentials_file, "rb"))
+    return pickle.load(open(Config.credentials_file, "rb"))

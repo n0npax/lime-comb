@@ -17,9 +17,11 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2, timestamp_pb2
 
 from cli.auth.google import get_anon_cred, get_cred
+from cli.logger.logger import logger
 
 
 def get_gpg(cred, email):
+    logger.info(f"fetching gpg for {email}")
     project_id = "lime-comb"  # TODO from config
     database_id = "(default)"
     _, domain = email.split("@")
@@ -44,6 +46,3 @@ def get_document(cred, name, mask=None):
 
 def _decode_base64(s):
     return base64.b64decode(s).decode("utf-8")
-
-
-
