@@ -12,12 +12,11 @@ lint: deps
 	isort $(shell find . -name "*.py") -qy
 	bandit -r . -x $(shell find . -name "test_*.py" | tr "\n" ",")
 
-cover: test
-	curl -s https://codecov.io/bash -o codecov_upload.sh
+cover: test codecov_upload.sh
 ifeq ("$(wildcard .codecov_token)","")
-	bash codecov_upload.sh -cF cli -t $$CODECOV_TOKEN
+	./codecov_upload.sh -cF cli -t "$${CODECOV_TOKEN}" -C "$${COMMIT_SHA}" -Z
 else
-	bash codecov_upload.sh -cF cli -t $(shell cat .codecov_token)
+	./codecov_upload.sh -cF cli -t "$(shell cat .codecov_token)" -Z
 endif
 
 
@@ -44,3 +43,7 @@ install:
 release:
 	$(MAKE) build
 	echo TODO release to pypi
+
+codecov_upload.sh:
+	curl -s https://codecov.io/bash -o codecov_upload.sh
+	chmod +x ./codecov_upload.sh

@@ -19,11 +19,14 @@ steps:
       - '-c'
       - |
         set -x
+        set -e
         . /build/virtualenvs/*/bin/activate
         poetry env info
         make release
     env:
       - CODECOV_TOKEN=${_CODECOV_TOKEN}
+      - COMMIT_SHA=$COMMIT_SHA
+
 
 substitutions:
   _BUILDER: lime-comb-builder

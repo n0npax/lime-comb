@@ -24,7 +24,5 @@ class Config:
 try:
     with open(Config.config_file, "r") as f:
         config = yaml.safe_load(f)
-        for k, v in config.items():
-            setattr(Config, k, v)
 except FileNotFoundError:
     print("Error config file dont exist")
