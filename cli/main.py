@@ -70,6 +70,7 @@ parser.add_argument(
 args = parser.parse_args()
 import logging
 
+
 def parse_args():
     logger.setLevel(args.log_lvl)
 
