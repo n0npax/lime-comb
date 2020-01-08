@@ -21,7 +21,7 @@ endif
 
 
 .PHONY: test
-test: deps
+test: deps firestore-emulator
 	poetry run pytest -v --cov-report=xml --cov . .
 
 .PHONY: build
@@ -47,3 +47,6 @@ release:
 codecov_upload.sh:
 	curl -s https://codecov.io/bash -o codecov_upload.sh
 	chmod +x ./codecov_upload.sh
+
+firestore-emulator:
+	gcloud beta emulators firestore start --host-port localhost:5004 --rules ../web/firestore-test.rules --verbosity debug

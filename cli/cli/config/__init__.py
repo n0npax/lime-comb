@@ -22,10 +22,11 @@ class Config:
     keyring_dir.mkdir(exist_ok=True)
 
     username = "marcin.niemira"
-    email =  "marcin.niemira@gmail.com"
+    email = "marcin.niemira@gmail.com"
     comment = "Lime Comb"
 
-    password=None
+    password = None
+    firestore_target = "firestore.googleapis.com:443"
 
 
 try:
