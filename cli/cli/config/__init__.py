@@ -17,9 +17,9 @@ class Config:
     credentials_file = data_dir / "credentials"
     keyring_dir = data_dir / "keyring"
 
-    config_dir.mkdir(exist_ok=True)
-    data_dir.mkdir(exist_ok=True)
-    keyring_dir.mkdir(exist_ok=True)
+    config_dir.mkdir(exist_ok=True, parents=True)
+    data_dir.mkdir(exist_ok=True, parents=True)
+    keyring_dir.mkdir(exist_ok=True, parents=True)
 
     username = "marcin.niemira"
     email = "marcin.niemira@gmail.com"
