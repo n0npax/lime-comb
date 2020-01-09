@@ -49,4 +49,4 @@ codecov_upload.sh:
 	chmod +x ./codecov_upload.sh
 
 firestore-emulator:
-	gcloud beta emulators firestore start --host-port localhost:5004 --rules ../web/firestore-test.rules --verbosity debug
+	firebase emulators:start --only firestore
