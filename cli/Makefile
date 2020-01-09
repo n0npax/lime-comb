@@ -28,7 +28,7 @@ test: deps
 	$(MAKE) firestore-stop
 
 firestore-stop:
-	pgrep -lfa firebase | cut -f1 -d ' ' | xargs -n1 kill -9
+	pgrep -lfa firebase | cut -f1 -d ' ' | grep -v -e make | xargs -n1 kill -9
 
 .PHONY: build
 build: deps clean test cover lint
