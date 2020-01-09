@@ -4,7 +4,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 .PHONY: deps
 deps:
-	poetry install
+	poetry install --no-root
 
 .PHONY: lint
 lint: deps

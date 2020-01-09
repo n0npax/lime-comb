@@ -4,17 +4,16 @@ import pickle
 from contextlib import contextmanager
 
 import google
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 from cli.config import Config
 from cli.logger.logger import logger
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 __scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform openid"
 
 
 @contextmanager
 def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
-
     try:
         cred = read_creds()
         if cred.expired:
@@ -27,7 +26,6 @@ def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
                 raise Exception("cannot refresh creds")
             yield cred
         yield cred
-
     except Exception as err:
         logger.warning(f"Error: {err}, fallback to fresh login")
         flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)

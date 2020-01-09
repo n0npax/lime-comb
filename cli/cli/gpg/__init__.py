@@ -1,4 +1,5 @@
 import gnupg
+
 from cli.config import Config
 
 gpg = gnupg.GPG(gnupghome=str(Config.keyring_dir), keyring=Config.app_name)
