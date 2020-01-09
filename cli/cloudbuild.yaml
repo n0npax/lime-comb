@@ -21,23 +21,26 @@ steps:
         set -x
         set -e
         . /build/virtualenvs/*/bin/activate
-        make release
+        echo make release TODO
         poetry version | cut -f2 -d ' ' > .version
     env:
       - CODECOV_TOKEN=${_CODECOV_TOKEN}
       - COMMIT_SHA=$COMMIT_SHA
+
   - name: gcr.io/cloud-builders/git
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        set -x
         set -e
         git init
-        git remote add origin https://github.com/n0npax/lime-comb.git
+        git remote add origin https://n0npax:${_GITHUB_TOKEN}@github.com/n0npax/lime-comb.git
         git fetch
         git tag $(cat ./cli/.version) $COMMIT_SHA
-        git push origin $(cat ./cli/.version)
+        git push origin $(cat ./cli/.version) -f
+    env:
+      - GITHUB_TOKEN=${_GITHUB_TOKEN}
+      - COMMIT_SHA=$COMMIT_SHA
 
 substitutions:
   _BUILDER: lime-comb-builder
