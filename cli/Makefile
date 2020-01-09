@@ -21,8 +21,14 @@ endif
 
 
 .PHONY: test
-test: deps firestore-emulator
+test: deps 
+	firebase emulators:start --only firestore &
+	sleep 5
 	poetry run pytest -v --cov-report=xml --cov . .
+	$(MAKE) firestore-stop
+
+firestore-stop:
+	pgrep -lfa firebase | cut -f1 -d ' ' | xargs -n1 kill -9
 
 .PHONY: build
 build: deps clean test cover lint
@@ -47,6 +53,3 @@ release:
 codecov_upload.sh:
 	curl -s https://codecov.io/bash -o codecov_upload.sh
 	chmod +x ./codecov_upload.sh
-
-firestore-emulator:
-	firebase emulators:start --only firestore

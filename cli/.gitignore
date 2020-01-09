@@ -4,3 +4,4 @@ dist/**
 .coverage
 codecov_upload.sh
 cli.egg-info/**
+coverage.xml
