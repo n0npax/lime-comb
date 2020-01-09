@@ -5,7 +5,8 @@ import os
 import sys
 
 import email_validator
-
+from cli.commands.encrypt import EncryptCommand
+from cli.commands.decrypt import DecryptCommand
 import cli
 from cli.logger.logger import logger
 
@@ -45,15 +46,20 @@ subparsers = parser.add_subparsers(
     title="commands",
     description="Top level supported commands",
     required=True,
-    dest='sub_command'
+    dest="sub_command",
 )
 
+enc_cmd = EncryptCommand()
 enc_parsers = subparsers.add_parser(
-    "encrypt", aliases=["enc", "e"], help="encrypt message for receipment"
+    enc_cmd.name, aliases=enc_cmd.aliases, help=enc_cmd.help
 )
+dec_cmd = DecryptCommand()
+
 dec_parsers = subparsers.add_parser(
-    "decrypt", aliases=["dec", "d"], help="decrypt message"
+    dec_cmd.name, aliases=dec_cmd.aliases, help=dec_cmd.help
 )
+
+# TODO provide class for config and keys
 config_parsers = subparsers.add_parser(
     "config", aliases=["conf", "c"], help="configuration"
 )
@@ -89,7 +95,6 @@ for name, p in {"enc": enc_parsers, "dec": dec_parsers}.items():
         help="message",
         default=[],
     )
-    p.set_defaults(name=name)
 
 
 def parse_common():
@@ -125,14 +130,14 @@ args = parser.parse_args(sys.argv[1:])
 if __name__ == "__main__":
     parse_common()
 
-    if args.name == "dec":
+    if args.sub_command in ["d", "dec", "decrypt"]:
         print(args)
-    if args.name == "enc":
+    if args.sub_command in ["e", "enc", "encrypt"]:
         pass
 
     from cli.auth.google import get_cred
     from cli.firestore.fetch import get_gpg
     from cli.config import OAUTH_GCP_CONF
 
-    with get_cred(OAUTH_GCP_CONF) as cred:
-        print(get_gpg(cred, "marcin.niemira@gmail.com"))
+    # with get_cred(OAUTH_GCP_CONF) as cred:
+    #    print(get_gpg(cred, "marcin.niemira@gmail.com"))
