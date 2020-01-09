@@ -44,6 +44,8 @@ subparsers = parser.add_subparsers(
     help="use --help to check help for sub-command",
     title="commands",
     description="Top level supported commands",
+    required=True,
+    dest='sub_command'
 )
 
 enc_parsers = subparsers.add_parser(
@@ -87,7 +89,7 @@ for name, p in {"enc": enc_parsers, "dec": dec_parsers}.items():
         help="message",
         default=[],
     )
-    p.set_defaults(command_name=lambda: name)
+    p.set_defaults(name=name)
 
 
 def parse_common():
@@ -122,11 +124,10 @@ def get_message():
 args = parser.parse_args(sys.argv[1:])
 if __name__ == "__main__":
     parse_common()
-    command_name = args.command_name()
 
-    if command_name == "dec":
-        pass
-    if command_name == "enc":
+    if args.name == "dec":
+        print(args)
+    if args.name == "enc":
         pass
 
     from cli.auth.google import get_cred

@@ -21,7 +21,7 @@ steps:
         set -x
         set -e
         . /build/virtualenvs/*/bin/activate
-        echo make release TODO
+        make release
         poetry version | cut -f2 -d ' ' > .version
     env:
       - CODECOV_TOKEN=${_CODECOV_TOKEN}
