@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import argparse
+import logging
 import os
 import sys
 
-import email_validator
-
 import cli
+import email_validator
 from cli.logger.logger import logger
 
 
@@ -68,7 +68,6 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-import logging
 
 
 def parse_args():

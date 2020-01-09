@@ -5,27 +5,20 @@ import subprocess
 import sys
 import time
 
-from cli.config import Config
 import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.oauth2.credentials
-import grpc
-from google.cloud.firestore_v1.proto import (
-    common_pb2,
-    common_pb2_grpc,
-    document_pb2,
-    document_pb2_grpc,
-    firestore_pb2,
-    firestore_pb2_grpc,
-    write_pb2,
-    write_pb2_grpc,
-)
+from google.cloud.firestore_v1.proto import (common_pb2, common_pb2_grpc,
+                                             document_pb2, document_pb2_grpc,
+                                             firestore_pb2, firestore_pb2_grpc,
+                                             write_pb2, write_pb2_grpc)
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2, timestamp_pb2
 
-from cli.auth.google import get_anon_cred, get_cred
-from cli.logger.logger import logger
 import grpc
+from cli.auth.google import get_anon_cred, get_cred
+from cli.config import Config
+from cli.logger.logger import logger
 
 
 def get_gpg(cred, email):
