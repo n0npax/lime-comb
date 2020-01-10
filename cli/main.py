@@ -114,7 +114,7 @@ def get_receipments():
     return args.receipmens
 
 
-def get_message():
+def get_message(args):
     if args.files:
         for fn in args.files:
             logger.debug(f"adding content of {fn} to messages")
@@ -134,4 +134,4 @@ if __name__ == "__main__":
     if args.sub_command in ["d", "dec", "decrypt"]:
         print(args)
     if args.sub_command in ["e", "enc", "encrypt"]:
-        enc_cmd(args.messages, args.receipments)
+        enc_cmd(get_message(args), args.receipments)
