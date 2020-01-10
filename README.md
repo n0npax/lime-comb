@@ -9,10 +9,14 @@
 # Lets treat secrets like we should and don't be to nerdy
 
 ## Why ?
-People are often afraid of `GPG` and asymetric cryptograpy.
-If you want to share secret with your teammates, but your company has no procedures? Here we are!
-LIME-COMB is set of tools and services designed to make sharing secrets easy for everone.
-We want to offer easy, still safe solution for everyone( including non technical staff)
+People are often afraid of `gpg` and asymetric cryptograpy. `gpg` keyserver doesn't validate a key ownership.
+* If you want to share secret with your teammates, but your company has no procedures
+* If storing secret in external system like 1password is not an option
+* If you want to share secrets in secure way and use managed key registry
+Here we are!
+
+`LIME-COMB` is set of tools and services designed to make sharing secrets easy.
+Given solution iams to be an easy, still safe solution for everyone( including non technical staff)
 
 ## How ?
 
@@ -20,13 +24,21 @@ Lime-comb is basicly public key registy and set of the tools. Public keys are st
 
 ### Public key registry (WEB)
 
-We believe we shouldn't reinvent wheel. Public key registry is secured with authorization from google(`firebase auth`).
-User is able to modify just his own key and read keys from all not premium users. We believe smart people provides good solutions and we should utilize them.
+We believe we shouldn't reinvent wheel. Lime-comb key registry is secured with authorization from google(`firebase auth`).
+We believe smart people provides good solutions and we should utilize them.
 
 ### CMD line tools
 
-What was the syntax for gpg? Sould I use `base64` or armour mode? It's not you problem anymore, we will do it for you.
+What was the syntax for gpg? Sould I use `base64` or armour mode? It's not your problem anymore, we will do it for you.
 The only thing you need to know is receiver email and message itself.
+
+#### Smart defaults
+
+We are offering flexible solution with 2 main default profiles
+* locked (keeps private key just locally)
+* glassbreak (store prov key in `db` with access just for given user)
+
+Many other configuration option can be adjusted by an user
 
 ### GUI - TODO
 
