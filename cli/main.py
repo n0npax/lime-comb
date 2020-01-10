@@ -5,9 +5,10 @@ import os
 import sys
 
 import email_validator
-from cli.commands.encrypt import EncryptCommand
-from cli.commands.decrypt import DecryptCommand
+
 import cli
+from cli.commands.decrypt import DecryptCommand
+from cli.commands.encrypt import EncryptCommand
 from cli.logger.logger import logger
 
 
@@ -133,11 +134,4 @@ if __name__ == "__main__":
     if args.sub_command in ["d", "dec", "decrypt"]:
         print(args)
     if args.sub_command in ["e", "enc", "encrypt"]:
-        pass
-
-    from cli.auth.google import get_cred
-    from cli.firestore.fetch import get_gpg
-    from cli.config import OAUTH_GCP_CONF
-
-    # with get_cred(OAUTH_GCP_CONF) as cred:
-    #    print(get_gpg(cred, "marcin.niemira@gmail.com"))
+        enc_cmd(args.messages, args.receipments)

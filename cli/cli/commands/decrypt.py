@@ -1,5 +1,6 @@
-from cli.commands.base import Command
 from dataclasses import dataclass
+
+from cli.commands.base import Command
 
 
 @dataclass

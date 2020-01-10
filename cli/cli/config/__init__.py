@@ -4,11 +4,11 @@ from pathlib import Path
 import yaml
 from appdirs import user_config_dir, user_data_dir
 
-OAUTH_GCP_CONF = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
 
 
 class Config:
     app_name = "lime-comb"
+    oauth_gcp_conf = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
 
     data_dir = Path(user_data_dir(app_name))
     config_dir = Path(user_config_dir(app_name))
@@ -21,12 +21,14 @@ class Config:
     data_dir.mkdir(exist_ok=True, parents=True)
     keyring_dir.mkdir(exist_ok=True, parents=True)
 
-    username = "marcin.niemira"
-    email = "marcin.niemira@gmail.com"
-    comment = "Lime Comb"
+    username:str = "marcin.niemira"
+    email:str = "marcin.niemira@gmail.com"
+    comment:str = "Lime Comb"
 
-    password = None
-    firestore_target = "firestore.googleapis.com:443"
+    password: str = None
+    firestore_target: str = "firestore.googleapis.com:443"
+
+    always_import: bool = True
 
 
 try:
