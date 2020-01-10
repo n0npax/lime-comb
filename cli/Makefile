@@ -24,7 +24,7 @@ endif
 test: deps 
 	firebase emulators:start --only firestore &
 	sleep 5
-	poetry run pytest -v --cov-report=xml --cov . .
+	poetry run pytest -vs --cov-report=xml --cov . .
 	$(MAKE) firestore-stop
 
 firestore-stop:

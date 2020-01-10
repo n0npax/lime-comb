@@ -5,7 +5,6 @@ import yaml
 from appdirs import user_config_dir, user_data_dir
 
 
-
 class Config:
     app_name = "lime-comb"
     oauth_gcp_conf = "/home/n0npax/workspace/lime-comb/cli/client-lime-comb.json"
@@ -21,9 +20,9 @@ class Config:
     data_dir.mkdir(exist_ok=True, parents=True)
     keyring_dir.mkdir(exist_ok=True, parents=True, mode=0o700)
 
-    username:str = "marcin.niemira"
-    email:str = "marcin.niemira@gmail.com"
-    comment:str = "Lime Comb"
+    username: str = "marcin.niemira"
+    email: str = "marcin.niemira@gmail.com"
+    comment: str = "Lime Comb"
 
     password: str = None
     firestore_target: str = "firestore.googleapis.com:443"

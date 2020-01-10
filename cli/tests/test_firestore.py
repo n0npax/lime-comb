@@ -9,6 +9,7 @@ import cli
 from cli.auth.google import get_anon_cred
 from cli.config import Config
 from cli.firestore import fetch
+from uuid import uuid4
 
 from .conftest import cred
 
@@ -20,7 +21,7 @@ def collection_id():
 
 @pytest.fixture
 def document_id():
-    return "existingTestDocument" + str(random.randint(1, 10000))
+    return str(uuid4())
 
 
 @pytest.fixture
@@ -41,15 +42,16 @@ def local_firestore(
     f = lambda _: grpc.insecure_channel(Config.firestore_target)
     old_f = cli.firestore.fetch._create_channel
     cli.firestore.fetch._create_channel = f
-    a = cli.firestore.fetch.put_document(
+    mocker_document = cli.firestore.fetch.put_document(
         cred,
         firestore_parent,
         collection_id,
         document=document,
         document_id=document_id,
     )
-    print(a)
-    yield
+    doc_name = f"{firestore_parent}/{collection_id}/{document_id}"
+    yield mocker_document
+    cli.firestore.fetch.delete_document(cred, doc_name)
     cli.firestore.fetch._create_channel = old_f
 
 
@@ -59,8 +61,6 @@ def test_decodebase64():
 
 
 def test_get_doc(local_firestore, firestore_parent, collection_id, document_id):
-    print(
-        cli.firestore.fetch.get_document(
-            cred, firestore_parent + f"/{collection_id}/{document_id}"
-        )
+    cli.firestore.fetch.get_document(
+        cred, firestore_parent + f"/{collection_id}/{document_id}"
     )

@@ -62,6 +62,13 @@ def put_document(cred, parent, collection_id, document, document_id=None, mask=N
     return put_document_response.fields
 
 
+def delete_document(cred, doc_name):
+    channel = _create_channel(cred)
+    stub = firestore_pb2_grpc.FirestoreStub(channel)
+    delete_document_request = firestore_pb2.DeleteDocumentRequest(name=doc_name,)
+    stub.DeleteDocument(delete_document_request)
+
+
 def _create_channel(cred):
     http_request = google.auth.transport.requests.Request()
     channel = google.auth.transport.grpc.secure_authorized_channel(
