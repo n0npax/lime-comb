@@ -19,7 +19,7 @@ class Config:
 
     config_dir.mkdir(exist_ok=True, parents=True)
     data_dir.mkdir(exist_ok=True, parents=True)
-    keyring_dir.mkdir(exist_ok=True, parents=True)
+    keyring_dir.mkdir(exist_ok=True, parents=True, mode=0o700)
 
     username:str = "marcin.niemira"
     email:str = "marcin.niemira@gmail.com"

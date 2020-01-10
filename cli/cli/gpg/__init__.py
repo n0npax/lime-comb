@@ -7,9 +7,9 @@ gpg.encoding = "utf-8"
 
 
 def encrypt(emails, data):
-    encrypted_data = gpg.encrypt(data, emails)
+    encrypted_data = gpg.encrypt(data, emails, always_trust=True, sign=False)
     if not encrypted_data.ok:
-        raise Exception("encryption failed {encrypted_data.stderr}")
+        raise Exception(f"encryption failed {encrypted_data.stderr}")
     return str(encrypted_data)
 
 
@@ -24,13 +24,17 @@ def geneate_keys():
     )
     return gpg.gen_key(key_input)
 
+def get_local_pub_key(email):
+    pub_keys = gpg.list_keys()
+    for k, v in pub_keys.key_map.items():
+        if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
+            return k
 
 def get_existing_priv_key():
     private_keys = gpg.list_keys(True)
     for k, v in private_keys.key_map.items():
         if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
             return k
-
 
 def get_priv_key():
     existing_priv_key = get_existing_priv_key()
@@ -39,4 +43,8 @@ def get_priv_key():
     return get_priv_key()
 
 
-print(get_priv_key())
+def import_pub_key(data):
+    status = gpg.import_keys(data)
+    for r in status.results:
+        if not r['fingerprint']:
+            raise Exception(f"key import error: {r}")
