@@ -11,9 +11,9 @@
 
 ## Why ?
 People are often afraid of `gpg` and asymetric cryptograpy. `gpg` keyserver doesn't validate a key ownership.
-* If you want to share secret with your teammates, but your company has no procedures
-* If storing secret in external system like 1password is not an option
-* If you want to share secrets in secure way and use managed key registry
+  * If you want to share secret with your teammates, but your company has no procedures
+  * If storing secret in external system like 1password is not an option
+  * If you want to share secrets in secure way and use managed key registry
 Here we are!
 
 `LIME-COMB` is set of tools and services designed to make sharing secrets easy.
@@ -36,8 +36,8 @@ The only thing you need to know is receiver email and message itself.
 #### Smart defaults
 
 We are offering flexible solution with 2 main default profiles
-* locked (keeps private key just locally)
-* glassbreak (store prov key in `db` with access just for given user)
+  * locked (keeps private key just locally)
+  * glassbreak (store prov key in `db` with access just for given user)
 
 Many other configuration option can be adjusted by an user
 
@@ -51,7 +51,7 @@ it's [here](https://lime-comb.web.app/). Please register yourself directly or vi
 ## cmdline tools
 
 ### requirements
-* python
+  * python
 
 # Design
 
