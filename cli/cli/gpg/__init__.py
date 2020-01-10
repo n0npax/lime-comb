@@ -15,7 +15,7 @@ def encrypt(emails, data):
 
 def geneate_keys():
     key_input = gpg.gen_key_input(
-        key_type="ECDSA",
+        key_type="RSA",
         key_length=4096,
         name_real=Config.username,
         name_email=Config.email,
