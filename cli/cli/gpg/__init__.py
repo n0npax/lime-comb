@@ -9,7 +9,8 @@ gpg.encoding = "utf-8"
 def encrypt(emails, data):
     encrypted_data = gpg.encrypt(data, emails, always_trust=True, sign=False)
     if not encrypted_data.ok:
-        raise Exception(f"encryption failed {encrypted_data.stderr}")
+        err = getattr(encrypted_data, "stderr", "expected stderr not found")
+        raise Exception(f"encryption failed {err}")
     return str(encrypted_data)
 
 

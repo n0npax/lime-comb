@@ -8,4 +8,6 @@ class DecryptCommand(Command):
     aliases: str = ("d", "dec")
     name: str = "decrypt"
     help: str = "decrypt message"
-    pass
+    
+    def __call__(self):
+        pass

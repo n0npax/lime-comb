@@ -12,7 +12,6 @@ class EncryptCommand(Command):
     aliases: str = ("e", "enc")
     name: str = "encrypt"
     help: str = "encrypt message for receipment"
-    pass
 
     def __call__(self, msgs, recipients):
         if Config.always_import:
@@ -25,6 +24,7 @@ class EncryptCommand(Command):
         msgs = "\n---\n".join(msgs)
         encrypted_msgs = encrypt(recipients, msgs)
         print(encrypted_msgs)
+        return encrypted_msgs
 
     def _import_key(self, email, cred):
         key_str = get_gpg(cred, email)

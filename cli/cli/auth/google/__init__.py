@@ -16,15 +16,11 @@ __scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googlea
 def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
     try:
         cred = read_creds()
-        if cred.expired:
+        if not cred.expired:
             request = google.auth.transport.requests.Request()
             cred.refresh(request)
-            if cred.expired:
-                logger.warning(
-                    "existing credentials are expired and cannot be refreshed"
-                )
-                raise Exception("cannot refresh creds")
-            yield cred
+        else:
+            raise Exception("cannot refresh creds")
         yield cred
     except Exception as err:
         logger.warning(f"Error: {err}, fallback to fresh login")
