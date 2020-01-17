@@ -54,7 +54,7 @@ def get_existing_priv_key():
     private_keys = gpg.list_keys(True)
     for k, v in private_keys.key_map.items():
         if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
-            yield k
+            yield (k, v['uids'])
 
 
 def get_priv_key():

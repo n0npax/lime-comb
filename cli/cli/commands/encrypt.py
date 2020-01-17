@@ -22,10 +22,9 @@ class EncryptCommand(Command):
             if not get_local_pub_key(email):
                 self._import_key(email, cred)
         if merge:
-            msgs = ["---".join(msgs)]
+            msgs = ["\n---\n".join(msgs)]
         for msg in msgs:
-            encrypted_msg = encrypt(recipients, msg)
-            yield encrypted_msg
+            yield encrypt(recipients, msg)
 
     def _import_key(self, email, cred):
         key_str = get_gpg(cred, email)

@@ -36,7 +36,7 @@ steps:
         git init
         git remote add origin https://n0npax:${_GITHUB_TOKEN}@github.com/n0npax/lime-comb.git
         git fetch
-        git tag $(cat ./cli/.version) $COMMIT_SHA
+        git tag $(cat ./cli/.version) $COMMIT_SHA || exit 0
         git push origin $(cat ./cli/.version) -f
     env:
       - GITHUB_TOKEN=${_GITHUB_TOKEN}
