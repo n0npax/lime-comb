@@ -136,8 +136,7 @@ def get_message(args):
             with open(fn, "r") as f:
                 args.messages.append(f.read())
     if not args.messages:
-        logger.warning("no message to encrypt")
-        print("No message to encrypt")
+        logger.warning("No message to encrypt")
         sys.exit(1)
     return args.messages
 
@@ -153,4 +152,5 @@ if __name__ == "__main__":
         for m in enc_cmd(get_message(args), args.receipments, merge=args.merge_messages):
             print(m)
     if args.top_command in keys_cmd.aliases:
-        keys_cmd(args)
+        for k in keys_cmd(args):
+            print(k)

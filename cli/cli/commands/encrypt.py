@@ -11,7 +11,7 @@ from cli.config import Config
 class EncryptCommand(Command):
     aliases: str = ("e", "enc")
     name: str = "encrypt"
-    help: str = "encrypt message for receipment"
+    help: str = "Encrypt message for receipment. You can pass multiple messages by passing -m before earch message"
 
     def __call__(self, msgs, recipients, merge=False):
         if Config.always_import:

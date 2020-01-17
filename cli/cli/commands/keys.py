@@ -12,6 +12,6 @@ class KeysCommand(Command):
 
     def __call__(self, args):
         if args.command == "generate":
-            return geneate_keys()
+            yield geneate_keys()
         else:
-            return get_existing_priv_key()
+            yield from get_existing_priv_key()

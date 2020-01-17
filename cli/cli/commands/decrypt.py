@@ -8,7 +8,7 @@ from cli.commands.base import Command
 class DecryptCommand(Command):
     aliases: str = ("d", "dec")
     name: str = "decrypt"
-    help: str = "decrypt message"
+    help: str = "Decrypt message"
 
     def __call__(self, msgs):
         for msg in msgs:
