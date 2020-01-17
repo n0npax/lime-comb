@@ -65,7 +65,7 @@ def put_document(cred, parent, collection_id, document, document_id=None, mask=N
 def delete_document(cred, doc_name):
     channel = _create_channel(cred)
     stub = firestore_pb2_grpc.FirestoreStub(channel)
-    delete_document_request = firestore_pb2.DeleteDocumentRequest(name=doc_name,)
+    delete_document_request = firestore_pb2.DeleteDocumentRequest(name=doc_name)
     stub.DeleteDocument(delete_document_request)
 
 

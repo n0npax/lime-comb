@@ -1,9 +1,28 @@
 import gnupg
-
+import os
 from cli.config import Config
 
-gpg = gnupg.GPG(gnupghome=str(Config.keyring_dir), keyring=Config.app_name)
+GPGHOME=str(Config.keyring_dir)
+KEYRING=None #f"{GPGHOME}/../keyring-"+Config.app_name
+SECRET_KEYRING=None #f"{KEYRING}-secrets"
+gpg = gnupg.GPG(
+    gnupghome=GPGHOME,
+    keyring=KEYRING,
+    use_agent=True,
+    verbose=True,
+    secret_keyring=SECRET_KEYRING
+)
 gpg.encoding = "utf-8"
+
+
+def decrypt(data, *args, **kwargs):
+    print(gpg.gnupghome, "-------------------------------")
+    print(gpg.keyring, "-------------------------------")
+    decrypted_data = gpg.decrypt(data, extra_args=["--no-default-keyring"])
+    if not decrypted_data.ok:
+        err = getattr(decrypted_data, "stderr", "expected stderr not found")
+        raise Exception(f"decryption failed {err}")
+    return str(decrypted_data)
 
 
 def encrypt(emails, data):

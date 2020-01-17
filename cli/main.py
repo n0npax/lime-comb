@@ -9,6 +9,7 @@ import email_validator
 import cli
 from cli.commands.decrypt import DecryptCommand
 from cli.commands.encrypt import EncryptCommand
+from cli.commands.keys import KeysCommand
 from cli.logger.logger import logger
 
 
@@ -47,7 +48,7 @@ subparsers = parser.add_subparsers(
     title="commands",
     description="Top level supported commands",
     required=True,
-    dest="sub_command",
+    dest="top_command",
 )
 
 enc_cmd = EncryptCommand()
@@ -59,12 +60,6 @@ dec_cmd = DecryptCommand()
 dec_parsers = subparsers.add_parser(
     dec_cmd.name, aliases=dec_cmd.aliases, help=dec_cmd.help
 )
-
-# TODO provide class for config and keys
-config_parsers = subparsers.add_parser(
-    "config", aliases=["conf", "c"], help="configuration"
-)
-keys_parsers = subparsers.add_parser("keys", aliases=["k"], help="keys management")
 
 enc_parsers.add_argument(
     "-t",
@@ -96,6 +91,17 @@ for name, p in {"enc": enc_parsers, "dec": dec_parsers}.items():
         help="message",
         default=[],
     )
+
+
+# TODO provide class for config and keys
+config_parsers = subparsers.add_parser(
+    "config", aliases=["conf", "c"], help="configuration"
+)
+keys_cmd = KeysCommand()
+keys_parsers = subparsers.add_parser(
+    keys_cmd.name, aliases=keys_cmd.aliases, help=keys_cmd.help
+)
+keys_parsers.add_argument("command", choices=["generate", "list"], help="main command")
 
 
 def parse_common():
@@ -131,7 +137,9 @@ args = parser.parse_args(sys.argv[1:])
 if __name__ == "__main__":
     parse_common()
 
-    if args.sub_command in ["d", "dec", "decrypt"]:
-        print(args)
-    if args.sub_command in ["e", "enc", "encrypt"]:
+    if args.top_command in dec_cmd.aliases:
+        dec_cmd(get_message(args))
+    if args.top_command in enc_cmd.aliases:
         enc_cmd(get_message(args), args.receipments)
+    if args.top_command in keys_cmd.aliases:
+        keys_cmd(args)

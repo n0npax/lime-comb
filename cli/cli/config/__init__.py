@@ -20,11 +20,11 @@ class Config:
     data_dir.mkdir(exist_ok=True, parents=True)
     keyring_dir.mkdir(exist_ok=True, parents=True, mode=0o700)
 
-    username: str = "marcin.niemira"
-    email: str = "marcin.niemira@gmail.com"
+    username: str = "foo.bar"
+    email: str = "foo.bar@baz.org"
     comment: str = "Lime Comb"
 
-    password: str = None
+    password: str = "dupa.8Polska12"
     firestore_target: str = "firestore.googleapis.com:443"
 
     always_import: bool = True

@@ -5,5 +5,9 @@ service cloud.firestore {
       allow write: if request.auth.token.email == email && request.auth.uid != null;
       allow read: if true;
     }
+    match /baz.org/{email}/pub/{key_name} {
+      allow write: if request.auth.token.email == email && request.auth.uid != null;
+      allow read: if true;
+    }
   }
 }
