@@ -1,8 +1,10 @@
-import pytest
-from cli.gpg import geneate_keys, encrypt
-import tempfile
 import os
+import tempfile
+
+import pytest
+
 from cli.config import Config
+from cli.gpg import encrypt, geneate_keys
 
 
 @pytest.yield_fixture(autouse=True)

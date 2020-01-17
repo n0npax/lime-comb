@@ -1,22 +1,26 @@
-import gnupg
 import os
+
+import gnupg
+
 from cli.config import Config
 
-GPGHOME=str(Config.keyring_dir)
-KEYRING=None #f"{GPGHOME}/../keyring-"+Config.app_name
-SECRET_KEYRING=None #f"{KEYRING}-secrets"
+GPGHOME = str(Config.keyring_dir)
+KEYRING = None  # f"{GPGHOME}/../keyring-"+Config.app_name
+SECRET_KEYRING = None  # f"{KEYRING}-secrets"
 gpg = gnupg.GPG(
     gnupghome=GPGHOME,
     keyring=KEYRING,
     use_agent=True,
     verbose=False,
-    secret_keyring=SECRET_KEYRING
+    secret_keyring=SECRET_KEYRING,
 )
 gpg.encoding = "utf-8"
 
 
 def decrypt(data, *args, **kwargs):
-    decrypted_data = gpg.decrypt(data, extra_args=["--no-default-keyring", "--passphrase", Config.password])
+    decrypted_data = gpg.decrypt(
+        data, extra_args=["--no-default-keyring", "--passphrase", Config.password]
+    )
     if not decrypted_data.ok:
         err = getattr(decrypted_data, "stderr", "expected stderr not found")
         raise Exception(f"decryption failed {err}")
@@ -54,7 +58,7 @@ def get_existing_priv_key():
     private_keys = gpg.list_keys(True)
     for k, v in private_keys.key_map.items():
         if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
-            yield (k, v['uids'])
+            yield (k, v["uids"])
 
 
 def get_priv_key():

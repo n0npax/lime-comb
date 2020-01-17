@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from cli.gpg import geneate_keys, get_existing_priv_key
-from cli.config import Config
+
 from cli.commands.base import Command
+from cli.config import Config
+from cli.gpg import geneate_keys, get_existing_priv_key
 
 
 @dataclass

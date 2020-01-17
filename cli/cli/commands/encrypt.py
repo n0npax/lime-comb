@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from cli.commands.base import Command
 from cli.auth.google import get_anon_cred
-from cli.firestore.fetch import get_gpg
-from cli.gpg import get_local_pub_key, import_pub_key, encrypt
+from cli.commands.base import Command
 from cli.config import Config
+from cli.firestore.fetch import get_gpg
+from cli.gpg import encrypt, get_local_pub_key, import_pub_key
 
 
 @dataclass

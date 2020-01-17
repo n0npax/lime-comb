@@ -149,7 +149,9 @@ if __name__ == "__main__":
         for m in dec_cmd(get_message(args)):
             print(m)
     if args.top_command in enc_cmd.aliases:
-        for m in enc_cmd(get_message(args), args.receipments, merge=args.merge_messages):
+        for m in enc_cmd(
+            get_message(args), args.receipments, merge=args.merge_messages
+        ):
             print(m)
     if args.top_command in keys_cmd.aliases:
         for k in keys_cmd(args):

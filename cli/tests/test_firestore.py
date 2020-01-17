@@ -1,4 +1,5 @@
 import random
+from uuid import uuid4
 
 import google
 import grpc
@@ -9,7 +10,6 @@ import cli
 from cli.auth.google import get_anon_cred
 from cli.config import Config
 from cli.firestore import fetch
-from uuid import uuid4
 
 from .conftest import cred
 
