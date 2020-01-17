@@ -2,3 +2,5 @@
 **/__pycache__
 **/*.log
 **/nohup.out
+node_modules
+package-lock.json
