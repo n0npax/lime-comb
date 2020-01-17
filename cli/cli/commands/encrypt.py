@@ -13,7 +13,7 @@ class EncryptCommand(Command):
     name: str = "encrypt"
     help: str = "encrypt message for receipment"
 
-    def __call__(self, msgs, recipients):
+    def __call__(self, msgs, recipients, merge=False):
         if Config.always_import:
             with get_anon_cred() as cred:
                 for email in recipients:
@@ -21,10 +21,11 @@ class EncryptCommand(Command):
         for email in recipients:
             if not get_local_pub_key(email):
                 self._import_key(email, cred)
-        msgs = "\n---\n".join(msgs)
-        encrypted_msgs = encrypt(recipients, msgs)
-        print(encrypted_msgs)
-        return encrypted_msgs
+        if merge:
+            msgs = ["---".join(msgs)]
+        for msg in msgs:
+            encrypted_msg = encrypt(recipients, msg)
+            yield encrypted_msg
 
     def _import_key(self, email, cred):
         key_str = get_gpg(cred, email)

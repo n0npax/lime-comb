@@ -13,5 +13,4 @@ class DecryptCommand(Command):
     def __call__(self, msgs):
         for msg in msgs:
             decrypted_msg = decrypt(msg, always_trust=True, passphrase=Config.password)
-            print(decrypted_msg)
-        return decrypted_msg
+            yield decrypted_msg

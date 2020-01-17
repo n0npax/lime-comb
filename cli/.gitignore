@@ -5,3 +5,5 @@ dist/**
 codecov_upload.sh
 cli.egg-info/**
 coverage.xml
+do.sh
+encrypted_msg

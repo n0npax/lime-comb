@@ -9,16 +9,14 @@ gpg = gnupg.GPG(
     gnupghome=GPGHOME,
     keyring=KEYRING,
     use_agent=True,
-    verbose=True,
+    verbose=False,
     secret_keyring=SECRET_KEYRING
 )
 gpg.encoding = "utf-8"
 
 
 def decrypt(data, *args, **kwargs):
-    print(gpg.gnupghome, "-------------------------------")
-    print(gpg.keyring, "-------------------------------")
-    decrypted_data = gpg.decrypt(data, extra_args=["--no-default-keyring"])
+    decrypted_data = gpg.decrypt(data, extra_args=["--no-default-keyring", "--passphrase", Config.password])
     if not decrypted_data.ok:
         err = getattr(decrypted_data, "stderr", "expected stderr not found")
         raise Exception(f"decryption failed {err}")

@@ -71,6 +71,15 @@ enc_parsers.add_argument(
     help="receipment of the message",
     type=validate_email,
 )
+enc_parsers.add_argument(
+    "--merge-messages",
+    "--mm",
+    dest="merge_messages",
+    required=False,
+    action="store_true",
+    default=False,
+    help="merge multile messages into 1",
+)
 for name, p in {"enc": enc_parsers, "dec": dec_parsers}.items():
     p.add_argument(
         "-f",
@@ -138,8 +147,10 @@ if __name__ == "__main__":
     parse_common()
 
     if args.top_command in dec_cmd.aliases:
-        dec_cmd(get_message(args))
+        for m in dec_cmd(get_message(args)):
+            print(m)
     if args.top_command in enc_cmd.aliases:
-        enc_cmd(get_message(args), args.receipments)
+        for m in enc_cmd(get_message(args), args.receipments, merge=args.merge_messages):
+            print(m)
     if args.top_command in keys_cmd.aliases:
         keys_cmd(args)
