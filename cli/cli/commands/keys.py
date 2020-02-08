@@ -14,5 +14,9 @@ class KeysCommand(Command):
     def __call__(self, args):
         if args.command == "generate":
             yield geneate_keys()
-        else:
+        elif args.command == "list":
             yield from get_existing_priv_key()
+        elif args.command == "upload":
+            print("TODO implement Me keys upload")
+        else:
+            raise Exception("not supported subcommands")

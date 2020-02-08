@@ -110,7 +110,7 @@ keys_cmd = KeysCommand()
 keys_parsers = subparsers.add_parser(
     keys_cmd.name, aliases=keys_cmd.aliases, help=keys_cmd.help
 )
-keys_parsers.add_argument("command", choices=["generate", "list"], help="main command")
+keys_parsers.add_argument("command", choices=["generate", "list", "upload"], help="main command")
 
 
 def parse_common():
