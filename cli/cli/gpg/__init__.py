@@ -47,25 +47,18 @@ def geneate_keys():
     return gpg.gen_key(key_input)
 
 
-def get_local_pub_key(email):
+def get_existing_pub_keys(email):
     pub_keys = gpg.list_keys()
     for k, v in pub_keys.key_map.items():
         if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
             return k
 
 
-def get_existing_priv_key():
+def get_existing_priv_keys():
     private_keys = gpg.list_keys(True)
     for k, v in private_keys.key_map.items():
         if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
             yield (k, v["uids"])
-
-
-def get_priv_key():
-    existing_priv_key = get_existing_priv_key()
-    if existing_priv_key:
-        return existing_priv_key
-    return get_priv_key()
 
 
 def import_pub_key(data):
@@ -73,3 +66,11 @@ def import_pub_key(data):
     for r in status.results:
         if not r["fingerprint"]:
             raise Exception(f"key import error: {r}")
+
+
+def export_key(keyids, priv=False):
+    return gpg.export_keys(
+        keyids,
+        secret=priv,
+        passphrase=Config.password,
+    )

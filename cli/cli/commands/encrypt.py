@@ -4,7 +4,7 @@ from cli.auth.google import get_anon_cred
 from cli.commands.base import Command
 from cli.config import Config
 from cli.firestore.fetch import get_gpg
-from cli.gpg import encrypt, get_local_pub_key, import_pub_key
+from cli.gpg import encrypt, get_existing_pub_keys, import_pub_key
 
 
 @dataclass
@@ -19,7 +19,7 @@ class EncryptCommand(Command):
                 for email in recipients:
                     self._import_key(email, cred)
         for email in recipients:
-            if not get_local_pub_key(email):
+            if not get_existing_pub_keys(email):
                 self._import_key(email, cred)
         if merge:
             msgs = ["\n---\n".join(msgs)]
