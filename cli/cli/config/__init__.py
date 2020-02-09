@@ -20,8 +20,8 @@ class Config:
     data_dir.mkdir(exist_ok=True, parents=True)
     keyring_dir.mkdir(exist_ok=True, parents=True, mode=0o700)
 
-    username: str = "foo.bar"
-    email: str = "foo.bar@baz.org"
+    username: str = "marcin.niemira"
+    email: str = "marcin.niemira@gmail.com"
     comment: str = "Lime Comb"
 
     password: str = "dupa.8Polska12"

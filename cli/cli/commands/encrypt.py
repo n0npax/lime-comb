@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from cli.auth.google import get_anon_cred
 from cli.commands.base import Command
 from cli.config import Config
-from cli.firestore.fetch import get_gpg
-from cli.gpg import encrypt, get_existing_pub_keys, import_pub_key
+from cli.gpg import encrypt, get_existing_pub_keys
 
 
 @dataclass
@@ -26,6 +25,4 @@ class EncryptCommand(Command):
         for msg in msgs:
             yield encrypt(recipients, msg)
 
-    def _import_key(self, email, cred):
-        key_str = get_gpg(cred, email)
-        import_pub_key(key_str)
+

@@ -1,6 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /gmail.com/{email}/priv/{key_name} {
+      allow read,write: if request.auth.token.email == email && request.auth.uid != null;
+    }
     match /gmail.com/{email}/pub/{key_name} {
       allow write: if request.auth.token.email == email && request.auth.uid != null;
       allow read: if true;

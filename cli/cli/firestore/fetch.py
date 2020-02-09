@@ -26,18 +26,20 @@ from cli.auth.google import get_anon_cred, get_cred
 from cli.config import Config
 from cli.logger.logger import logger
 
-
-def get_gpg(cred, email):
+def doc_path(email, key_type="pub", key_name="default"):
     logger.info(f"fetching gpg for {email}")
     project_id = "lime-comb"  # TODO from config
     database_id = "(default)"
     _, domain = email.split("@")
-    document_path = f"{domain}/{email}/pub/default"
+    document_path = f"{domain}/{email}/{key_type}/{key_name}"
     name = f"projects/{project_id}/databases/{database_id}/documents/{document_path}"
+    return name
+
+def get_gpg(cred, email, key_type="pub", key_name="default"):
+    name = doc_path(email, key_type, key_name)
     mask = common_pb2.DocumentMask(field_paths=["data"])
     pub_key = get_document(cred, name, mask)
     return _decode_base64(pub_key["data"].string_value)
-
 
 def get_document(cred, name, mask=None):
     channel = _create_channel(cred)

@@ -14,26 +14,24 @@ __scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googlea
 
 @contextmanager
 def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
-    try:
-        cred = read_creds()
-        if not cred.expired:
-            request = google.auth.transport.requests.Request()
-            cred.refresh(request)
+        try:
+            cred = read_creds()
+        except:
+            cred = None
+        if cred and not cred.expired:
+            yield cred
         else:
-            raise Exception("cannot refresh creds")
-        yield cred
-    except Exception as err:
-        logger.warning(f"Error: {err}, fallback to fresh login")
-        flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
-        cred = flow.run_local_server(
-            host="localhost",
-            port=5000,
-            authorization_prompt_message="Please visit this URL: {url}",
-            success_message="The auth flow is complete; you may close this window.",
-            open_browser=True,
-        )
-        save_creds(cred)
-        yield cred
+            logger.warning(f"Error, fallback to fresh login")
+            flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
+            cred = flow.run_local_server(
+                host="localhost",
+                port=5000,
+                authorization_prompt_message="Please visit this URL: {url}",
+                success_message="The auth flow is complete; you may close this window.",
+                open_browser=True,
+            )
+            save_creds(cred)
+            yield cred
 
 
 @contextmanager
