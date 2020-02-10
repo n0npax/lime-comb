@@ -1,7 +1,6 @@
 import os
 
 import gnupg
-
 from cli.config import Config
 
 GPGHOME = str(Config.keyring_dir)
@@ -69,4 +68,4 @@ def import_pub_key(data):
 
 
 def export_key(keyids, priv=False):
-    return gpg.export_keys(keyids, secret=priv, passphrase=Config.password,)
+    return gpg.export_keys(keyids, secret=priv, passphrase=Config.password)

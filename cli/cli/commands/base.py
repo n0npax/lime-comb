@@ -1,6 +1,7 @@
 import abc
-from cli.gpg import import_pub_key
+
 from cli.firestore.fetch import get_gpg
+from cli.gpg import import_pub_key
 
 
 class Command(metaclass=abc.ABCMeta):

@@ -4,9 +4,8 @@ import logging
 import os
 import sys
 
-import email_validator
-
 import cli
+import email_validator
 from cli.commands.decrypt import DecryptCommand
 from cli.commands.encrypt import EncryptCommand
 from cli.commands.keys import KeysCommand
