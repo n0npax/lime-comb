@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from cli.auth.google import get_anon_cred, get_cred
 from cli.commands.base import Command
 from cli.config import Config
-from cli.firestore.fetch import get_gpg, put_gpg
+from cli.firestore.fetch import get_gpgs, list_gpg_ids, put_gpg
 from cli.gpg import (export_key, geneate_keys, get_existing_priv_keys,
                      get_existing_pub_keys)
 
@@ -23,9 +23,10 @@ class KeysCommand(Command):
         elif args.command == "pull":
             email = Config.email
             with get_cred(Config.oauth_gcp_conf) as cred:
-                priv = get_gpg(cred, email, key_type="priv")
-                pub = get_gpg(cred, email, key_type="pub")
-                print(priv)
+                privs = get_gpgs(cred, email, key_type="priv")
+                pubs = get_gpgs(cred, email, key_type="pub")
+                for p in pubs:
+                    print(p)
                 # TODO import to keyring
         elif args.command == "push":
             email = Config.email
