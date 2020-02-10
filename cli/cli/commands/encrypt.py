@@ -24,5 +24,3 @@ class EncryptCommand(Command):
             msgs = ["\n---\n".join(msgs)]
         for msg in msgs:
             yield encrypt(recipients, msg)
-
-

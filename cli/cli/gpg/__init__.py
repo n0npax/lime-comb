@@ -51,7 +51,7 @@ def get_existing_pub_keys(email):
     pub_keys = gpg.list_keys()
     for k, v in pub_keys.key_map.items():
         if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
-            return k
+            yield (k, v["uids"])
 
 
 def get_existing_priv_keys():
@@ -69,8 +69,4 @@ def import_pub_key(data):
 
 
 def export_key(keyids, priv=False):
-    return gpg.export_keys(
-        keyids,
-        secret=priv,
-        passphrase=Config.password,
-    )
+    return gpg.export_keys(keyids, secret=priv, passphrase=Config.password,)
