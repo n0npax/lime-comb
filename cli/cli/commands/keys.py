@@ -5,7 +5,7 @@ from cli.commands.base import Command
 from cli.config import Config
 from cli.firestore.fetch import get_gpgs, list_gpg_ids, put_gpg
 from cli.gpg import (export_key, geneate_keys, get_existing_priv_keys,
-                     get_existing_pub_keys)
+                     get_existing_pub_keys, import_pub_key)
 
 
 @dataclass
@@ -26,8 +26,8 @@ class KeysCommand(Command):
                 privs = get_gpgs(cred, email, key_type="priv")
                 pubs = get_gpgs(cred, email, key_type="pub")
                 for p in pubs:
-                    print(p)
-                # TODO import to keyring
+                    import_pub_key(p)
+                # TODO import priv to keyring
         elif args.command == "push":
             email = Config.email
             with get_cred(Config.oauth_gcp_conf) as cred:

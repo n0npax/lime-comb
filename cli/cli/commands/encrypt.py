@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from cli.auth.google import get_anon_cred
+from cli.auth.google import get_anon_cred, get_cred
 from cli.commands.base import Command
 from cli.config import Config
 from cli.gpg import encrypt, get_existing_pub_keys
@@ -14,12 +14,13 @@ class EncryptCommand(Command):
 
     def __call__(self, msgs, recipients, merge=False):
         if Config.always_import:
-            with get_anon_cred() as cred:
+            with get_cred(Config.oauth_gcp_conf) as cred:
+            #with get_anon_cred() as cred:
                 for email in recipients:
-                    self._import_key(email, cred)
+                    self._import_keys(email, cred)
         for email in recipients:
             if not get_existing_pub_keys(email):
-                self._import_key(email, cred)
+                self._import_keys(email, cred)
         if merge:
             msgs = ["\n---\n".join(msgs)]
         for msg in msgs:

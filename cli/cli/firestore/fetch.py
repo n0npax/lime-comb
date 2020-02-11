@@ -22,7 +22,7 @@ from cli.config import Config
 from cli.logger.logger import logger
 
 
-def doc_path(email, key_type="pub", key_name="default"):
+def doc_path(email, key_type="pub", *,  key_name=None):
     logger.info(f"fetching gpg for {email}")
     project_id = "lime-comb"  # TODO from config
     database_id = "(default)"
@@ -36,21 +36,21 @@ def doc_path_e(domain, email, key_type, key_name):
     return f"{domain}/{email}/{key_name}/{key_type}"
 
 
-def get_gpg(cred, email, key_type="pub", key_name="default"):
-    name = doc_path(email, key_type, key_name)
+def get_gpg(cred, email, key_name, * ,key_type="pub"):
+    name = doc_path(email, key_type, key_name=key_name)
     mask = common_pb2.DocumentMask(field_paths=["data"])
     pub_key = get_document(cred, name, mask)
     return pub_key["data"].string_value
 
 
-def get_gpgs(cred, email, key_type="pub"):
-    for key_name in list_gpg_ids(cred, email):
+def get_gpgs(cred, email, * ,key_type="pub"):
+    for key_name in list_gpg_ids(cred, email, key_type=key_type):
         yield get_gpg(cred, email, key_type=key_type, key_name=key_name)
 
 
-def put_gpg(cred, email, data, key_type="pub", key_name="default"):
+def put_gpg(cred, email, data, key_name, *, key_type="pub"):
     document = Document(fields={"data": Value(string_value=data)})
-    name = doc_path(email, key_type, key_name)
+    name = doc_path(email, key_type, key_name=key_name)
     mask = common_pb2.DocumentMask(field_paths=["data"])
     parent, collection_id, _ = name.rsplit("/", 2)
     return put_document(
@@ -58,14 +58,13 @@ def put_gpg(cred, email, data, key_type="pub", key_name="default"):
     )
 
 
-def list_gpg_ids(cred, email, key_type="pub", key_name="default"):
+def list_gpg_ids(cred, email, key_type="pub"):
     channel = _create_channel(cred)
     stub = firestore_pb2_grpc.FirestoreStub(channel)
-    name = doc_path(email, key_type, key_name)
+    name = doc_path(email, key_type)
     parent, _, _ = name.rsplit("/", 2)
-    list_document_request = firestore_pb2.ListCollectionIdsRequest(parent=parent)
+    list_document_request = firestore_pb2.ListCollectionIdsRequest(parent=parent, page_size=10)
     list_document_response = stub.ListCollectionIds(list_document_request)
-    # TODO next page support
     return list_document_response.collection_ids
 
 
