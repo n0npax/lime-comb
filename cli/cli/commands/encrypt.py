@@ -15,7 +15,7 @@ class EncryptCommand(Command):
     def __call__(self, msgs, recipients, merge=False):
         if Config.always_import:
             with get_cred(Config.oauth_gcp_conf) as cred:
-            #with get_anon_cred() as cred:
+                # with get_anon_cred() as cred:
                 for email in recipients:
                     self._import_keys(email, cred)
         for email in recipients:
