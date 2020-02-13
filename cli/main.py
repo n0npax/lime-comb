@@ -4,25 +4,12 @@ import logging
 import os
 import sys
 
-import email_validator
-
 import cli
+from cli.commands.base import validate_email, validate_filepath
 from cli.commands.decrypt import DecryptCommand
 from cli.commands.encrypt import EncryptCommand
 from cli.commands.keys import KeysCommand
 from cli.logger.logger import logger
-
-
-def validate_filepath(fp):
-    if not os.path.isfile(fp):
-        raise argparse.ArgumentTypeError(f"have to be file")
-    return fp
-
-
-def validate_email(email):
-    email_validator.validate_email(email)
-    return email
-
 
 parser = argparse.ArgumentParser(description="lime comb tool.")
 
