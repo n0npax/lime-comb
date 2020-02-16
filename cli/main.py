@@ -38,50 +38,11 @@ subparsers = parser.add_subparsers(
     dest="top_command",
 )
 
+keys_cmd = KeysCommand(subparsers)
+
 enc_cmd = EncryptCommand(subparsers)
 
 dec_cmd = DecryptCommand(subparsers)
-
-enc_cmd.parser.add_argument(
-    "-t",
-    "--to",
-    dest="receipments",
-    required=False,
-    action="append",
-    default=[],
-    help="receipment of the message",
-    type=validate_email,
-)
-enc_cmd.parser.add_argument(
-    "--merge-messages",
-    "--mm",
-    dest="merge_messages",
-    required=False,
-    action="store_true",
-    default=False,
-    help="merge multile messages into 1",
-)
-for name, p in {"enc": enc_cmd.parser, "dec": dec_cmd.parser}.items():
-    p.add_argument(
-        "-f",
-        "--file",
-        dest="files",
-        required=False,
-        action="append",
-        help="file",
-        default=[],
-        type=validate_filepath,
-    )
-    p.add_argument(
-        "-m",
-        "--message",
-        dest="messages",
-        required=False,
-        action="append",
-        help="message",
-        default=[],
-    )
-
 
 # TODO provide class for config and keys
 
