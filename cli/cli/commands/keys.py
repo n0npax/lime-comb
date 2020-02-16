@@ -15,9 +15,17 @@ class KeysCommand(Command):
     help: str = "keys management"
     choices: tuple = ("generate", "list", "push", "pull")
 
+    def __init__(self, subparsers):
+        self.parser = subparsers.add_parser(
+            self.name, aliases=self.aliases, help=self.help
+        )
+        self.parser.add_argument("command", choices=self.choices, help=self.help)
+
     def __call__(self, args):
         if args.command == "generate":
             yield geneate_keys()
+        elif args.command == "delete":
+            pass
         elif args.command == "list":
             yield from get_existing_priv_keys()
         elif args.command == "pull":

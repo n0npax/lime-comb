@@ -38,17 +38,11 @@ subparsers = parser.add_subparsers(
     dest="top_command",
 )
 
-enc_cmd = EncryptCommand()
-enc_parsers = subparsers.add_parser(
-    enc_cmd.name, aliases=enc_cmd.aliases, help=enc_cmd.help
-)
-dec_cmd = DecryptCommand()
+enc_cmd = EncryptCommand(subparsers)
 
-dec_parsers = subparsers.add_parser(
-    dec_cmd.name, aliases=dec_cmd.aliases, help=dec_cmd.help
-)
+dec_cmd = DecryptCommand(subparsers)
 
-enc_parsers.add_argument(
+enc_cmd.parser.add_argument(
     "-t",
     "--to",
     dest="receipments",
@@ -58,7 +52,7 @@ enc_parsers.add_argument(
     help="receipment of the message",
     type=validate_email,
 )
-enc_parsers.add_argument(
+enc_cmd.parser.add_argument(
     "--merge-messages",
     "--mm",
     dest="merge_messages",
@@ -67,7 +61,7 @@ enc_parsers.add_argument(
     default=False,
     help="merge multile messages into 1",
 )
-for name, p in {"enc": enc_parsers, "dec": dec_parsers}.items():
+for name, p in {"enc": enc_cmd.parser, "dec": dec_cmd.parser}.items():
     p.add_argument(
         "-f",
         "--file",
@@ -90,14 +84,6 @@ for name, p in {"enc": enc_parsers, "dec": dec_parsers}.items():
 
 
 # TODO provide class for config and keys
-config_parsers = subparsers.add_parser(
-    "config", aliases=["conf", "c"], help="configuration"
-)
-keys_cmd = KeysCommand()
-keys_parsers = subparsers.add_parser(
-    keys_cmd.name, aliases=keys_cmd.aliases, help=keys_cmd.help
-)
-keys_parsers.add_argument("command", choices=keys_cmd.choices, help=keys_cmd.help)
 
 
 def parse_common():

@@ -12,6 +12,12 @@ class EncryptCommand(Command):
     name: str = "encrypt"
     help: str = "Encrypt message for receipment. You can pass multiple messages by passing -m before earch message"
 
+    def __init__(self, subparsers):
+        self.parser = subparsers.add_parser(
+            self.name, aliases=self.aliases, help=self.help
+        )
+        self.parser.add_argument("command", help=self.help)
+
     def __call__(self, msgs, recipients, merge=False):
         if Config.always_import:
             with get_cred(Config.oauth_gcp_conf) as cred:
