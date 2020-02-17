@@ -32,7 +32,7 @@ firestore-stop:
 
 .PHONY: build
 build: deps clean test cover lint
-	poetry build
+	poetry $@
 
 .PHONY: clean
 clean:
@@ -43,7 +43,7 @@ clean:
 
 .PHONY: install
 install:
-	poetry install
+	pip3 $@ dist/*.whl
 
 .PHONY: release
 release:

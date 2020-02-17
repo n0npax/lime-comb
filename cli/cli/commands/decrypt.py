@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
 from cli.commands.base import Command
+from cli.commands.common import add_message_parameters
 from cli.config import Config
 from cli.gpg import decrypt
-from cli.commands.common import add_message_parameters
 
 
 @dataclass

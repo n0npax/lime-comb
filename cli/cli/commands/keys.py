@@ -5,12 +5,12 @@ from cli.commands.base import Command
 from cli.config import Config
 from cli.firestore.database import get_gpgs, list_gpg_ids, put_gpg
 from cli.gpg import (
+    delete_gpg_key,
     export_key,
     geneate_keys,
     get_existing_priv_keys,
     get_existing_pub_keys,
     import_gpg_key,
-    delete_gpg_key,
 )
 
 

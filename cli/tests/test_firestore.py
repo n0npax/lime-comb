@@ -9,7 +9,7 @@ from google.cloud.firestore_v1.types import Document, Value
 import cli
 from cli.auth.google import get_anon_cred
 from cli.config import Config
-from cli.firestore import fetch
+from cli.firestore import database
 
 from .conftest import cred
 
@@ -40,9 +40,9 @@ def local_firestore(
 ):
     Config.firestore_target = "localhost:8080"
     f = lambda _: grpc.insecure_channel(Config.firestore_target)
-    old_f = cli.firestore.fetch._create_channel
-    cli.firestore.fetch._create_channel = f
-    mocker_document = cli.firestore.fetch.put_document(
+    old_f = cli.firestore.database._create_channel
+    cli.firestore.database._create_channel = f
+    mocker_document = cli.firestore.database.put_document(
         cred,
         firestore_parent,
         collection_id,
@@ -51,16 +51,16 @@ def local_firestore(
     )
     doc_name = f"{firestore_parent}/{collection_id}/{document_id}"
     yield mocker_document
-    cli.firestore.fetch.delete_document(cred, doc_name)
-    cli.firestore.fetch._create_channel = old_f
+    cli.firestore.database.delete_document(cred, doc_name)
+    cli.firestore.database._create_channel = old_f
 
 
 def test_decodebase64():
     foo_encoded = "Zm9vCg=="
-    assert "foo\n" == fetch._decode_base64(foo_encoded)
+    assert "foo\n" == database._decode_base64(foo_encoded)
 
 
 def test_get_doc(local_firestore, firestore_parent, collection_id, document_id):
-    cli.firestore.fetch.get_document(
+    cli.firestore.database.get_document(
         cred, firestore_parent + f"/{collection_id}/{document_id}"
     )
