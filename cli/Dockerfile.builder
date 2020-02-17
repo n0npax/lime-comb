@@ -1,14 +1,18 @@
-FROM python:3.7.5-alpine
-RUN apk add make build-base python3-dev libc-dev libffi-dev libressl-dev openssl-dev linux-headers curl git bash tree gnupg
-RUN apk add --update nodejs npm
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
+RUN apt-get update && apt-get install -y make python3-dev linux-libc-dev libffi-dev openssl curl git bash tree gnupg nodejs npm
+#&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3-pip python3-venv
+RUN npm upgrade -g npm nodejs
 RUN npm install -g firebase-tools
-RUN apk --no-cache add openjdk11-jdk
-RUN pip install --upgrade pip
-RUN pip install poetry
+RUN pip3 install --upgrade pip
+RUN pip3 install poetry
 RUN mkdir -p /build
 WORKDIR /build
 COPY pyproject.toml .
 COPY poetry.lock .
 COPY poetry.toml .
-RUN poetry env use python3.7
+RUN poetry env use python3
 RUN poetry install
