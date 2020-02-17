@@ -22,6 +22,7 @@ def add_message_parameters(parser):
         default=[],
     )
 
+
 def add_msg_recv(parser):
     parser.add_argument(
         "-t",
@@ -33,6 +34,8 @@ def add_msg_recv(parser):
         help="receipment of the message",
         type=validate_email,
     )
+
+
 def add_msg_merge(parser):
     parser.add_argument(
         "--merge-messages",

@@ -5,6 +5,7 @@ from cli.config import Config
 from cli.gpg import decrypt
 from cli.commands.common import add_message_parameters
 
+
 @dataclass
 class DecryptCommand(Command):
     aliases: str = ("d", "dec")

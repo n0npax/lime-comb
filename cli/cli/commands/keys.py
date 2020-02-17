@@ -4,8 +4,13 @@ from cli.auth.google import get_anon_cred, get_cred
 from cli.commands.base import Command
 from cli.config import Config
 from cli.firestore.database import get_gpgs, list_gpg_ids, put_gpg
-from cli.gpg import (export_key, geneate_keys, get_existing_priv_keys,
-                     get_existing_pub_keys, import_pub_key)
+from cli.gpg import (
+    export_key,
+    geneate_keys,
+    get_existing_priv_keys,
+    get_existing_pub_keys,
+    import_pub_key,
+)
 
 
 @dataclass
@@ -13,20 +18,23 @@ class KeysCommand(Command):
     aliases: str = ("k", "keys")
     name: str = "keys"
     help: str = "keys management"
-    choices: tuple = ("generate", "list", "push", "pull")
+    choices: tuple = ("generate", "list-priv", "list-pub", "push", "pull", "delete")
 
     def __init__(self, subparsers):
         self.parser = subparsers.add_parser(
             self.name, aliases=self.aliases, help=self.help
         )
         self.parser.add_argument("command", choices=self.choices, help=self.help)
+        self.parser.add_argument("id", nargs="?", help="ID filter (optional)")
 
     def __call__(self, args):
         if args.command == "generate":
             yield geneate_keys()
         elif args.command == "delete":
-            pass
-        elif args.command == "list":
+            print("delete")
+        elif args.command == "list-pub":
+            print("list pub")
+        elif args.command == "list-priv":
             yield from get_existing_priv_keys()
         elif args.command == "pull":
             email = Config.email

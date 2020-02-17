@@ -22,7 +22,6 @@ class EncryptCommand(Command):
         add_msg_recv(self.parser)
         add_msg_merge(self.parser)
 
-
     def __call__(self, msgs, recipients, merge=False):
         if Config.always_import:
             with get_cred(Config.oauth_gcp_conf) as cred:

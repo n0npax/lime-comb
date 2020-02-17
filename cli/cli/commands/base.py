@@ -23,8 +23,6 @@ def validate_filepath(fp):
     return fp
 
 
-
-
 def validate_email(email):
     email_validator.validate_email(email)
     return email
