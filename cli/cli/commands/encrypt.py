@@ -11,7 +11,9 @@ from cli.commands.common import add_message_parameters, add_msg_merge, add_msg_r
 class EncryptCommand(Command):
     aliases: str = ("e", "enc")
     name: str = "encrypt"
-    help: str = "Encrypt message for receipment. You can pass multiple messages by passing -m before earch message"
+    help: str = """Encrypt message for receipment.
+You can pass multiple messages by passing -m before earch message
+Or -f before each file you want to encrypt"""
 
     def __init__(self, subparsers):
         self.parser = subparsers.add_parser(

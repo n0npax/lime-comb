@@ -44,4 +44,4 @@ def save_creds(cred):
 
 
 def read_creds():
-    return pickle.load(open(Config.credentials_file, "rb"))
+    return pickle.load(open(Config.credentials_file, "rb"))  # nosec
