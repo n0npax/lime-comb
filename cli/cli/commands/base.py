@@ -11,6 +11,7 @@ from cli.gpg import import_gpg_key
 class Command(metaclass=abc.ABCMeta):
     pass
 
+
 def import_keys(email, cred, *, key_type="pub"):
     for key_str in get_gpgs(cred, email, key_type=key_type):
         import_gpg_key(key_str)
