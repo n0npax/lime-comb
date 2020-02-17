@@ -16,7 +16,6 @@ class DecryptCommand(Command):
         self.parser = subparsers.add_parser(
             self.name, aliases=self.aliases, help=self.help
         )
-        self.parser.add_argument("command", help=self.help)
         add_message_parameters(self.parser)
 
     def __call__(self, msgs):
