@@ -1,6 +1,6 @@
 __author__ = "marcin.niemira@gmail.com (n0npax)"
 
-import pickle
+import pickle  # nosec
 from contextlib import contextmanager
 
 import google
