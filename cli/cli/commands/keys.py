@@ -9,7 +9,8 @@ from cli.gpg import (
     geneate_keys,
     get_existing_priv_keys,
     get_existing_pub_keys,
-    import_pub_key,
+    import_gpg_key,
+    delete_gpg_key,
 )
 
 
@@ -25,15 +26,15 @@ class KeysCommand(Command):
             self.name, aliases=self.aliases, help=self.help
         )
         self.parser.add_argument("command", choices=self.choices, help=self.help)
-        self.parser.add_argument("id", nargs="?", help="ID filter (optional)")
+        self.parser.add_argument("argument", nargs="?", help="ID filter (optional)")
 
     def __call__(self, args):
         if args.command == "generate":
             yield geneate_keys()
         elif args.command == "delete":
-            print("delete")
+            yield from delete_gpg_key(args.argument, Config.password)
         elif args.command == "list-pub":
-            print("list pub")
+            yield from get_existing_pub_keys(args.argument)
         elif args.command == "list-priv":
             yield from get_existing_priv_keys()
         elif args.command == "pull":
@@ -42,7 +43,7 @@ class KeysCommand(Command):
                 privs = get_gpgs(cred, email, key_type="priv")
                 pubs = get_gpgs(cred, email, key_type="pub")
                 for p in pubs:
-                    import_pub_key(p)
+                    import_gpg_key(p)
                 # TODO import priv to keyring
         elif args.command == "push":
             email = Config.email

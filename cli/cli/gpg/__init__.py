@@ -47,25 +47,35 @@ def geneate_keys():
     return gpg.gen_key(key_input)
 
 
-def get_existing_pub_keys(email):
-    pub_keys = gpg.list_keys()
+def get_existing_pub_keys(email=None):
+    yield from get_existing_keys(email=None, priv=False)
+
+
+def get_existing_keys(email=None, priv=False):
+    if not email:
+        email = Config.email
+    pub_keys = gpg.list_keys(priv)
     for k, v in pub_keys.key_map.items():
-        if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
+        if email in v["uids"][0]:
             yield (k, v["uids"])
 
 
 def get_existing_priv_keys():
-    private_keys = gpg.list_keys(True)
-    for k, v in private_keys.key_map.items():
-        if v["uids"] == [f"{Config.username} ({Config.comment}) <{Config.email}>"]:
-            yield (k, v["uids"])
+    yield from get_existing_keys(email=None, priv=True)
 
 
-def import_pub_key(data):
+def import_gpg_key(data):
     status = gpg.import_keys(data)
     for r in status.results:
         if not r["fingerprint"]:
             raise Exception(f"key import error: {r}")
+
+
+def delete_gpg_key(fingerprint, passphrase):
+    yield "priv", str(
+        gpg.delete_keys(fingerprint, secret=bool(passphrase), passphrase=passphrase)
+    )
+    yield "pub", str(gpg.delete_keys(fingerprint))
 
 
 def export_key(keyids, priv=False):
