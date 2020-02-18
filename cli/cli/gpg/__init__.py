@@ -19,7 +19,7 @@ gpg.encoding = "utf-8"
 
 def decrypt(data, *args, **kwargs):
     decrypted_data = gpg.decrypt(
-        data, extra_args=["--no-default-keyring", "--passphrase", Config.password]
+        data, extra_args=["--no-default-keyring"], passphrase=Config.password
     )
     if not decrypted_data.ok:
         err = getattr(decrypted_data, "stderr", "expected stderr not found")

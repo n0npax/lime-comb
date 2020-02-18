@@ -4,7 +4,7 @@ import tempfile
 import pytest
 
 from cli.config import Config
-from cli.gpg import encrypt, geneate_keys
+from cli.gpg import encrypt, geneate_keys, decrypt
 
 
 @pytest.yield_fixture(autouse=True)
@@ -26,9 +26,11 @@ def test_encrypt(keypair):
     assert enc_msg.startswith("-----BEGIN PGP MESSAGE----")
 
 
-def test_decrypt():
-    pass  # TODO
-
+def test_decrypt(keypair):
+    input_data = "test_data"
+    enc_msg = encrypt(Config.email, input_data)
+    dec_msg = decrypt(enc_msg)
+    assert dec_msg == input_data
 
 def test_generate_keypair():
     keys = geneate_keys()
