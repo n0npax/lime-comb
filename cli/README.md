@@ -1,4 +1,4 @@
-# Lime-comb CLI
+# Lime-comb
 
 This tool allows:
 - Encrypt messages directly from your terminal.
