@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* 
 ENV LANG en_US.utf8
 RUN apt-get update && apt-get install -y make python3-dev linux-libc-dev libffi-dev openssl curl git bash tree gnupg nodejs npm python3-pip python3-venv sudo && rm -rf /var/lib/apt/lists/*
 RUN curl -sL https://firebase.tools | bash
-RUN npm install -g git://github.com/firebase/firebase-tools.git#ss-update-auto-auth ## FIXME
 RUN pip3 install --upgrade pip
 RUN pip3 install poetry
 RUN mkdir -p /build
