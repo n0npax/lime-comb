@@ -4,9 +4,14 @@ from cli.auth.google import get_anon_cred, get_cred
 from cli.commands.base import Command
 from cli.config import Config
 from cli.firestore.database import get_gpgs, list_gpg_ids, put_gpg
-from cli.gpg import (delete_gpg_key, export_key, geneate_keys,
-                     get_existing_priv_keys, get_existing_pub_keys,
-                     import_gpg_key)
+from cli.gpg import (
+    delete_gpg_key,
+    export_key,
+    geneate_keys,
+    get_existing_priv_keys,
+    get_existing_pub_keys,
+    import_gpg_key,
+)
 
 
 @dataclass
@@ -28,6 +33,7 @@ class KeysCommand(Command):
             yield geneate_keys()
         elif args.command == "delete":
             yield from delete_gpg_key(args.argument, Config.password)
+            # TODO delete from firestore
         elif args.command == "list-pub":
             yield from get_existing_pub_keys(args.argument)
         elif args.command == "list-priv":

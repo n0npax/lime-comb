@@ -4,21 +4,35 @@ import tempfile
 import pytest
 
 from cli.config import Config
-from cli.gpg import encrypt, geneate_keys, decrypt
+from cli.gpg import (
+    encrypt,
+    geneate_keys,
+    decrypt,
+    get_existing_priv_keys,
+    get_existing_pub_keys,
+    delete_gpg_key,
+)
 
 
-@pytest.yield_fixture(autouse=True)
-def temp_data_dir():
-    data_dir = tempfile.mkdtemp()
-    Config.data_dir = data_dir
-    yield data_dir
-    os.rmdir(data_dir)
-
-
-@pytest.fixture
-def keypair(temp_data_dir):
+@pytest.yield_fixture
+def keypair():
     keys = geneate_keys()
-    return keys.fingerprint
+    yield keys.fingerprint
+    delete_gpg_key(keys.fingerprint, Config.password)
+
+
+def test_get_priv_key(keypair):
+    keys = get_existing_priv_keys()
+    assert keys
+    for k in keys:
+        assert len(k) >= 2
+
+
+def test_get_pub_key(keypair):
+    keys = get_existing_pub_keys(Config.email)
+    assert keys
+    for k in keys:
+        assert len(k) >= 2
 
 
 def test_encrypt(keypair):
@@ -32,6 +46,11 @@ def test_decrypt(keypair):
     dec_msg = decrypt(enc_msg)
     assert dec_msg == input_data
 
-def test_generate_keypair():
-    keys = geneate_keys()
-    assert keys.fingerprint
+
+def test_generate_keypair(keypair):
+    assert keypair
+
+
+def test_delete_gpg_key(keypair):
+    for k in delete_gpg_key(keypair, Config.password):
+        assert "ok" in k
