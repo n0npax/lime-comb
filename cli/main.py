@@ -4,6 +4,8 @@ import logging
 import os
 import sys
 
+import pyperclip
+
 import cli
 from cli.commands.base import validate_email, validate_filepath
 from cli.commands.decrypt import DecryptCommand
@@ -80,8 +82,11 @@ if __name__ == "__main__":
     parse_common()
 
     if args.top_command in dec_cmd.aliases:
+        decrypted = []
         for m in dec_cmd(get_message(args)):
             print(m)
+            decrypted.append(m)
+        pyperclip.copy("\n".join(decrypted))
     if args.top_command in enc_cmd.aliases:
         for m in enc_cmd(
             get_message(args), args.receipments, merge=args.merge_messages

@@ -4,14 +4,8 @@ import tempfile
 import pytest
 
 from cli.config import Config
-from cli.gpg import (
-    encrypt,
-    geneate_keys,
-    decrypt,
-    get_existing_priv_keys,
-    get_existing_pub_keys,
-    delete_gpg_key,
-)
+from cli.gpg import (decrypt, delete_gpg_key, encrypt, geneate_keys,
+                     get_existing_priv_keys, get_existing_pub_keys)
 
 
 @pytest.yield_fixture
