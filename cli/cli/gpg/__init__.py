@@ -1,6 +1,7 @@
 import os
 
 import gnupg
+
 from cli.config import Config
 
 GPGHOME = str(Config.keyring_dir)
