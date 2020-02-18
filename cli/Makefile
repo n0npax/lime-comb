@@ -22,7 +22,7 @@ endif
 
 .PHONY: test
 test: deps 
-	firebase emulators:start --only firestore --debug &
+	firebase emulators:start --only firestore & # --debug &
 	sleep 5
 	poetry run pytest -vs --cov-report=xml --cov . .
 	$(MAKE) firestore-stop
