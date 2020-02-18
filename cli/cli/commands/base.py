@@ -3,7 +3,6 @@ import argparse
 import os
 
 import email_validator
-
 from cli.firestore.database import get_gpgs
 from cli.gpg import import_gpg_key
 

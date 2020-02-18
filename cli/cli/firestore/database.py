@@ -8,7 +8,6 @@ import time
 import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.oauth2.credentials
-import grpc
 from google.cloud.firestore_v1.proto import (common_pb2, common_pb2_grpc,
                                              document_pb2, document_pb2_grpc,
                                              firestore_pb2, firestore_pb2_grpc,
@@ -17,6 +16,7 @@ from google.cloud.firestore_v1.types import Document, Value
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2, timestamp_pb2
 
+import grpc
 from cli.auth.google import get_anon_cred, get_cred
 from cli.config import Config
 from cli.logger.logger import logger

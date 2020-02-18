@@ -1,8 +1,8 @@
-# Lime-comb CLI
+# Lime-comb
 
 This tool allows:
-- Encrypt messages directly from your terminal.
-- Upload keys to central registry
+-   Encrypt messages directly from your terminal.
+-   Upload keys to central registry
 
 ## encrypt
 

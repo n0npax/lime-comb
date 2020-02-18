@@ -7,35 +7,46 @@
 
 # Lets treat secrets like we should and don't be to nerdy
 
-## Why?
-People are often afraid of `gpg` and asymmetric cryptography. `gpg` key-server doesn't validate a key ownership.
-- If you want to share secret with your teammates, but your company has no procedures
-- If storing secret in external system like `1password` is not an option
-- If you want to share secrets in secure way and use managed key registry
+## Why
+People are often afraid of `gpg` and asymmetric cryptography.
+`gpg` key-server doesn't validate a key ownership.
+
+-   If you want to share secret with your teammates,
+but your company has no procedures
+
+-   If storing secret in external system like `1password` is not an option
+
+-   If you want to share secrets in secure way and use managed key registry.
 Here we are!
 
 `LIME-COMB` is set of tools and services designed to make sharing secrets easy.
-Given solution aims to be an easy, still safe solution for everyone( including non technical staff)
+Given solution aims to be an easy,
+still safe solution for everyone(including non technical staff)
 
-## How?
+## How
 
-Lime-comb is basically public key registry and set of the tools. Public keys are stored in the database. End user can easily import existing public key and encrypt message. No `gpg` nor cryptography knowledge required.
+Lime-comb is basically public key registry and set of the tools.
+Public keys are stored in the database.
+End user can easily import existing public key and encrypt message.
+No `gpg` nor cryptography knowledge required.
 
 ### Public key registry (WEB)
 
-We believe we shouldn't reinvent wheel. Lime-comb key registry is secured with authorization from google(`firebase auth`).
+We believe we shouldn't reinvent wheel.
+Lime-comb key registry is secured with authorization from google(`firebase auth`).
 We believe smart people provides good solutions and we should utilize them.
 
 ### Command line tools
 
-What was the syntax for `gpg`? Should I use `base64` or `armour mode`? It's not your problem anymore, we will do it for you.
+What was the syntax for `gpg`? Should I use `base64` or `armour mode`?
+It's not your problem anymore, we will do it for you.
 The only thing you need to know is receiver email and message itself.
 
 #### Smart defaults
+We are offering flexible solution with 2 main default profiles.
 
-We are offering flexible solution with 2 main default profiles
-- locked (keeps private key just locally)
-- glass-break (store prov key in `db` with access just for given user)
+-   Locked (keeps private key just locally)
+-   Glass-break (store prov key in `db` with access just for given user)
 
 Many other configuration option can be adjusted by an user
 
@@ -44,13 +55,12 @@ Many other configuration option can be adjusted by an user
 ## Install
 
 ### Key registry
-it's [here](https://lime-comb.web.app/). Please register yourself directly or via cmdline tool.
+it's [here](https://lime-comb.web.app/).
+Please register yourself directly or preferably via provided command line tool.
 
-### Command line tools
-
-#### Requirements
-- python
-- installed gpg
+## Requirements
+-   `python`
+-   `gpg`
 
 ## Design
 
@@ -58,8 +68,11 @@ it's [here](https://lime-comb.web.app/). Please register yourself directly or vi
 
 ### Flow
 
-All clients are connecting to `firestore` database using `oauth2`. By default unauthorized user is allowed to read any key, and authenticated user is allowed to modify just his own key.
+All clients are connecting to `firestore` database using `oauth2`.
+By default unauthorized user is allowed to read any key,
+and authenticated user is allowed to modify just his own key.
 
 ### infra
 
-Deployment is done via cloud build jobs which are triggered by GitHub repository event.
+Deployment is done via cloud build jobs which are triggered
+by GitHub repository event.

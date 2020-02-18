@@ -4,9 +4,8 @@ import logging
 import os
 import sys
 
-import pyperclip
-
 import cli
+import pyperclip
 from cli.commands.base import validate_email, validate_filepath
 from cli.commands.decrypt import DecryptCommand
 from cli.commands.encrypt import EncryptCommand
