@@ -1,5 +1,3 @@
-# WORK in PROGRESS - Code here won't work so far
-
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://lime-comb.web.app/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
@@ -9,7 +7,7 @@
 
 # Lets treat secrets like we should and don't be to nerdy
 
-## Why ?
+## Why?
 People are often afraid of `gpg` and asymmetric cryptography. `gpg` key-server doesn't validate a key ownership.
 - If you want to share secret with your teammates, but your company has no procedures
 - If storing secret in external system like `1password` is not an option
@@ -19,7 +17,7 @@ Here we are!
 `LIME-COMB` is set of tools and services designed to make sharing secrets easy.
 Given solution aims to be an easy, still safe solution for everyone( including non technical staff)
 
-## How ?
+## How?
 
 Lime-comb is basically public key registry and set of the tools. Public keys are stored in the database. End user can easily import existing public key and encrypt message. No `gpg` nor cryptography knowledge required.
 
@@ -43,25 +41,25 @@ Many other configuration option can be adjusted by an user
 
 ### GUI - TODO
 
-# Install
+## Install
 
-## key registry
+### Key registry
 it's [here](https://lime-comb.web.app/). Please register yourself directly or via cmdline tool.
 
-## Command line tools
+### Command line tools
 
-### requirements
+#### Requirements
 - python
 - installed gpg
 
-# Design
+## Design
 
 ![Design diagram](https://github.com/n0npax/lime-comb/blob/master/images/arch_diagram.svg)
 
-## Flow
+### Flow
 
 All clients are connecting to `firestore` database using `oauth2`. By default unauthorized user is allowed to read any key, and authenticated user is allowed to modify just his own key.
 
-## infra
+### infra
 
 Deployment is done via cloud build jobs which are triggered by GitHub repository event.
