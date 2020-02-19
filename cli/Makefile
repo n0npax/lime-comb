@@ -22,13 +22,8 @@ endif
 
 .PHONY: test
 test: deps 
-	firebase emulators:start --only firestore & # --debug &
-	sleep 5
 	poetry run pytest -vs --cov-report=xml --cov . .
-	$(MAKE) firestore-stop
 
-firestore-stop:
-	pgrep -lfa firebase | grep -v -e make | cut -f1 -d ' ' | xargs -n1 kill -9
 
 .PHONY: build
 build: deps clean test cover lint
