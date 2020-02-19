@@ -15,13 +15,15 @@ def doc_path(*, email, key_type, key_name):
     return f"{domain}", f"{email}/{key_name}/{key_type}"
 
 
+def get_firestore_db(cred):
+    return firestore.Client(credentials=cred, project=Config.app_name)
+
+
 def get_gpg(cred, email, key_name, *, key_type="pub"):
-    db = firestore.Client(credentials=cred, project=Config.app_name)
+    db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
-
-    pub_key = db.collection(collection_id).document(name)
-
-    return pub_key["data"].string_value
+    key = db.collection(collection_id).document(name).get().to_dict()
+    return key["data"]
 
 
 def get_gpgs(cred, email, *, key_type="pub"):
@@ -30,17 +32,20 @@ def get_gpgs(cred, email, *, key_type="pub"):
 
 
 def put_gpg(cred, email, data, key_name, *, key_type="pub"):
-    db = firestore.Client(credentials=cred, project=Config.app_name)
+    db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     pub_key = db.collection(collection_id).document(name)
     pub_key.set({"data": data})
 
 
 def list_gpg_ids(cred, email, key_type="pub"):
-    db = firestore.Client(credentials=cred, project=Config.app_name)
-    collection_id, _ = doc_path(email=email, key_type=key_type, key_name=key_name)
+    db = get_firestore_db(cred)
+    collection_id, _ = doc_path(
+        email=email, key_type=key_type, key_name="key_id_placeholder"
+    )
 
-    return db.collection(collection_id).list_documents()
+    for d in db.collection(collection_id).document(email).collections():
+        yield d.id
 
 
 def _decode_base64(s):

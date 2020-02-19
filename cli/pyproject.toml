@@ -19,6 +19,7 @@ appdirs = "^1.4.3"
 email-validator = "^1.0.5"
 google-cloud-datastore = "^1.10.0"
 pyperclip = "^1.7.0"
+mock-firestore = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3.2"
