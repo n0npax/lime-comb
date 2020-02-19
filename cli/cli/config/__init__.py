@@ -25,7 +25,6 @@ class Config:
     comment: str = "Lime Comb"
 
     password: str = "dupa.8Polska12"
-    firestore_target: str = "firestore.googleapis.com:443"
 
     always_import: bool = True
 
