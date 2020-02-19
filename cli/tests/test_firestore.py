@@ -38,11 +38,13 @@ def document():
 def local_firestore(
     mocker, cred, document, collection_id, firestore_parent, document_id
 ):
-    Config.firestore_target = "localhost:8080"
-    f = lambda _: grpc.insecure_channel(Config.firestore_target)
+    Config.firestore_target = "127.0.0.1:8080"
+
     old_f = cli.firestore.database._create_channel
-    cli.firestore.database._create_channel = f
-    mocker_document = cli.firestore.database.put_document(
+    cli.firestore.database._create_channel = lambda _: grpc.insecure_channel(
+        Config.firestore_target
+    )
+    cli.firestore.database.put_document(
         cred,
         firestore_parent,
         collection_id,
@@ -50,7 +52,7 @@ def local_firestore(
         document_id=document_id,
     )
     doc_name = f"{firestore_parent}/{collection_id}/{document_id}"
-    yield mocker_document
+    yield
     cli.firestore.database.delete_document(cred, doc_name)
     cli.firestore.database._create_channel = old_f
 

@@ -2,10 +2,15 @@ import base64
 
 import google.auth.transport.grpc
 import google.auth.transport.requests
-from google.cloud.firestore_v1.proto import (common_pb2, common_pb2_grpc,
-                                             document_pb2, document_pb2_grpc,
-                                             firestore_pb2, firestore_pb2_grpc,
-                                             write_pb2_grpc)
+from google.cloud.firestore_v1.proto import (
+    common_pb2,
+    common_pb2_grpc,
+    document_pb2,
+    document_pb2_grpc,
+    firestore_pb2,
+    firestore_pb2_grpc,
+    write_pb2_grpc,
+)
 from google.cloud.firestore_v1.types import Document, Value
 
 from cli.config import Config

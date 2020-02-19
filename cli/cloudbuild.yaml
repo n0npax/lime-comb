@@ -23,6 +23,7 @@ steps:
         set -x
         set -e
         . /build/virtualenvs/*/bin/activate
+        env | grep -i -e proxy -e http
         make release
         poetry version | cut -f2 -d ' ' > .version
     env:
