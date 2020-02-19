@@ -55,9 +55,11 @@ def local_firestore(
     cli.firestore.database._create_channel = old_f
 
 
-def test_decodebase64():
-    foo_encoded = "Zm9vCg=="
-    assert "foo\n" == database._decode_base64(foo_encoded)
+def test_encode_decodebase64():
+    foo = "foo"
+    foo_encoded = database._encode_base64(foo)
+    assert foo_encoded == "Zm9v"
+    assert foo == database._decode_base64(foo_encoded)
 
 
 def test_get_doc(local_firestore, firestore_parent, collection_id, document_id):
