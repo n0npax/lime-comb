@@ -69,6 +69,7 @@ def import_gpg_key(data):
     for r in status.results:
         if not r["fingerprint"]:
             raise Exception(f"key import error: {r}")
+        yield r
 
 
 def delete_gpg_key(fingerprint, passphrase):

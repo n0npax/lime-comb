@@ -5,7 +5,8 @@ import os
 import sys
 
 import pyperclip
-
+from tqdm import tqdm
+from tabulate import tabulate
 import cli
 from cli.commands.base import validate_email, validate_filepath
 from cli.commands.decrypt import DecryptCommand
@@ -83,15 +84,23 @@ if __name__ == "__main__":
 
     if args.top_command in dec_cmd.aliases:
         decrypted = []
-        for m in dec_cmd(get_message(args)):
-            print(m)
+        for m in tqdm(dec_cmd(get_message(args)), desc="decrypting"):
             decrypted.append(m)
-        pyperclip.copy("\n".join(decrypted))
+        decrypted = "\n---\n".join(decrypted)
+        pyperclip.copy(decrypted)
+        print(decrypted)
+
     if args.top_command in enc_cmd.aliases:
-        for m in enc_cmd(
-            get_message(args), args.receipments, merge=args.merge_messages
+        encrypted = []
+        for m in tqdm(
+            enc_cmd(get_message(args), args.receipments, merge=args.merge_messages),
+            desc="encrypting",
         ):
-            print(m)
+            encrypted.append(m)
+        encrypted = "\n---\n".join(encrypted)
+        pyperclip.copy(encrypted)
+        print(encrypted)
+
     if args.top_command in keys_cmd.aliases:
-        for k in keys_cmd(args):
-            print(k)
+        keys = list(tqdm(keys_cmd(args), desc="keys"))
+        print(tabulate(keys))

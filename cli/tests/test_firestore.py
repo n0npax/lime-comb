@@ -5,6 +5,7 @@ import google
 import grpc
 import pytest
 from google.cloud.firestore_v1.types import Document, Value
+from mockfirestore.client import MockFirestore
 
 import cli
 from cli.auth.google import get_anon_cred
@@ -12,7 +13,6 @@ from cli.config import Config
 from cli.firestore import database
 
 from .conftest import *
-from mockfirestore.client import MockFirestore
 
 
 def test_encode_decodebase64():

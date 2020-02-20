@@ -26,7 +26,7 @@ class Config:
 
     password: str = "dupa.8Polska12"
 
-    always_import: bool = True
+    always_import: bool = False
 
 
 try:

@@ -1,9 +1,6 @@
 import base64
 
-import google.auth.transport.grpc
-import google.auth.transport.requests
 from google.cloud import firestore
-
 
 from cli.config import Config
 from cli.logger.logger import logger

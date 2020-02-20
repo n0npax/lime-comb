@@ -1,9 +1,9 @@
+from uuid import uuid4
+
 import pytest
 
 from cli.auth.google import get_anon_cred
 from cli.config import Config
-
-from uuid import uuid4
 
 
 @pytest.yield_fixture
