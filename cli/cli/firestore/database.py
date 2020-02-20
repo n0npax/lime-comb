@@ -45,6 +45,9 @@ def list_gpg_ids(cred, email, key_type="pub"):
         yield d.id
 
 
+# TODO delete
+
+
 def _decode_base64(s):
     return base64.b64decode(s).decode("utf-8")
 

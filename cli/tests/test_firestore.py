@@ -49,13 +49,20 @@ def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
     yield
 
 
-def test_get_gpg_pub(mocked_gpg_key, email, pub_key):
+def test_get_gpg_pub(mocked_gpg_key, email, pub_key, cred):
     keys = list(database.get_gpgs(cred, email))
     assert len(keys) > 0
     assert keys[0] == pub_key
 
 
-def test_get_gpg_priv(mocked_gpg_key, email, priv_key):
+def test_get_gpg_priv(mocked_gpg_key, email, priv_key, cred):
     keys = list(database.get_gpgs(cred, email, key_type="priv"))
     assert len(keys) > 0
     assert keys[0] == priv_key
+
+
+def test_put_gpg_priv(mocked_db, cred, email, key_id, priv_key):
+
+    database.put_gpg(cred, email, priv_key, key_id, key_type="priv")
+    rec_priv_key = database.get_gpg(cred, email, key_id, key_type="priv")
+    assert rec_priv_key == priv_key
