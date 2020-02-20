@@ -60,11 +60,11 @@ def parse_common():
         sys.exit(0)
 
 
-def get_receipments():
+def get_receipments(args):
     if not args.receipments:
         logger.info("No receipmens. Asking userto type in")
         args.receipments = input("please specify receipments(space separated)\n")
-    return args.receipmens
+    return args.receipments
 
 
 def get_message(args):
@@ -94,7 +94,9 @@ if __name__ == "__main__":
     if args.top_command in enc_cmd.aliases:
         encrypted = []
         for m in tqdm(
-            enc_cmd(get_message(args), args.receipments, merge=args.merge_messages),
+            enc_cmd(
+                get_message(args), get_receipments(args), merge=args.merge_messages
+            ),
             desc="encrypting",
         ):
             encrypted.append(m)
