@@ -12,6 +12,17 @@ from cli.logger.logger import logger
 __scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform openid"
 
 
+def web_login():
+    flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
+    return flow.run_local_server(
+        host="localhost",
+        port=5000,
+        authorization_prompt_message="Please visit this URL: {url}",
+        success_message="The auth flow is complete; you may close this window.",
+        open_browser=True,
+    )
+
+
 @contextmanager
 def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
     try:
@@ -22,14 +33,7 @@ def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
         yield cred
     else:
         logger.warning(f"Error, fallback to fresh login")
-        flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
-        cred = flow.run_local_server(
-            host="localhost",
-            port=5000,
-            authorization_prompt_message="Please visit this URL: {url}",
-            success_message="The auth flow is complete; you may close this window.",
-            open_browser=True,
-        )
+        cred = web_login()
         save_creds(cred)
         yield cred
 

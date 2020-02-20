@@ -4,39 +4,35 @@ from uuid import uuid4
 
 import google
 import pytest
+from google.auth.credentials import AnonymousCredentials
 
-from cli.auth.google import get_anon_cred, read_creds, save_creds, get_cred
+import cli.auth.google
+from cli.auth.google import get_anon_cred, get_cred, read_creds, save_creds
 from cli.config import Config
 
-
-class Creds:
-    def __init__(self, expired=True):
-        self.expired = expired
-        self.uuid = uuid4()
+from .conftest import *
 
 
-@pytest.fixture
-def valid_cred():
-    return Creds(expired=False)
+class TestAuth:
+    def test_read_and_save_creds(self, valid_cred):
+        save_creds(valid_cred)
+        r_creds = read_creds()
+        assert valid_cred.uuid == r_creds.uuid
 
+    def test_get_saved_creds(self, valid_cred):
+        save_creds(valid_cred)
+        with get_cred(Config.credentials_file) as cred:
+            assert not cred.expired
 
-@pytest.fixture
-def invalid_cred():
-    return Creds()
+    def test_get_saved_expired_creds(self, invalid_cred, web_login):
+        save_creds(invalid_cred)
+        with get_cred(Config.credentials_file) as cred:
+            assert not cred.expired
 
+    def test_get_no_saved_creds(self, no_cred, web_login):
+        with get_cred(Config.credentials_file) as cred:
+            assert not cred.expired
 
-def test_read_and_save_creds(valid_cred):
-    save_creds(valid_cred)
-    r_creds = read_creds()
-    assert valid_cred.uuid == r_creds.uuid
-
-
-def test_get_saved_creds(valid_cred):
-    save_creds(valid_cred)
-    with get_cred(Config.credentials_file) as cred:
-        assert not cred.expired
-
-
-def test_get_anon_creds():
-    with get_anon_cred() as cred:
-        assert type(cred) == google.auth.credentials.AnonymousCredentials
+    def test_get_anon_creds(self):
+        with get_anon_cred() as cred:
+            assert type(cred) == AnonymousCredentials

@@ -380,6 +380,19 @@ version = "0.6.1"
 
 [[package]]
 category = "main"
+description = "Rolling backport of unittest.mock for all Pythons"
+name = "mock"
+optional = false
+python-versions = ">=3.6"
+version = "4.0.1"
+
+[package.extras]
+build = ["twine", "wheel", "blurb"]
+docs = ["sphinx"]
+test = ["pytest", "pytest-cov"]
+
+[[package]]
+category = "main"
 description = "In-memory implementation of Google Cloud Firestore for use in tests"
 name = "mock-firestore"
 optional = false
@@ -768,7 +781,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "cc9f8ef6cd86da370ca2b663a85ff3cda1aae966df17533085c28894707b4dce"
+content-hash = "112d9c33985e0ea01bbb83a6f760bcb5c1b1a9c217e82dd0e43ab5459eef68b5"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -982,6 +995,10 @@ lazy-object-proxy = [
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
+]
+mock = [
+    {file = "mock-4.0.1-py3-none-any.whl", hash = "sha256:5e48d216809f6f393987ed56920305d8f3c647e6ed35407c1ff2ecb88a9e1151"},
+    {file = "mock-4.0.1.tar.gz", hash = "sha256:2a572b715f09dd2f0a583d8aeb5bb67d7ed7a8fd31d193cf1227a99c16a67bc3"},
 ]
 mock-firestore = [
     {file = "mock-firestore-0.6.0.tar.gz", hash = "sha256:85195175fa4e5b55f46cf5c21c8ffb58242fce4073caf0e27fd82d374c83df28"},

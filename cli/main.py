@@ -5,8 +5,9 @@ import os
 import sys
 
 import pyperclip
-from tqdm import tqdm
 from tabulate import tabulate
+from tqdm import tqdm
+
 import cli
 from cli.commands.base import validate_email, validate_filepath
 from cli.commands.decrypt import DecryptCommand
