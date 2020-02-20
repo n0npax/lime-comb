@@ -1,0 +1,2 @@
+fixes:
+  - "::cli/"         # move root   e.g., "path/" => "after/path/"
