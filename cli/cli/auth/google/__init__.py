@@ -4,10 +4,10 @@ import pickle  # nosec
 from contextlib import contextmanager
 
 import google
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 from cli.config import Config
 from cli.logger.logger import logger
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 __scopes = " ".join(
     [

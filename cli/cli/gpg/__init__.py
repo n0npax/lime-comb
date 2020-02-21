@@ -1,7 +1,9 @@
 import os
 
 import gnupg
+
 from cli.config import Config
+from cli.logger.logger import logger
 
 GPGHOME = str(Config.keyring_dir)
 KEYRING = None  # f"{GPGHOME}/../keyring-"+Config.app_name
@@ -16,13 +18,17 @@ gpg = gnupg.GPG(
 gpg.encoding = "utf-8"
 
 
+class GPGException(Exception):
+    pass
+
+
 def decrypt(data, *args, **kwargs):
     decrypted_data = gpg.decrypt(
         data, extra_args=["--no-default-keyring"], passphrase=Config.password
     )
     if not decrypted_data.ok:
         err = getattr(decrypted_data, "stderr", "expected stderr not found")
-        raise Exception(f"decryption failed {err}")
+        raise GPGException(f"decryption failed {err}")
     return str(decrypted_data)
 
 
@@ -30,7 +36,7 @@ def encrypt(emails, data):
     encrypted_data = gpg.encrypt(data, emails, always_trust=True, sign=False)
     if not encrypted_data.ok:
         err = getattr(encrypted_data, "stderr", "expected stderr not found")
-        raise Exception(f"encryption failed {err}")
+        raise GPGException(f"encryption failed {err}")
     return str(encrypted_data)
 
 
@@ -67,7 +73,8 @@ def import_gpg_key(data):
     status = gpg.import_keys(data)
     for r in status.results:
         if not r["fingerprint"]:
-            raise Exception(f"key import error: {r}")
+            logger.error("cannot import gpg key")
+            raise GPGException(f"key import error: {r}")
         yield r
 
 
