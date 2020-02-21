@@ -1,12 +1,12 @@
 from uuid import uuid4
 
 import pytest
-from mockfirestore.client import MockFirestore
 
 import cli
 import cli.firestore.database
 from cli.auth.google import get_anon_cred
 from cli.config import Config
+from mockfirestore.client import MockFirestore
 
 
 @pytest.yield_fixture

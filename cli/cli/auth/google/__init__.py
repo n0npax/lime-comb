@@ -4,12 +4,19 @@ import pickle  # nosec
 from contextlib import contextmanager
 
 import google
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 from cli.config import Config
 from cli.logger.logger import logger
+from google_auth_oauthlib.flow import InstalledAppFlow
 
-__scopes = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform openid"
+__scopes = " ".join(
+    [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform",
+        "openid",
+    ]
+)
 
 
 def web_login():
@@ -27,7 +34,8 @@ def web_login():
 def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
     try:
         cred = read_creds()
-    except:
+    except Exception as e:
+        logger.warning(e)
         cred = None
     if cred and not cred.expired:
         yield cred

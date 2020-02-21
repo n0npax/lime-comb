@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from cli.auth.google import get_anon_cred, get_cred
+from cli.auth.google import get_cred
 from cli.commands.base import Command, import_keys
 from cli.commands.common import (add_message_parameters, add_msg_merge,
                                  add_msg_recv)

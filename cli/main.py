@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
 import argparse
-import logging
 import os
 import sys
 
-import pyperclip
 from tabulate import tabulate
-from tqdm import tqdm
 
 import cli
-from cli.commands.base import validate_email, validate_filepath
+import pyperclip
 from cli.commands.decrypt import DecryptCommand
 from cli.commands.encrypt import EncryptCommand
 from cli.commands.keys import KeysCommand
 from cli.logger.logger import logger
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description="lime comb tool.")
 
