@@ -13,49 +13,49 @@ from cli.commands.encrypt import EncryptCommand
 from cli.commands.keys import KeysCommand
 from cli.logger.logger import logger
 
-parser = argparse.ArgumentParser(description="lime comb tool.")
 
-parser.add_argument(
-    "--version",
-    dest="version",
-    required=False,
-    action="store_true",
-    help="show current version",
-)
-parser.add_argument(
-    "--log-lvl",
-    dest="log_lvl",
-    required=False,
-    default="WARNING",
-    action="store",
-    choices=("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"),
-    help="log level",
-)
+def base_parser():
+    parser = argparse.ArgumentParser(description="lime comb tool.")
 
-subparsers = parser.add_subparsers(
-    help="use --help to check help for sub-command",
-    title="commands",
-    description="Top level supported commands",
-    required=True,
-    dest="top_command",
-)
+    parser.add_argument(
+        "--version",
+        dest="version",
+        required=False,
+        action="store_true",
+        help="show current version",
+    )
+    parser.add_argument(
+        "--log-lvl",
+        dest="log_lvl",
+        required=False,
+        default="WARNING",
+        action="store",
+        choices=("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"),
+        help="log level",
+    )
 
-keys_cmd = KeysCommand(subparsers)
+    subparsers = parser.add_subparsers(
+        help="use --help to check help for sub-command",
+        title="commands",
+        description="Top level supported commands",
+        required=False,
+        dest="top_command",
+    )
+    return parser, subparsers
 
-enc_cmd = EncryptCommand(subparsers)
-
-dec_cmd = DecryptCommand(subparsers)
 
 # TODO provide class for config and keys
 
 
-def parse_common():
+def parse_common(args):
     logger.setLevel(args.log_lvl)
 
     logger.info(f"log lvl {logger.getEffectiveLevel()}")
     if args.version:
         print(f"version: {cli.__version__}")
         sys.exit(0)
+    elif not args.top_command:
+        print("TODO")
 
 
 def get_receipments(args):
@@ -77,9 +77,13 @@ def get_message(args):
     return args.messages
 
 
-args = parser.parse_args(sys.argv[1:])
 if __name__ == "__main__":
-    parse_common()
+    parser, subparsers = base_parser()
+    keys_cmd = KeysCommand(subparsers)
+    enc_cmd = EncryptCommand(subparsers)
+    dec_cmd = DecryptCommand(subparsers)
+    args = parser.parse_args(sys.argv[1:])
+    parse_common(args)
 
     if args.top_command in dec_cmd.aliases:
         decrypted = []

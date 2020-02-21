@@ -3,19 +3,20 @@ import tempfile
 
 import pytest
 
-from .conftest import public_key_string
 from cli.config import Config
 from cli.gpg import (
     GPGException,
     decrypt,
     delete_gpg_key,
     encrypt,
+    export_key,
     geneate_keys,
     get_existing_priv_keys,
-    export_key,
     get_existing_pub_keys,
     import_gpg_key,
 )
+
+from .conftest import public_key_string
 
 
 @pytest.yield_fixture

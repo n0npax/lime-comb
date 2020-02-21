@@ -16,11 +16,14 @@ def get_firestore_db(cred):
 
 
 def get_gpg(cred, email, key_name, *, key_type="pub"):
-    logger.debug(f"fetching gpg key for: {email}")
+    logger.debug(f"fetching gpg key for: {email} (firebase registry)")
     db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     key = db.collection(collection_id).document(name).get().to_dict()
-    return key["data"]
+    try:
+        return key["data"]
+    except KeyError:
+        return None
 
 
 def get_gpgs(cred, email, *, key_type="pub"):
@@ -29,7 +32,7 @@ def get_gpgs(cred, email, *, key_type="pub"):
 
 
 def put_gpg(cred, email, data, key_name, *, key_type="pub"):
-    logger.debug(f"pushing gpg key for: {email}")
+    logger.debug(f"pushing gpg key for: {email} (firebase registry)")
     db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     pub_key = db.collection(collection_id).document(name)
@@ -46,7 +49,11 @@ def list_gpg_ids(cred, email, key_type="pub"):
         yield d.id
 
 
-# TODO delete
+def delete_gpg(cred, email, key_name, *, key_type="pub"):
+    logger.debug(f"deleting gpg key for: {email} (firebase registry)")
+    db = get_firestore_db(cred)
+    collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
+    return db.collection(collection_id).document(name).delete()
 
 
 def _decode_base64(s):

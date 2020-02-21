@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
+import cli.firestore.database as database
 from cli.auth.google import get_cred
 from cli.commands.base import Command
 from cli.config import Config
-from cli.firestore.database import get_gpgs, put_gpg
 from cli.gpg import (
     delete_gpg_key,
     export_key,
@@ -29,37 +29,42 @@ class KeysCommand(Command):
         self.parser.add_argument("argument", nargs="?", help="ID filter (optional)")
 
     def __call__(self, args):
+        email = Config.email
+
         if args.command == "generate":
             yield [geneate_keys()]
         elif args.command == "delete":
-            yield from delete_gpg_key(args.argument, Config.password)
-            # TODO delete from firestore
+            with get_cred(Config.oauth_gcp_conf) as cred:
+                yield from delete_gpg_key(args.argument, Config.password)
+                database.delete_gpg(cred, email, args.argument)
         elif args.command == "list-pub":
             yield from get_existing_pub_keys(args.argument)
         elif args.command == "list-priv":
             yield from get_existing_priv_keys()
         elif args.command == "pull":
-            email = Config.email
             with get_cred(Config.oauth_gcp_conf) as cred:
-                privs = get_gpgs(cred, email, key_type="priv")
-                pubs = get_gpgs(cred, email, key_type="pub")
+                privs = database.get_gpgs(cred, email, key_type="priv")
+                pubs = database.get_gpgs(cred, email, key_type="pub")
                 for p in privs:
                     yield from import_gpg_key(p)
                 for p in pubs:
                     yield from import_gpg_key(p)
-                # TODO import priv to keyring
         elif args.command == "push":
             email = Config.email
             with get_cred(Config.oauth_gcp_conf) as cred:
                 for k in get_existing_priv_keys():
                     key_id = k[0]
                     priv_key = export_key(key_id, True)
-                    put_gpg(cred, email, priv_key, key_type="priv", key_name=key_id)
+                    database.put_gpg(
+                        cred, email, priv_key, key_type="priv", key_name=key_id
+                    )
                     yield key_id, email
                 for k in get_existing_pub_keys(Config.email):
                     key_id = k[0]
                     pub_key = export_key(key_id, False)
-                    put_gpg(cred, email, pub_key, key_type="pub", key_name=key_id)
+                    database.put_gpg(
+                        cred, email, pub_key, key_type="pub", key_name=key_id
+                    )
                     yield key_id, email
 
         else:
