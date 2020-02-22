@@ -14,7 +14,7 @@ from cli.commands.keys import KeysCommand
 from cli.logger.logger import logger
 
 
-def base_parser():
+def base_parser(input_args):
     parser = argparse.ArgumentParser(description="lime comb tool.")
 
     parser.add_argument(
@@ -41,7 +41,12 @@ def base_parser():
         required=False,
         dest="top_command",
     )
-    return parser, subparsers
+    keys_cmd = KeysCommand(subparsers)
+    enc_cmd = EncryptCommand(subparsers)
+    dec_cmd = DecryptCommand(subparsers)
+    args = parser.parse_args(input_args)
+    parse_common(args)
+    return args, keys_cmd, enc_cmd, dec_cmd, None
 
 
 # TODO provide class for config and keys
@@ -77,28 +82,21 @@ def get_message(args):
     return args.messages
 
 
-if __name__ == "__main__":
-    parser, subparsers = base_parser()
-    keys_cmd = KeysCommand(subparsers)
-    enc_cmd = EncryptCommand(subparsers)
-    dec_cmd = DecryptCommand(subparsers)
-    args = parser.parse_args(sys.argv[1:])
-    parse_common(args)
-
-    if args.top_command in dec_cmd.aliases:
+def dec_exec(args, cmd):
+    if args.top_command in cmd.aliases:
         decrypted = []
-        for m in tqdm(dec_cmd(get_message(args)), desc="decrypting"):
+        for m in tqdm(cmd(get_message(args)), desc="decrypting"):
             decrypted.append(m)
         decrypted = "\n---\n".join(decrypted)
         pyperclip.copy(decrypted)
         print(decrypted)
 
-    if args.top_command in enc_cmd.aliases:
+
+def enc_exec(args, cmd):
+    if args.top_command in cmd.aliases:
         encrypted = []
         for m in tqdm(
-            enc_cmd(
-                get_message(args), get_receipments(args), merge=args.merge_messages
-            ),
+            cmd(get_message(args), get_receipments(args), merge=args.merge_messages),
             desc="encrypting",
         ):
             encrypted.append(m)
@@ -106,6 +104,15 @@ if __name__ == "__main__":
         pyperclip.copy(encrypted)
         print(encrypted)
 
-    if args.top_command in keys_cmd.aliases:
-        keys = list(tqdm(keys_cmd(args), desc="keys"))
+
+def keys_exec(args, cmd):
+    if args.top_command in cmd.aliases:
+        keys = list(tqdm(cmd(args), desc="keys"))
         print(tabulate(keys))
+
+
+if __name__ == "__main__":
+    args, k_cmd, e_cmd, d_cmd, _ = base_parser(sys.argv[1:])
+    dec_exec(args, d_cmd)
+    enc_exec(args, e_cmd)
+    keys_exec(args, k_cmd)
