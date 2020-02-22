@@ -9,6 +9,8 @@ import pytest
 from cli.config import Config
 from main import *
 
+from .conftest import *
+
 
 class TestHelperFunctions:
     def test_parse_common_version(self, capsys, mocker):
@@ -62,6 +64,22 @@ class TestCommandObjects:
         args, _, _, d_cmd, _ = base_parser(["d", "-m", enc_msg])
         dec_msg = dec_exec(args, d_cmd)
         assert dec_msg == base_test_message
+
+    @pytest.mark.parametrize(
+        "action,action_arg",
+        [
+            ("generate", None),
+            ("delete", "key_id"),
+            ("list-pub", None),
+            ("list-priv", None),
+        ],
+    )
+    def test_key_cmd(self, mocker, action, action_arg, mocked_gpg_key):
+        mocker.patch.object(pyperclip, "copy")
+        if action_arg == "key_id":
+            action_arg = mocked_gpg_key
+        args, k_cmd, _, _, _ = base_parser(["k", action, action_arg])
+        output = keys_exec(args, k_cmd)
 
 
 def test_main(mocker, capsys):

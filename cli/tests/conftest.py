@@ -186,3 +186,4 @@ def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
     mocked_db.collection(domain).document(f"{email}/{key_id}/pub").set(
         {"data": pub_key}
     )
+    return f"{key_id}"
