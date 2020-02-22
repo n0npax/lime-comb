@@ -28,9 +28,22 @@ class TestHelperFunctions:
 class TestCommandObjects:
     def test_enc_cmd_plain_test_msg(self, mocker, capsys):
         mocker.patch.object(pyperclip, "copy")
-        args, _, e_cmd, _, _ = base_parser(["e", "-t", Config.email, "-m", "test"])
+        args, _, e_cmd, _, _ = base_parser(
+            ["e", "-t", Config.email, "-m", "test1", "-m", "test2"]
+        )
         output = enc_exec(args, e_cmd)
         assert output.startswith("-----BEGIN PGP MESSAGE---")
+        assert output.count("-----BEGIN PGP MESSAGE---") == 2
+
+    def test_enc_cmd_plain_test_msg_merged(self, mocker, capsys):
+        mocker.patch.object(pyperclip, "copy")
+        args, _, e_cmd, _, _ = base_parser(
+            ["e", "-t", Config.email, "-m", "test1", "-m", "test2", "--mm"]
+        )
+        output = enc_exec(args, e_cmd)
+        assert output.startswith("-----BEGIN PGP MESSAGE---")
+        print(output)
+        assert output.count("-----BEGIN PGP MESSAGE---") == 1
 
     def test_enc_cmd_file_msg(self, mocker):
         mocker.patch.object(pyperclip, "copy")
