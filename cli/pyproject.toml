@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cli"
-version = "0.0.3"
+version = "0.0.4"
 description = "lime-comb cli"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
 

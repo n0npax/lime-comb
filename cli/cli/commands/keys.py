@@ -4,14 +4,9 @@ import cli.firestore.database as database
 from cli.auth.google import get_cred
 from cli.commands.base import Command
 from cli.config import Config
-from cli.gpg import (
-    delete_gpg_key,
-    export_key,
-    geneate_keys,
-    get_existing_priv_keys,
-    get_existing_pub_keys,
-    import_gpg_key,
-)
+from cli.gpg import (delete_gpg_key, export_key, geneate_keys,
+                     get_existing_priv_keys, get_existing_pub_keys,
+                     import_gpg_key)
 
 
 @dataclass

@@ -64,9 +64,11 @@ def parse_common(args):
 
 
 def get_receipments(args):
-    if not args.receipments:
+    if not getattr(args, "receipments", None):
         logger.info("No receipmens. Asking userto type in")
-        args.receipments = input("please specify receipments(space separated)\n")
+        args.receipments = input(
+            "please specify receipments(space separated)\n"
+        ).split()
     return args.receipments
 
 
