@@ -6,6 +6,7 @@ from uuid import uuid4
 import pyperclip
 import pytest
 
+from cli.auth.google import get_anon_cred
 from cli.config import Config
 from main import *
 
@@ -72,12 +73,19 @@ class TestCommandObjects:
             ("delete", "key_id"),
             ("list-pub", None),
             ("list-priv", None),
+            ("push", None),
+            ("pull", "email"),
         ],
     )
-    def test_key_cmd(self, mocker, action, action_arg, mocked_gpg_key):
+    def test_key_cmd(
+        self, web_login, mocker, action, action_arg, mocked_gpg_key, email
+    ):
+        mocker.patch.object(cli.auth.google, "get_cred", return_value=get_anon_cred())
         mocker.patch.object(pyperclip, "copy")
         if action_arg == "key_id":
             action_arg = mocked_gpg_key
+        if action_arg == "email":
+            action_arg = email
         args, k_cmd, _, _, _ = base_parser(["k", action, action_arg])
         output = keys_exec(args, k_cmd)
 

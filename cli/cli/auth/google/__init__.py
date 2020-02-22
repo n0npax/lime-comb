@@ -19,7 +19,7 @@ __scopes = " ".join(
 )
 
 
-def web_login():
+def web_login(conf: str):
     flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
     return flow.run_local_server(
         host="localhost",
@@ -41,7 +41,7 @@ def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
         yield cred
     else:
         logger.warning(f"Error, fallback to fresh login")
-        cred = web_login()
+        cred = web_login(conf)
         save_creds(cred)
         yield cred
 
