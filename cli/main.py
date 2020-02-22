@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import os
 import sys
 
 import pyperclip
@@ -91,7 +90,7 @@ def dec_exec(args, cmd):
             decrypted.append(m)
         decrypted = "\n---\n".join(decrypted)
         pyperclip.copy(decrypted)
-        print(decrypted)
+        return decrypted
 
 
 def enc_exec(args, cmd):
@@ -104,17 +103,21 @@ def enc_exec(args, cmd):
             encrypted.append(m)
         encrypted = "\n---\n".join(encrypted)
         pyperclip.copy(encrypted)
-        print(encrypted)
+        return encrypted
 
 
 def keys_exec(args, cmd):
     if args.top_command in cmd.aliases:
         keys = list(tqdm(cmd(args), desc="keys"))
-        print(tabulate(keys))
+        return tabulate(keys)
+
+
+def main(cmdline_args):
+    args, k_cmd, e_cmd, d_cmd, _ = base_parser(cmdline_args)
+    print(dec_exec(args, d_cmd))
+    print(enc_exec(args, e_cmd))
+    print(keys_exec(args, k_cmd))
 
 
 if __name__ == "__main__":
-    args, k_cmd, e_cmd, d_cmd, _ = base_parser(sys.argv[1:])
-    dec_exec(args, d_cmd)
-    enc_exec(args, e_cmd)
-    keys_exec(args, k_cmd)
+    main(sys.argv[1:])

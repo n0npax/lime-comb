@@ -1,13 +1,13 @@
 import builtins
 import sys
 import tempfile
+from uuid import uuid4
 
 import pyperclip
 import pytest
 
 from cli.config import Config
-from main import (EncryptCommand, base_parser, dec_exec, enc_exec,
-                  get_receipments, parse_common)
+from main import *
 
 
 class TestHelperFunctions:
@@ -29,14 +29,31 @@ class TestCommandObjects:
     def test_enc_cmd_plain_test_msg(self, mocker, capsys):
         mocker.patch.object(pyperclip, "copy")
         args, _, e_cmd, _, _ = base_parser(["e", "-t", Config.email, "-m", "test"])
-        enc_exec(args, e_cmd)
-        captured = capsys.readouterr()
-        assert captured.out.startswith("-----BEGIN PGP MESSAGE---")
+        output = enc_exec(args, e_cmd)
+        assert output.startswith("-----BEGIN PGP MESSAGE---")
 
-    def test_enc_cmd_file_msg(self, mocker, capsys):
+    def test_enc_cmd_file_msg(self, mocker):
         mocker.patch.object(pyperclip, "copy")
         with tempfile.NamedTemporaryFile() as fp:
             args, _, e_cmd, _, _ = base_parser(["e", "-t", Config.email, "-f", fp.name])
-            enc_exec(args, e_cmd)
-            captured = capsys.readouterr()
-            assert captured.out.startswith("-----BEGIN PGP MESSAGE---")
+            output = enc_exec(args, e_cmd)
+            assert output.startswith("-----BEGIN PGP MESSAGE---")
+
+    def test_dec_cmd(self, mocker):
+        base_test_message = str(uuid4())
+        mocker.patch.object(pyperclip, "copy")
+        args, _, e_cmd, _, _ = base_parser(
+            ["e", "-t", Config.email, "-m", base_test_message]
+        )
+        enc_msg = enc_exec(args, e_cmd)
+        args, _, _, d_cmd, _ = base_parser(["d", "-m", enc_msg])
+        dec_msg = dec_exec(args, d_cmd)
+        assert dec_msg == base_test_message
+
+
+def test_main(mocker, capsys):
+    mocker.patch.object(sys, "exit")
+    main(["--help"])
+    assert sys.exit.called
+    captured = capsys.readouterr()
+    assert "--help" in captured.out
