@@ -2,7 +2,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: build builder
-    dir: /workspace/cli
+    dir: /workspace/lime_comb_cli
     args:
       - build
       - -t
@@ -11,11 +11,11 @@ steps:
       - gcr.io/$PROJECT_ID/${_BUILDER}:latest
       - -f
       - Dockerfile.builder
-      - /workspace/cli
+      - /workspace/lime_comb_cli
 
   - name: 'gcr.io/$PROJECT_ID/${_BUILDER}'
     id: 'test, build, release'
-    dir: '/workspace/cli'
+    dir: '/workspace/lime_comb_cli'
     entrypoint: 'bash'
     args:
       - '-c'

@@ -1,4 +1,4 @@
-from cli.commands.base import validate_email, validate_filepath
+from lime_comb_cli.commands.base import validate_email, validate_filepath
 
 
 def add_message_parameters(parser):

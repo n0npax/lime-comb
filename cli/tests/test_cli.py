@@ -1,4 +1,4 @@
-from cli import __version__
+from lime_comb_cli import __version__
 
 
 def test_version():

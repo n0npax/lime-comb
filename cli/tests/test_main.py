@@ -1,14 +1,8 @@
 import builtins
-import sys
 import tempfile
-from uuid import uuid4
 
-import pyperclip
-import pytest
-
-from cli.auth.google import get_anon_cred
-from cli.config import Config
-from main import *
+from lime_comb_cli.auth.google import get_anon_cred
+from lime_comb_cli.main import *
 
 from .conftest import *
 
@@ -80,7 +74,9 @@ class TestCommandObjects:
     def test_key_cmd(
         self, web_login, mocker, action, action_arg, mocked_gpg_key, email
     ):
-        mocker.patch.object(cli.auth.google, "get_cred", return_value=get_anon_cred())
+        mocker.patch.object(
+            lime_comb_cli.auth.google, "get_cred", return_value=get_anon_cred()
+        )
         mocker.patch.object(pyperclip, "copy")
         if action_arg == "key_id":
             action_arg = mocked_gpg_key

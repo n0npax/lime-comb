@@ -1,8 +1,14 @@
 [tool.poetry]
-name = "cli"
+name = "lime_comb_cli"
 version = "0.0.4"
 description = "lime-comb cli"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
+readme = 'README.md'
+
+
+[tool.poetry.scripts]
+lime-comb = "lime_comb_cli.main:run"
+
 
 [tool.poetry.dependencies]
 python = "^3.7"

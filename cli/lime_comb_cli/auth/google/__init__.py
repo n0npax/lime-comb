@@ -6,8 +6,8 @@ from contextlib import contextmanager
 import google
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-from cli.config import Config
-from cli.logger.logger import logger
+from lime_comb_cli.config import Config
+from lime_comb_cli.logger.logger import logger
 
 __scopes = " ".join(
     [

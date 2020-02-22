@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from cli.commands.base import Command
-from cli.commands.common import add_message_parameters
-from cli.config import Config
-from cli.gpg import decrypt
+from lime_comb_cli.commands.base import Command
+from lime_comb_cli.commands.common import add_message_parameters
+from lime_comb_cli.config import Config
+from lime_comb_cli.gpg import decrypt
 
 
 @dataclass

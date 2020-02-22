@@ -6,9 +6,10 @@ import google
 import pytest
 from google.auth.credentials import AnonymousCredentials
 
-import cli.auth.google
-from cli.auth.google import get_anon_cred, get_cred, read_creds, save_creds
-from cli.config import Config
+import lime_comb_cli.auth.google
+from lime_comb_cli.auth.google import (get_anon_cred, get_cred, read_creds,
+                                       save_creds)
+from lime_comb_cli.config import Config
 
 from .conftest import *
 
