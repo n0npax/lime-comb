@@ -3,10 +3,9 @@ import tempfile
 from uuid import uuid4
 
 import google
+import lime_comb_cli.auth.google
 import pytest
 from google.auth.credentials import AnonymousCredentials
-
-import lime_comb_cli.auth.google
 from lime_comb_cli.auth.google import (get_anon_cred, get_cred, read_creds,
                                        save_creds)
 from lime_comb_cli.config import Config

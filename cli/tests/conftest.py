@@ -1,12 +1,11 @@
 from uuid import uuid4
 
-import pytest
-from mockfirestore.client import MockFirestore
-
 import lime_comb_cli
 import lime_comb_cli.firestore.database
+import pytest
 from lime_comb_cli.auth.google import get_anon_cred
 from lime_comb_cli.config import Config
+from mockfirestore.client import MockFirestore
 
 
 @pytest.fixture

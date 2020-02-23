@@ -8,9 +8,8 @@ This tool allows:
 
 Example usage:
 
-TODO replace ./main.py
 ```bash
-./main.py enc -t ${SOMEONES_EMAIL}@gmail.com -m "db_qa_password: SUPERSECRET1" -m "dq_preprod_password:SUPERSECRET2"
+$lime-comb enc -t ${SOMEONES_EMAIL} -m "db_qa_password: SUPERSECRET1" -m "dq_preprod_password:SUPERSECRET2"
 -----BEGIN PGP MESSAGE-----
 
 hQIMA3u/FP5aHZnFARAAiSoK/MThwKlKd1BCfPYSeU4E8NwtFjZ6wa9cVxmlcApl

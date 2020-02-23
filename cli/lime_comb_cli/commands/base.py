@@ -3,7 +3,6 @@ import argparse
 import os
 
 import email_validator
-
 from lime_comb_cli.firestore.database import get_gpgs
 from lime_comb_cli.gpg import import_gpg_key
 

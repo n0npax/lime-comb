@@ -2,15 +2,14 @@
 import argparse
 import sys
 
-import pyperclip
-from tabulate import tabulate
-from tqdm import tqdm
-
 import lime_comb_cli
+import pyperclip
 from lime_comb_cli.commands.decrypt import DecryptCommand
 from lime_comb_cli.commands.encrypt import EncryptCommand
 from lime_comb_cli.commands.keys import KeysCommand
 from lime_comb_cli.logger.logger import logger
+from tabulate import tabulate
+from tqdm import tqdm
 
 
 def base_parser(input_args):
