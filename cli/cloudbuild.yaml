@@ -2,20 +2,17 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: build builder
-    dir: /workspace/lime_comb_cli
+    dir: /workspace/cli
+    entrypoint: 'bash'
     args:
-      - build
-      - -t
-      - gcr.io/$PROJECT_ID/${_BUILDER}:latest
-      - --cache-from
-      - gcr.io/$PROJECT_ID/${_BUILDER}:latest
-      - -f
-      - Dockerfile.builder
-      - /workspace/lime_comb_cli
+    - '-c'
+    - |
+      docker pull gcr.io/$PROJECT_ID/${_BUILDER}:latest
+      docker build -t gcr.io/$PROJECT_ID/${_BUILDER}:latest --cache-from gcr.io/$PROJECT_ID/${_BUILDER}:latest -f Dockerfile.builder /workspace/cli
 
   - name: 'gcr.io/$PROJECT_ID/${_BUILDER}'
-    id: 'test, build, release'
-    dir: '/workspace/lime_comb_cli'
+    id: test, build, release
+    dir: /workspace/cli
     entrypoint: 'bash'
     args:
       - '-c'
