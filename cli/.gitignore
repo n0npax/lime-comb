@@ -6,3 +6,4 @@ cli.egg-info/**
 coverage.xml
 do.sh
 encrypted_msg
+.pypi_token

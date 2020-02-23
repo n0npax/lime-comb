@@ -7,9 +7,7 @@ from appdirs import user_config_dir, user_data_dir
 
 class Config:
     app_name = "lime-comb"
-    oauth_gcp_conf = (
-        "/home/n0npax/workspace/lime-comb/lime_comb/client-lime-comb.json"
-    )
+    oauth_gcp_conf = "/home/n0npax/workspace/lime-comb/lime_comb/client-lime-comb.json"
 
     data_dir = Path(user_data_dir(app_name))
     config_dir = Path(user_config_dir(app_name))

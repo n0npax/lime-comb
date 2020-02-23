@@ -47,9 +47,12 @@ install:
 	pip3 $@ dist/*.whl
 
 .PHONY: release
-release:
-	$(MAKE) build
-	echo TODO release to pypi
+release: build
+ifeq ("$(wildcard .codecov_token)","")
+	poetry publish -u __token__ -p "$${PYPI_TOKEN}}"
+else
+	poetry publish -u __token__ -p "$(shell cat .pypi_token)"
+endif
 
 codecov_upload.sh:
 	curl -s https://codecov.io/bash -o codecov_upload.sh

@@ -8,7 +8,7 @@ from google.auth.credentials import AnonymousCredentials
 
 import lime_comb.auth.google
 from lime_comb.auth.google import (get_anon_cred, get_cred, read_creds,
-                                       save_creds)
+                                   save_creds)
 from lime_comb.config import Config
 
 from .conftest import *

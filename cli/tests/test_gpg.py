@@ -5,9 +5,8 @@ import pytest
 
 from lime_comb.config import Config
 from lime_comb.gpg import (GPGException, decrypt, delete_gpg_key, encrypt,
-                               export_key, geneate_keys,
-                               get_existing_priv_keys, get_existing_pub_keys,
-                               import_gpg_key)
+                           export_key, geneate_keys, get_existing_priv_keys,
+                           get_existing_pub_keys, import_gpg_key)
 
 from .conftest import pub_key
 
