@@ -1,7 +1,6 @@
 import base64
 
 from google.cloud import firestore
-
 from lime_comb.config import Config
 from lime_comb.logger.logger import logger
 

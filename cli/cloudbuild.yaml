@@ -40,6 +40,7 @@ steps:
     env:
       - GITHUB_TOKEN=${_GITHUB_TOKEN}
       - COMMIT_SHA=$COMMIT_SHA
+      - PYPI_TOKEN=${_PYPI_TOKEN}
 
 substitutions:
   _BUILDER: lime-comb-builder

@@ -1,4 +1,4 @@
-EXECUTABLES := poetry curl
+EXECUTABLES := poetry curl isort bandit
 K := $(foreach exec,$(EXECUTABLES),\
         $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))
 
@@ -49,9 +49,9 @@ install:
 .PHONY: release
 release: build
 ifeq ("$(wildcard .codecov_token)","")
-	poetry publish -u __token__ -p "$${PYPI_TOKEN}}"
+	poetry publish -u '__token__' -p "$${PYPI_TOKEN}"
 else
-	poetry publish -u __token__ -p "$(shell cat .pypi_token)"
+	poetry publish -u '__token__' -p "$(shell cat .pypi_token)"
 endif
 
 codecov_upload.sh:
