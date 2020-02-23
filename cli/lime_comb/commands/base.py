@@ -4,8 +4,8 @@ import os
 
 import email_validator
 
-from lime_comb_cli.firestore.database import get_gpgs
-from lime_comb_cli.gpg import import_gpg_key
+from lime_comb.firestore.database import get_gpgs
+from lime_comb.gpg import import_gpg_key
 
 
 class Command(metaclass=abc.ABCMeta):

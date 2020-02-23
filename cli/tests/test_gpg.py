@@ -3,8 +3,8 @@ import tempfile
 
 import pytest
 
-from lime_comb_cli.config import Config
-from lime_comb_cli.gpg import (GPGException, decrypt, delete_gpg_key, encrypt,
+from lime_comb.config import Config
+from lime_comb.gpg import (GPGException, decrypt, delete_gpg_key, encrypt,
                                export_key, geneate_keys,
                                get_existing_priv_keys, get_existing_pub_keys,
                                import_gpg_key)

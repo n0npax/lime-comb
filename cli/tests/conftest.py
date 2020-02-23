@@ -3,10 +3,10 @@ from uuid import uuid4
 import pytest
 from mockfirestore.client import MockFirestore
 
-import lime_comb_cli
-import lime_comb_cli.firestore.database
-from lime_comb_cli.auth.google import get_anon_cred
-from lime_comb_cli.config import Config
+import lime_comb
+import lime_comb.firestore.database
+from lime_comb.auth.google import get_anon_cred
+from lime_comb.config import Config
 
 
 @pytest.yield_fixture
@@ -181,7 +181,7 @@ def valid_cred():
 
 @pytest.yield_fixture
 def no_cred():
-    lime_comb_cli.config.Config.credentials_file = "/dev/null"
+    lime_comb.config.Config.credentials_file = "/dev/null"
     yield
 
 
@@ -193,7 +193,7 @@ def invalid_cred():
 @pytest.yield_fixture
 def web_login(mocker):
     mocker.patch.object(
-        lime_comb_cli.auth.google, "web_login", return_value=Creds(expired=False)
+        lime_comb.auth.google, "web_login", return_value=Creds(expired=False)
     )
     yield
 
@@ -209,10 +209,10 @@ def fake_list_gpg_ids(key_id):
 def mocked_db(key_id, valid_cred, mocker):
     db = MockFirestore()
     mocker.patch.object(
-        lime_comb_cli.firestore.database, "get_firestore_db", return_value=db
+        lime_comb.firestore.database, "get_firestore_db", return_value=db
     )
     mocker.patch.object(
-        lime_comb_cli.firestore.database,
+        lime_comb.firestore.database,
         "list_gpg_ids",
         return_value=fake_list_gpg_ids(key_id)(),
     )

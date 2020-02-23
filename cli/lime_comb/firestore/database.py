@@ -2,8 +2,8 @@ import base64
 
 from google.cloud import firestore
 
-from lime_comb_cli.config import Config
-from lime_comb_cli.logger.logger import logger
+from lime_comb.config import Config
+from lime_comb.logger.logger import logger
 
 
 def doc_path(*, email, key_type, key_name):

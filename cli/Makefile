@@ -27,7 +27,7 @@ test: deps
 
 .PHONY: update_version
 update_version:
-	sed -i 's/__version__.*/__version__ = "$(shell poetry version | cut -f2 -d " ")"/g' lime_comb_cli/__init__.py
+	sed -i 's/__version__.*/__version__ = "$(shell poetry version | cut -f2 -d " ")"/g' lime_comb/__init__.py
 
 .PHONY: build
 build:  update_version deps clean test cover lint

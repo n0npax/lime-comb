@@ -1,13 +1,22 @@
 [tool.poetry]
-name = "lime_comb_cli"
+name = "lime_comb"
 version = "0.0.5"
 description = "lime-comb cli"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
 readme = 'README.md'
+include = ["client-lime-comb.json"]
+classifiers = [
+    "Topic :: Software Development :: Passwords Tools",
+    "Topic :: Software Development :: Encryption Tools",
+    "Topic :: Software Development :: Libraries :: Encryption",
+    "Topic :: Software Development :: Libraries :: Lime Comb Lib"
+]
 
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/n0npax/lime-comb"
 
 [tool.poetry.scripts]
-lime-comb = "lime_comb_cli.main:run"
+lime-comb = "lime_comb.main:run"
 
 
 [tool.poetry.dependencies]

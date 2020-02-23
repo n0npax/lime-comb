@@ -1,8 +1,8 @@
 import builtins
 import tempfile
 
-from lime_comb_cli.auth.google import get_anon_cred
-from lime_comb_cli.main import *
+from lime_comb.auth.google import get_anon_cred
+from lime_comb.main import *
 
 from .conftest import *
 
@@ -75,7 +75,7 @@ class TestCommandObjects:
         self, web_login, mocker, action, action_arg, mocked_gpg_key, email
     ):
         mocker.patch.object(
-            lime_comb_cli.auth.google, "get_cred", return_value=get_anon_cred()
+            lime_comb.auth.google, "get_cred", return_value=get_anon_cred()
         )
         mocker.patch.object(pyperclip, "copy")
         if action_arg == "key_id":

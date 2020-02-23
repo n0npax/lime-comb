@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-import lime_comb_cli.firestore.database as database
-from lime_comb_cli.auth.google import get_cred
-from lime_comb_cli.commands.base import Command
-from lime_comb_cli.config import Config
-from lime_comb_cli.gpg import (delete_gpg_key, export_key, geneate_keys,
+import lime_comb.firestore.database as database
+from lime_comb.auth.google import get_cred
+from lime_comb.commands.base import Command
+from lime_comb.config import Config
+from lime_comb.gpg import (delete_gpg_key, export_key, geneate_keys,
                                get_existing_priv_keys, get_existing_pub_keys,
                                import_gpg_key)
 

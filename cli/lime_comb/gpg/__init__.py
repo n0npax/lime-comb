@@ -2,8 +2,8 @@ import os
 
 import gnupg
 
-from lime_comb_cli.config import Config
-from lime_comb_cli.logger.logger import logger
+from lime_comb.config import Config
+from lime_comb.logger.logger import logger
 
 GPGHOME = str(Config.keyring_dir)
 KEYRING = None  # f"{GPGHOME}/../keyring-"+Config.app_name

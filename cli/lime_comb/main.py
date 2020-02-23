@@ -6,11 +6,11 @@ import pyperclip
 from tabulate import tabulate
 from tqdm import tqdm
 
-import lime_comb_cli
-from lime_comb_cli.commands.decrypt import DecryptCommand
-from lime_comb_cli.commands.encrypt import EncryptCommand
-from lime_comb_cli.commands.keys import KeysCommand
-from lime_comb_cli.logger.logger import logger
+import lime_comb
+from lime_comb.commands.decrypt import DecryptCommand
+from lime_comb.commands.encrypt import EncryptCommand
+from lime_comb.commands.keys import KeysCommand
+from lime_comb.logger.logger import logger
 
 
 def base_parser(input_args):
@@ -56,7 +56,7 @@ def parse_common(parser, args):
 
     logger.info(f"log lvl {logger.getEffectiveLevel()}")
     if args.version:
-        print(f"version: {lime_comb_cli.__version__}")
+        print(f"version: {lime_comb.__version__}")
         sys.exit(0)
     elif not args.top_command:
         parser.print_help()
