@@ -12,7 +12,7 @@ from lime_comb_cli.gpg import encrypt, get_existing_pub_keys
 class EncryptCommand(Command):
     aliases: str = ("e", "enc")
     name: str = "encrypt"
-    help: str = """Encrypt message for receipment.
+    help: str = """Encrypt message for recipients.
 You can pass multiple messages by passing -m before earch message
 Or -f before each file you want to encrypt"""
 

@@ -15,11 +15,11 @@ class TestHelperFunctions:
         captured = capsys.readouterr()
         assert captured.out.startswith("version")
 
-    def test_get_receipments(self, mocker):
+    def test_get_recipients(self, mocker):
         mocker.patch.object(builtins, "input", return_value="test_input")
         args, _, _, _, _ = base_parser(["e"])
-        receipments = get_receipments(args)
-        assert receipments == ["test_input"]
+        recipients = get_recipients(args)
+        assert recipients == ["test_input"]
 
 
 class TestCommandObjects:

@@ -27,11 +27,11 @@ def add_msg_recv(parser):
     parser.add_argument(
         "-t",
         "--to",
-        dest="receipments",
+        dest="recipients",
         required=False,
         action="append",
         default=[],
-        help="receipment of the message",
+        help="recipient of the message",
         type=validate_email,
     )
 

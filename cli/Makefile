@@ -25,8 +25,12 @@ test: deps
 	poetry run pytest -vs --cov-report=xml --cov . .
 
 
+.PHONY: update_version
+update_version:
+	sed -i 's/__version__.*/__version__ = "$(shell poetry version | cut -f2 -d " ")"/g' lime_comb_cli/__init__.py
+
 .PHONY: build
-build: deps clean test cover lint
+build:  update_version deps clean test cover lint
 	poetry $@
 
 .PHONY: clean

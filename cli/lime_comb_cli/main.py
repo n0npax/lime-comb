@@ -2,14 +2,15 @@
 import argparse
 import sys
 
-import lime_comb_cli
 import pyperclip
+from tabulate import tabulate
+from tqdm import tqdm
+
+import lime_comb_cli
 from lime_comb_cli.commands.decrypt import DecryptCommand
 from lime_comb_cli.commands.encrypt import EncryptCommand
 from lime_comb_cli.commands.keys import KeysCommand
 from lime_comb_cli.logger.logger import logger
-from tabulate import tabulate
-from tqdm import tqdm
 
 
 def base_parser(input_args):
@@ -62,13 +63,11 @@ def parse_common(parser, args):
         sys.exit(0)
 
 
-def get_receipments(args):
-    if not getattr(args, "receipments", None):
-        logger.info("No receipmens. Asking userto type in")
-        args.receipments = input(
-            "please specify receipments(space separated)\n"
-        ).split()
-    return args.receipments
+def get_recipients(args):
+    if not getattr(args, "recipients", None):
+        logger.info("No recipients. Asking user to type in")
+        args.recipients = input("please specify recipients(space separated)\n").split()
+    return args.recipients
 
 
 def get_message(args):
@@ -97,7 +96,7 @@ def enc_exec(args, cmd):
     if args.top_command in cmd.aliases:
         encrypted = []
         for m in tqdm(
-            cmd(get_message(args), get_receipments(args), merge=args.merge_messages),
+            cmd(get_message(args), get_recipients(args), merge=args.merge_messages),
             desc="encrypting",
         ):
             encrypted.append(m)
