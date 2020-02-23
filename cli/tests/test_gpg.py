@@ -8,7 +8,7 @@ from lime_comb_cli.gpg import (GPGException, decrypt, delete_gpg_key, encrypt,
                                get_existing_priv_keys, get_existing_pub_keys,
                                import_gpg_key)
 
-from .conftest import public_key_string
+from .conftest import pub_key
 
 
 @pytest.yield_fixture
@@ -61,8 +61,8 @@ class TestGpg:
             for _ in import_gpg_key("invalid data"):
                 pass
 
-    def test_import_gpg_key_ok_data(self, public_key_string):
-        import_gpg_key(public_key_string)
+    def test_import_gpg_key_ok_data(self, pub_key):
+        import_gpg_key(pub_key)
 
     def test_export_key(self, keypair):
         assert export_key(keypair).startswith("-----BEGIN PGP")
