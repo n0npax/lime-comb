@@ -44,14 +44,14 @@ def base_parser(input_args):
     enc_cmd = EncryptCommand(subparsers)
     dec_cmd = DecryptCommand(subparsers)
     args = parser.parse_args(input_args)
-    parse_common(args)
+    parse_common(parser, args)
     return args, keys_cmd, enc_cmd, dec_cmd, None
 
 
 # TODO provide class for config and keys
 
 
-def parse_common(args):
+def parse_common(parser, args):
     logger.setLevel(args.log_lvl)
 
     logger.info(f"log lvl {logger.getEffectiveLevel()}")
@@ -59,7 +59,8 @@ def parse_common(args):
         print(f"version: {lime_comb_cli.__version__}")
         sys.exit(0)
     elif not args.top_command:
-        print("TODO")
+        parser.print_help()
+        sys.exit(0)
 
 
 def get_receipments(args):

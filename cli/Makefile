@@ -38,6 +38,8 @@ clean:
 
 .PHONY: install
 install:
+	poetry build
+	pip3 uninstall -y lime-comb-cli
 	pip3 $@ dist/*.whl
 
 .PHONY: release
