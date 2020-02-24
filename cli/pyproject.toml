@@ -8,6 +8,9 @@ include = ["client-lime-comb.json"]
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/n0npax/lime-comb"
+repository = "https://github.com/n0npax/lime-comb"
+homepage = "https://lime-comb.web.app/"
+documentation = "https://github.com/n0npax/lime-comb"
 
 [tool.poetry.scripts]
 lime-comb = "lime_comb.main:run"

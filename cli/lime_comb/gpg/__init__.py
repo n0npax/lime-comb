@@ -12,7 +12,7 @@ gpg = gnupg.GPG(
     gnupghome=GPGHOME,
     keyring=KEYRING,
     use_agent=False,
-    verbose=True,
+    verbose=False,
     secret_keyring=SECRET_KEYRING,
     # options=["--allow-loopback-pinentry","--allow-mode-loopback"]
 )
