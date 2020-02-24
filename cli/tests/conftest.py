@@ -1,11 +1,16 @@
+import tempfile
+from pathlib import Path
 from uuid import uuid4
+
+import pyperclip
+import pytest
+from mockfirestore.client import MockFirestore
 
 import lime_comb
 import lime_comb.firestore.database
-import pytest
 from lime_comb.auth.google import get_anon_cred
-from lime_comb.config import Config
-from mockfirestore.client import MockFirestore
+from lime_comb.config import config
+from lime_comb.gpg import delete_gpg_key, geneate_keys
 
 
 @pytest.yield_fixture
@@ -19,14 +24,26 @@ def domain():
     return "example.com"
 
 
-@pytest.fixture
-def email():
-    return "example.example@example.com"
 
 
-@pytest.fixture(autouse=True)
-def config_setup(email):
-    Config.email = email
+@pytest.yield_fixture(autouse=True)
+def email(config_file):
+    lime_comb.config.config.email = "example.example@example.com"
+    yield "example.example@example.com"
+
+
+
+
+@pytest.yield_fixture
+def temp_file():
+    with tempfile.NamedTemporaryFile() as fp:
+        yield fp
+
+
+@pytest.yield_fixture(autouse=True)
+def config_file(temp_file):
+    lime_comb.config.config.config_file = Path(temp_file.name)
+    yield
 
 
 @pytest.fixture
@@ -180,13 +197,19 @@ def valid_cred():
 
 @pytest.yield_fixture
 def no_cred():
-    lime_comb.config.Config.credentials_file = "/dev/null"
+    config.credentials_file = "/dev/null"
     yield
 
 
 @pytest.fixture
 def invalid_cred():
     return Creds()
+
+
+@pytest.yield_fixture()
+def pyperclip_copy(mocker):
+    mocker.patch.object(pyperclip, "copy")
+    yield
 
 
 @pytest.yield_fixture
@@ -204,7 +227,7 @@ def fake_list_gpg_ids(key_id):
     return list_gpg_ids
 
 
-@pytest.yield_fixture
+@pytest.yield_fixture()
 def mocked_db(key_id, valid_cred, mocker):
     db = MockFirestore()
     mocker.patch.object(
@@ -227,4 +250,11 @@ def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
     mocked_db.collection(domain).document(f"{email}/{key_id}/pub").set(
         {"data": pub_key}
     )
-    return f"{key_id}"
+    yield f"{key_id}"
+
+
+@pytest.yield_fixture
+def keypair():
+    keys = geneate_keys()
+    yield keys.fingerprint
+    delete_gpg_key(keys.fingerprint, config.password)

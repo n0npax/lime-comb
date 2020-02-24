@@ -4,7 +4,7 @@ from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command, import_keys
 from lime_comb.commands.common import (add_message_parameters, add_msg_merge,
                                        add_msg_recv)
-from lime_comb.config import Config
+from lime_comb.config import config
 from lime_comb.gpg import encrypt, get_existing_pub_keys
 
 
@@ -25,8 +25,8 @@ Or -f before each file you want to encrypt"""
         add_msg_merge(self.parser)
 
     def __call__(self, msgs, recipients, merge=False):
-        if Config.always_import:
-            with get_cred(Config.oauth_gcp_conf) as cred:
+        if config.always_import:
+            with get_cred(config.oauth_gcp_conf) as cred:
                 # with get_anon_cred() as cred:
                 for email in recipients:
                     import_keys(email, cred)

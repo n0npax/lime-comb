@@ -1,5 +1,5 @@
 import logging
 
-from lime_comb.config import Config
+from lime_comb.config import config
 
-logger = logging.getLogger(name=Config.app_name)
+logger = logging.getLogger(name=config.app_name)

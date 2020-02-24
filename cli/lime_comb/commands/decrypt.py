@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from lime_comb.commands.base import Command
 from lime_comb.commands.common import add_message_parameters
-from lime_comb.config import Config
+from lime_comb.config import config
 from lime_comb.gpg import decrypt
 
 
@@ -20,5 +20,5 @@ class DecryptCommand(Command):
 
     def __call__(self, msgs):
         for msg in msgs:
-            decrypted_msg = decrypt(msg, always_trust=True, passphrase=Config.password)
+            decrypted_msg = decrypt(msg, always_trust=True, passphrase=config.password)
             yield decrypted_msg

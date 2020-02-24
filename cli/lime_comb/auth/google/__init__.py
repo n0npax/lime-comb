@@ -5,7 +5,8 @@ from contextlib import contextmanager
 
 import google
 from google_auth_oauthlib.flow import InstalledAppFlow
-from lime_comb.config import Config
+
+from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
 __scopes = " ".join(
@@ -51,8 +52,8 @@ def get_anon_cred() -> google.auth.credentials.Credentials:
 
 
 def save_creds(cred):
-    pickle.dump(cred, open(Config.credentials_file, "wb"))
+    pickle.dump(cred, open(config.credentials_file, "wb"))
 
 
 def read_creds():
-    return pickle.load(open(Config.credentials_file, "rb"))  # nosec
+    return pickle.load(open(config.credentials_file, "rb"))  # nosec

@@ -1,11 +1,12 @@
 import os
 
 import gnupg
-from lime_comb.config import Config
+
+from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
-GPGHOME = str(Config.keyring_dir)
-KEYRING = None  # f"{GPGHOME}/../keyring-"+Config.app_name
+GPGHOME = str(config.keyring_dir)
+KEYRING = None  # f"{GPGHOME}/../keyring-"+config.app_name
 SECRET_KEYRING = None  # f"{KEYRING}-secrets"
 gpg = gnupg.GPG(
     gnupghome=GPGHOME,
@@ -23,7 +24,7 @@ class GPGException(Exception):
 
 def decrypt(data, *args, **kwargs):
     decrypted_data = gpg.decrypt(
-        data, extra_args=["--no-default-keyring"], passphrase=Config.password
+        data, extra_args=["--no-default-keyring"], passphrase=config.password
     )
     if not decrypted_data.ok:
         err = getattr(decrypted_data, "stderr", "expected stderr not found")
@@ -43,10 +44,10 @@ def geneate_keys():
     key_input = gpg.gen_key_input(
         key_type="RSA",
         key_length=4096,
-        name_real=Config.username,
-        name_email=Config.email,
-        name_comment=Config.comment,
-        passphrase=Config.password,
+        name_real=config.username,
+        name_email=config.email,
+        name_comment=config.comment,
+        passphrase=config.password,
     )
     return gpg.gen_key(key_input)
 
@@ -57,7 +58,7 @@ def get_existing_pub_keys(email=None):
 
 def get_existing_keys(email=None, priv=False):
     if not email:
-        email = Config.email
+        email = config.email
     pub_keys = gpg.list_keys(priv)
     for k, v in pub_keys.key_map.items():
         if email in v["uids"][0]:
@@ -85,4 +86,4 @@ def delete_gpg_key(fingerprint, passphrase):
 
 
 def export_key(keyids, priv=False):
-    return gpg.export_keys(keyids, secret=priv, passphrase=Config.password)
+    return gpg.export_keys(keyids, secret=priv, passphrase=config.password)

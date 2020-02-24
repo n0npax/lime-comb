@@ -1,7 +1,8 @@
 import base64
 
 from google.cloud import firestore
-from lime_comb.config import Config
+
+from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
 
@@ -11,7 +12,7 @@ def doc_path(*, email, key_type, key_name):
 
 
 def get_firestore_db(cred):
-    return firestore.Client(credentials=cred, project=Config.app_name)
+    return firestore.Client(credentials=cred, project=config.app_name)
 
 
 def get_gpg(cred, email, key_name, *, key_type="pub"):
