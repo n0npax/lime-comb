@@ -24,7 +24,6 @@ class GPGException(Exception):
 
 
 def decrypt(data, *args, **kwargs):
-    print("AAA", config.password)
     decrypted_data = gpg.decrypt(
         data, passphrase=config.password, extra_args=[f"--passphrase={config.password}"]
     )

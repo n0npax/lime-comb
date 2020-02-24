@@ -25,6 +25,7 @@ steps:
     env:
       - CODECOV_TOKEN=${_CODECOV_TOKEN}
       - COMMIT_SHA=$COMMIT_SHA
+      - PYPI_TOKEN=${_PYPI_TOKEN}
 
   - name: gcr.io/cloud-builders/git
     entrypoint: 'bash'
@@ -40,7 +41,6 @@ steps:
     env:
       - GITHUB_TOKEN=${_GITHUB_TOKEN}
       - COMMIT_SHA=$COMMIT_SHA
-      - PYPI_TOKEN=${_PYPI_TOKEN}
 
 substitutions:
   _BUILDER: lime-comb-builder
