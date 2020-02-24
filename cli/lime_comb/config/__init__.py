@@ -5,8 +5,9 @@ from pathlib import Path
 import yaml
 from appdirs import user_config_dir, user_data_dir
 
-from password_generator import PasswordGenerator
 from _collections import defaultdict
+from password_generator import PasswordGenerator
+
 
 @dataclass()
 class Config:

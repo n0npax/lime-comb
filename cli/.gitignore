@@ -7,4 +7,5 @@ coverage.xml
 do.sh
 encrypted_msg
 .pypi_token
-.idea
+.idea/**
+lime_comb.egg-info/**

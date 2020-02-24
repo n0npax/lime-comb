@@ -24,15 +24,15 @@ def domain():
     return "example.com"
 
 
-
-
 @pytest.yield_fixture(autouse=True)
 def email(config_file):
     lime_comb.config.config.email = "example.example@example.com"
     yield "example.example@example.com"
 
-
-
+@pytest.yield_fixture(autouse=True)
+def password(config_file):
+    lime_comb.config.config.password = "dupa.8Polska12"
+    yield lime_comb.config.config.password
 
 @pytest.yield_fixture
 def temp_file():

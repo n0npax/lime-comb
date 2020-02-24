@@ -11,9 +11,10 @@ SECRET_KEYRING = None  # f"{KEYRING}-secrets"
 gpg = gnupg.GPG(
     gnupghome=GPGHOME,
     keyring=KEYRING,
-    use_agent=True,
-    verbose=False,
+    use_agent=False,
+    verbose=True,
     secret_keyring=SECRET_KEYRING,
+    # options=["--allow-loopback-pinentry","--allow-mode-loopback"]
 )
 gpg.encoding = "utf-8"
 
@@ -23,8 +24,9 @@ class GPGException(Exception):
 
 
 def decrypt(data, *args, **kwargs):
+    print("AAA", config.password)
     decrypted_data = gpg.decrypt(
-        data, extra_args=["--no-default-keyring"], passphrase=config.password
+        data, passphrase=config.password, extra_args=[f"--passphrase={config.password}"]
     )
     if not decrypted_data.ok:
         err = getattr(decrypted_data, "stderr", "expected stderr not found")
@@ -33,7 +35,9 @@ def decrypt(data, *args, **kwargs):
 
 
 def encrypt(emails, data):
-    encrypted_data = gpg.encrypt(data, emails, always_trust=True, sign=False)
+    encrypted_data = gpg.encrypt(
+        data, emails, always_trust=True, sign=False, passphrase=config.password
+    )
     if not encrypted_data.ok:
         err = getattr(encrypted_data, "stderr", "expected stderr not found")
         raise GPGException(f"encryption failed {err}")
