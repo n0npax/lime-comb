@@ -7,7 +7,7 @@ import yaml
 from appdirs import user_config_dir, user_data_dir
 
 from _collections import defaultdict
-from lime_comb.logger import logger
+from lime_comb.logger.logger import logger
 from password_generator import PasswordGenerator
 
 
@@ -34,6 +34,7 @@ class Config:
         path = self.config_dir / "client-lime-comb.json"
         if not path.exists():
             try:
+                logger.info(f"fetching {self.client_lime_comb_url}")
                 response = requests.get(self.client_lime_comb_url)
                 response.raise_for_status()
                 with open(str(path), "w") as f:
