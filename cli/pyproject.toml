@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lime_comb"
-version = "0.0.6"
+version = "0.0.7"
 description = "lime-comb cli"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
 readme = 'README.md'
@@ -35,7 +35,6 @@ mock-firestore = "^0.6.0"
 tabulate = "^0.8.6"
 mock = "^4.0.1"
 semver = "^2.9.1"
-random-password-generator = "^2.1.0"
 requests = "^2.23.0"
 requests_mock = "^1.7.0"
 password_generator = "^0.1.0"

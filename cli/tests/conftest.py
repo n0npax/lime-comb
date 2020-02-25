@@ -4,11 +4,11 @@ from uuid import uuid4
 
 import pyperclip
 import pytest
+import requests_mock
 from mockfirestore.client import MockFirestore
 
 import lime_comb
 import lime_comb.firestore.database
-import requests_mock
 from lime_comb.auth.google import get_anon_cred
 from lime_comb.config import config
 from lime_comb.gpg import delete_gpg_key, geneate_keys

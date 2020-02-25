@@ -1,4 +1,6 @@
 import os
+import secrets
+import string
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -8,7 +10,6 @@ from appdirs import user_config_dir, user_data_dir
 
 from _collections import defaultdict
 from lime_comb.logger.logger import logger
-from password_generator import PasswordGenerator
 
 
 @dataclass()
@@ -105,9 +106,8 @@ class Config:
 
     def _gen_config(self):
         print("Empty config detected. Setting up a new one")
-        pwo = PasswordGenerator()
-        pwo.minlen, pwo.maxlen = 30, 32
-        password = pwo.generate()
+        alphabet = string.ascii_letters + string.digits
+        password = "".join(secrets.choice(alphabet) for i in range(32))
         self.password = password
         self.username = input("username: ")
         self.email = input("email: ")
