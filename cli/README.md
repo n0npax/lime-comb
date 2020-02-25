@@ -2,7 +2,7 @@
 
 This tool allows:
 -   Encrypt messages directly from your terminal.
--   Upload keys to central registry
+-   Push & pull keys to central registry
 
 ## encrypt
 

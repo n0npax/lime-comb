@@ -38,7 +38,7 @@ We believe smart people provides good solutions and we should utilize them.
 
 ### Command line tools
 
-What was the syntax for `gpg`? Should I use `base64` or `armour mode`?
+What was the syntax for `gpg`? Should I use `base64` or `armor mode`?
 It's not your problem anymore, we will do it for you.
 The only thing you need to know is receiver email and message itself.
 
@@ -59,7 +59,7 @@ it's [here](https://lime-comb.web.app/).
 Please register yourself directly or preferably via provided command line tool.
 
 ## Requirements
--   `python`
+-   `python3.6+`
 -   `gpg`
 
 ## Design

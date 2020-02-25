@@ -14,7 +14,6 @@ gpg = gnupg.GPG(
     use_agent=False,
     verbose=False,
     secret_keyring=SECRET_KEYRING,
-    # options=["--allow-loopback-pinentry","--allow-mode-loopback"]
 )
 gpg.encoding = "utf-8"
 
