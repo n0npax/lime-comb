@@ -76,11 +76,15 @@ class Config:
         self.__save_property("always_import", bool(always_import))
 
     def __read_config(self):
-        with open(self.config_file, "r") as f:
-            _config = yaml.safe_load(f.read())
-            if _config:
-                return _config
-        return {}
+        try:
+            with open(self.config_file, "r") as f:
+                _config = yaml.safe_load(f.read())
+                if _config:
+                    return _config
+            return {}
+        except FileNotFoundError:
+            self.config_file.touch(mode=0o600)
+            return {}
 
     def __write_config(self, conf):
         with open(self.config_file, "w") as f:

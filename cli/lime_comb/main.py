@@ -113,9 +113,9 @@ def keys_exec(args, cmd):
 
 def main(cmdline_args):
     args, k_cmd, e_cmd, d_cmd, _ = base_parser(cmdline_args)
-    print(dec_exec(args, d_cmd))
-    print(enc_exec(args, e_cmd))
-    print(keys_exec(args, k_cmd))
+    for action in (dec_exec(args, d_cmd),    enc_exec(args, e_cmd),    keys_exec(args, k_cmd)):
+        if action:
+            print(action)
 
 
 def run():
