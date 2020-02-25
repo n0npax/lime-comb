@@ -2,10 +2,12 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
 
 from _collections import defaultdict
+from lime_comb.logger import logger
 from password_generator import PasswordGenerator
 
 
@@ -16,16 +18,29 @@ class Config:
     data_dir = Path(user_data_dir(app_name))
     config_dir = Path(user_config_dir(app_name))
 
+    client_lime_comb_url = "http://lime-comb.web.app/_client-lime-comb.json"
     config_file = config_dir / "config.yml"
     credentials_file = data_dir / "credentials"
     keyring_dir = data_dir / "keyring"
-    oauth_gcp_conf = config_dir / "client-lime-comb.json"
 
     config_dir.mkdir(exist_ok=True, parents=True)
     data_dir.mkdir(exist_ok=True, parents=True)
     keyring_dir.mkdir(exist_ok=True, parents=True, mode=0o700)
 
     comment = "lime comb"
+
+    @property
+    def oauth_gcp_conf(self):
+        path = self.config_dir / "client-lime-comb.json"
+        if not path.exists():
+            try:
+                response = requests.get(self.client_lime_comb_url)
+                response.raise_for_status()
+                with open(str(path), "w") as f:
+                    f.write(response.content.decode("utf-8"))
+            except Exception as e:
+                logger.error(f"Error {e} during fetching client-lime-comb.json")
+        return path
 
     @property
     def username(self):

@@ -8,6 +8,7 @@ from mockfirestore.client import MockFirestore
 
 import lime_comb
 import lime_comb.firestore.database
+import requests_mock
 from lime_comb.auth.google import get_anon_cred
 from lime_comb.config import config
 from lime_comb.gpg import delete_gpg_key, geneate_keys
@@ -28,6 +29,25 @@ def domain():
 def email(config_file):
     lime_comb.config.config.email = "example.example@example.com"
     yield "example.example@example.com"
+
+
+@pytest.yield_fixture(autouse=True)
+def config_dir(config_file):
+    with tempfile.TemporaryDirectory() as dir_name:
+        lime_comb.config.config.config_dir = Path(dir_name)
+        yield
+
+
+@pytest.fixture
+def mocked_resp():
+    return '{"some": "response"}'
+
+
+@pytest.yield_fixture
+def oauth_gcp_conf(mocked_resp):
+    with requests_mock.Mocker(real_http=True) as m:
+        m.register_uri("GET", config.client_lime_comb_url, text=mocked_resp)
+        yield
 
 
 @pytest.yield_fixture(autouse=True)

@@ -24,7 +24,7 @@ class TestHelperFunctions:
 
 class TestCommandObjects:
     def test_enc_cmd_plain_text_msg(
-        self, mocker, capsys, mocked_db, web_login, pyperclip_copy
+        self, mocker, capsys, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
     ):
         args, _, e_cmd, _, _ = base_parser(
             ["e", "-t", config.email, "-m", "test1", "-m", "test2"]
@@ -34,7 +34,7 @@ class TestCommandObjects:
         assert output.count("-----BEGIN PGP MESSAGE---") == 2
 
     def test_enc_cmd_plain_test_msg_merged(
-        self, mocker, capsys, mocked_db, web_login, pyperclip_copy
+        self, mocker, capsys, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
     ):
         args, _, e_cmd, _, _ = base_parser(
             ["e", "-t", config.email, "-m", "test1", "-m", "test2", "--mm"]
@@ -44,7 +44,7 @@ class TestCommandObjects:
         assert output.count("-----BEGIN PGP MESSAGE---") == 1
 
     def test_enc_cmd_file_msg(
-        self, mocker, mocked_db, web_login, pyperclip_copy, temp_file
+        self, mocker, mocked_db, web_login, pyperclip_copy, temp_file, oauth_gcp_conf
     ):
         args, _, e_cmd, _, _ = base_parser(
             ["e", "-t", config.email, "-f", temp_file.name]
@@ -52,7 +52,9 @@ class TestCommandObjects:
         output = enc_exec(args, e_cmd)
         assert output.startswith("-----BEGIN PGP MESSAGE---")
 
-    def test_dec_cmd(self, mocker, mocked_db, web_login, pyperclip_copy):
+    def test_dec_cmd(
+        self, mocker, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
+    ):
         base_test_message = str(uuid4())
         args, _, e_cmd, _, _ = base_parser(
             ["e", "-t", config.email, "-m", base_test_message]
@@ -85,6 +87,7 @@ class TestCommandObjects:
         mocked_db,
         keypair,
         pyperclip_copy,
+        oauth_gcp_conf,
     ):
         mocker.patch.object(
             lime_comb.auth.google, "get_cred", return_value=get_anon_cred()

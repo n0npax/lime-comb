@@ -1,5 +1,4 @@
 import logging
+import sys
 
-from lime_comb.config import config
-
-logger = logging.getLogger(name=config.app_name)
+logger = logging.getLogger(name=sys.argv[0])
