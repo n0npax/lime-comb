@@ -1,5 +1,15 @@
 ---
 steps:
+  - name: 'busybox:latest'
+    id: setup client secrets
+    dir: 'web'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        set -eo pipefail
+        echo ${_CLIENT_SECRETS_JSON} | base64 -d > public/_client-lime-comb.json
+
   - name: 'node:10-buster'
     id: 'deploy'
     dir: 'web'
