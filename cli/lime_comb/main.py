@@ -7,6 +7,7 @@ from tabulate import tabulate
 from tqdm import tqdm
 
 import lime_comb
+from lime_comb.commands.config import ConfigCommand
 from lime_comb.commands.decrypt import DecryptCommand
 from lime_comb.commands.encrypt import EncryptCommand
 from lime_comb.commands.keys import KeysCommand
@@ -43,9 +44,10 @@ def base_parser(input_args):
     keys_cmd = KeysCommand(subparsers)
     enc_cmd = EncryptCommand(subparsers)
     dec_cmd = DecryptCommand(subparsers)
+    conf_cmd = ConfigCommand(subparsers)
     args = parser.parse_args(input_args)
     parse_common(parser, args)
-    return args, keys_cmd, enc_cmd, dec_cmd, None
+    return args, keys_cmd, enc_cmd, dec_cmd, conf_cmd
 
 
 # TODO provide class for config and keys
@@ -111,15 +113,24 @@ def keys_exec(args, cmd):
         return tabulate(keys)
 
 
+def conf_exec(args, cmd):
+    if args.top_command in cmd.aliases:
+        return tabulate(list(cmd(args)))
+
+
 def main(cmdline_args):
-    args, k_cmd, e_cmd, d_cmd, _ = base_parser(cmdline_args)
+    args, k_cmd, e_cmd, d_cmd, c_cmd = base_parser(cmdline_args)
     for action in (
         dec_exec(args, d_cmd),
         enc_exec(args, e_cmd),
         keys_exec(args, k_cmd),
+        conf_exec(args, c_cmd),
     ):
         if action:
             print(action)
+            import pdb
+
+            # pdb.set_trace()
 
 
 def run():

@@ -1,4 +1,3 @@
-import os
 import secrets
 import string
 from dataclasses import dataclass
@@ -7,8 +6,8 @@ from pathlib import Path
 import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
+from email_validator import validate_email
 
-from _collections import defaultdict
 from lime_comb.logger.logger import logger
 
 
@@ -44,6 +43,14 @@ class Config:
                 logger.error(f"Error {e} during fetching client-lime-comb.json")
         return path
 
+    def get_configurable(self):
+        return {
+            "username": self.username,
+            "email": self.email,
+            "always_import": self.always_import,
+            "password": self.password,
+        }
+
     @property
     def username(self):
         return self.__read_property("username")
@@ -58,7 +65,7 @@ class Config:
 
     @email.setter
     def email(self, email):
-        self.__save_property("email", email)
+        self.__save_property("email", email, validate_email)
 
     @property
     def password(self):
@@ -99,7 +106,7 @@ class Config:
 
     def __save_property(self, name, value, validator=None):
         if validator:
-            pass  # TODO
+            validator(validator)
         conf = self.__read_config()
         conf[name] = value
         self.__write_config(conf)
