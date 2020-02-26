@@ -8,9 +8,9 @@ deps:
 
 .PHONY: lint
 lint: deps
-	poetry run black .
 	isort $(shell find . -name "*.py") -qy
 	bandit -r . -x $(shell find . -name "test_*.py" | tr "\n" ",")
+	poetry run black .
 
 cover: test codecov_upload.sh
 ifeq ("$(wildcard .codecov_token)","")

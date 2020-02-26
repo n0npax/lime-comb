@@ -46,7 +46,7 @@ The only thing you need to know is receiver email and message itself.
 We are offering flexible solution with 2 main default profiles.
 
 -   Locked (keeps private key just locally)
--   Glass-break (store prov key in `db` with access just for given user)
+-   Glass-break (store private key and password in registry. This data are accessible just for given user)
 
 Many other configuration option can be adjusted by an user
 
@@ -72,7 +72,19 @@ All clients are connecting to `firestore` database using `oauth2`.
 By default unauthorized user is allowed to read any key,
 and authenticated user is allowed to modify just his own key.
 
-### infra
+### Infra
 
 Deployment is done via cloud build jobs which are triggered
 by GitHub repository event.
+
+## Other
+
+### Contribution
+
+Just raise a pull request on GitHub.
+
+### Feedback
+
+leave a star or raise an issue on GutHub
+
+### 

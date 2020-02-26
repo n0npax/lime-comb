@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from email_validator import EmailSyntaxError
+
 import lime_comb.firestore.database as database
 from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command
@@ -13,7 +15,6 @@ from lime_comb.gpg import (
     import_gpg_key,
 )
 from lime_comb.logger.logger import logger
-from email_validator import EmailSyntaxError
 
 
 @dataclass
