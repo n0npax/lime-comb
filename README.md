@@ -4,6 +4,8 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![codecov](https://codecov.io/gh/n0npax/lime-comb/branch/master/graph/badge.svg)](https://codecov.io/gh/n0npax/lime-comb)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f46eccc192ce4347b7a6596175c960ee)](https://www.codacy.com/manual/n0npax/lime-comb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=n0npax/lime-comb&amp;utm_campaign=Badge_Grade)
+[![License](https://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
+
 
 # Lets treat secrets like we should and don't be to nerdy
 

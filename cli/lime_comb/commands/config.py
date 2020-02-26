@@ -2,18 +2,8 @@ from dataclasses import dataclass
 
 from email_validator import EmailSyntaxError
 
-import lime_comb.firestore.database as database
-from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command
 from lime_comb.config import config
-from lime_comb.gpg import (
-    delete_gpg_key,
-    export_key,
-    geneate_keys,
-    get_existing_priv_keys,
-    get_existing_pub_keys,
-    import_gpg_key,
-)
 from lime_comb.logger.logger import logger
 
 
@@ -29,8 +19,8 @@ class ConfigCommand(Command):
             self.name, aliases=self.aliases, help=self.help
         )
         self.parser.add_argument("command", choices=self.choices, help=self.help)
-        self.parser.add_argument("name", nargs="?", help="name (optional)")
-        self.parser.add_argument("value", nargs="?", help="value (optional)")
+        self.parser.add_argument("name", nargs="?", help="property name")
+        self.parser.add_argument("value", nargs="?", help="property value")
 
     def __call__(self, args):
         name, value = args.name, args.value

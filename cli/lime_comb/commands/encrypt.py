@@ -2,11 +2,8 @@ from dataclasses import dataclass
 
 from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command, import_keys
-from lime_comb.commands.common import (
-    add_message_parameters,
-    add_msg_merge,
-    add_msg_recv,
-)
+from lime_comb.commands.common import (add_message_parameters, add_msg_merge,
+                                       add_msg_recv)
 from lime_comb.config import config
 from lime_comb.gpg import encrypt, get_existing_pub_keys
 
