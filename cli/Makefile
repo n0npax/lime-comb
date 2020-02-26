@@ -49,7 +49,7 @@ install:
 .PHONY: release
 release: build
 ifeq ("$(wildcard .codecov_token)","")
-	poetry publish -u '__token__' -p "$${PYPI_TOKEN}"
+	poetry publish -u '__token__' -p "$${PYPI_TOKEN}" || true
 else
 	poetry publish -u '__token__' -p "$(shell cat .pypi_token)"
 endif
