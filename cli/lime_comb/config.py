@@ -115,7 +115,9 @@ class Config:
         print("Empty config detected. Setting up a new one")
         alphabet = string.ascii_letters + string.digits
         password = "".join(secrets.choice(alphabet) for i in range(32))
-        self.password = password
+        if self.password:
+            password = self.password
+        self.password = input(f"password: (suggested {password}): ")
         self.username = input("username: ")
         self.email = input("email: ")
 

@@ -12,7 +12,7 @@ class ConfigCommand(Command):
     aliases: str = ("c", "conf", "config")
     name: str = "config"
     help: str = "config management"
-    choices: tuple = ("get", "set", "list")
+    choices: tuple = ("get", "set", "list", "generate", "regenerate")
 
     def __init__(self, subparsers):
         self.parser = subparsers.add_parser(
@@ -27,6 +27,8 @@ class ConfigCommand(Command):
         if args.command == "list":
             for k, v in config.get_configurable().items():
                 yield (k, v)
+        elif args.command in ("generate", "regenerate"):
+            config._gen_config()
         elif args.command == "set":
             try:
                 getattr(config, name)
