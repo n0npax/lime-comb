@@ -106,7 +106,7 @@ class Config:
 
     def __save_property(self, name, value, validator=None):
         if validator:
-            validator(validator)
+            validator(value)
         conf = self.__read_config()
         conf[name] = value
         self.__write_config(conf)

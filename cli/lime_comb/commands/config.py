@@ -4,10 +4,16 @@ import lime_comb.firestore.database as database
 from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command
 from lime_comb.config import config
-from lime_comb.gpg import (delete_gpg_key, export_key, geneate_keys,
-                           get_existing_priv_keys, get_existing_pub_keys,
-                           import_gpg_key)
+from lime_comb.gpg import (
+    delete_gpg_key,
+    export_key,
+    geneate_keys,
+    get_existing_priv_keys,
+    get_existing_pub_keys,
+    import_gpg_key,
+)
 from lime_comb.logger.logger import logger
+from email_validator import EmailSyntaxError
 
 
 @dataclass
@@ -29,13 +35,16 @@ class ConfigCommand(Command):
         name, value = args.name, args.value
         if args.command == "list":
             for k, v in config.get_configurable().items():
-                yield [k, v]
+                yield (k, v)
         elif args.command == "set":
             try:
                 getattr(config, name)
                 setattr(config, name, value)
+                yield (name, value)
             except AttributeError:
                 logger.error(f"'{name}' is not valid property")
+            except EmailSyntaxError as e:
+                logger.error(e)
         elif args.command == "get":
             try:
                 yield name, getattr(config, name)

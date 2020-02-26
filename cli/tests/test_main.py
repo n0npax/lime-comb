@@ -23,6 +23,34 @@ class TestHelperFunctions:
 
 
 class TestCommandObjects:
+    @pytest.mark.parametrize(
+        "action,name,value,expected",
+        [
+            ("list", None, None, "email"),
+            ("set", "email", "llama@llama.net", "llama@llama.net"),
+            ("set", "email", "invalid_email", ""),
+            ("set", "invalid_property", "llama@llama.net", ""),
+            ("get", "invalid_property", "dupa.8", ""),
+            ("get", "email", None, ""),
+        ],
+    )
+    def test_conf_cmd(
+        self,
+        action,
+        name,
+        value,
+        expected,
+        mocker,
+        capsys,
+        mocked_db,
+        web_login,
+        pyperclip_copy,
+        oauth_gcp_conf,
+    ):
+        args, _, _, _, c_cmd = base_parser(["config", action, name, value])
+        output = conf_exec(args, c_cmd)
+        assert expected in output
+
     def test_enc_cmd_plain_text_msg(
         self, mocker, capsys, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
     ):
