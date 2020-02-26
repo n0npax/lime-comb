@@ -1,0 +1,12 @@
+---
+steps:
+  - name: 'node:10-buster'
+    id: 'deploy datastore rules'
+    dir: 'web'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -x
+        npm install -g firebase-tools
+        firebase deploy --project $PROJECT_ID
