@@ -6,7 +6,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f46eccc192ce4347b7a6596175c960ee)](https://www.codacy.com/manual/n0npax/lime-comb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=n0npax/lime-comb&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
 
-
 # Lets treat secrets like we should and don't be to nerdy
 
 ## Why
@@ -88,5 +87,3 @@ Just raise a pull request on GitHub.
 ### Feedback
 
 leave a star or raise an issue on GutHub
-
-### 

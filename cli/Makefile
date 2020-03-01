@@ -8,6 +8,8 @@ deps:
 
 .PHONY: lint
 lint: deps
+	sed -i 's/[ \t]*$$//' $(shell find . -name "*.md")
+	sed -i 's/[ \t]*$$//' $(shell find . -name "*.py")
 	isort $(shell find . -name "*.py") -qy
 	bandit -r . -x $(shell find . -name "test_*.py" | tr "\n" ",")
 	poetry run black .
