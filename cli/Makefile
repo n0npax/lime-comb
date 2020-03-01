@@ -39,8 +39,8 @@ clean:
 	rm -fr cli.egg-info
 	find . -name __pycache__ | xargs rm -fr
 	find . -name '*.pyc' -delete
-	rm $${HOME}/.config/lime-comb/config.yml || true
-	rm $${HOME}/.local/share/lime-comb/credentials || true
+	rm $${HOME}/.config/lime-comb/ -fr || true
+	rm $${HOME}/.local/share/lime-comb/ -fr || true
 
 .PHONY: install
 install:

@@ -1,9 +1,10 @@
 import builtins
+from collections import defaultdict
 
 import yaml
 
 from lime_comb.config import config, validate_bool
-from collections import defaultdict
+
 from .conftest import *
 
 

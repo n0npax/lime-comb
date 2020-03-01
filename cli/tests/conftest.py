@@ -1,5 +1,6 @@
 import tempfile
 from pathlib import Path
+from unittest.mock import PropertyMock, patch
 from uuid import uuid4
 
 import pyperclip
@@ -8,9 +9,9 @@ import requests_mock
 from mockfirestore.client import MockFirestore
 
 import lime_comb
+import lime_comb.config
 import lime_comb.firestore.database
 from lime_comb.auth.google import get_anon_cred
-import lime_comb.config
 from lime_comb.gpg import delete_gpg_key, geneate_keys
 
 
@@ -111,9 +112,6 @@ def no_cred(mocker, credentials_file):
         lime_comb.config.config, "credentials_file", return_value=Path("/dev/null")
     )
     yield
-
-
-from unittest.mock import PropertyMock, patch
 
 
 @pytest.yield_fixture(autouse=True)

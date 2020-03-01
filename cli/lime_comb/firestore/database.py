@@ -47,7 +47,6 @@ def list_gpg_ids(cred, email, key_type="pub"):
     collection_id, _ = doc_path(
         email=email, key_type=key_type, key_name="key_id_placeholder"
     )
-
     for d in db.collection(collection_id).document(email).collections():
         yield d.id
 

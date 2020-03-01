@@ -6,7 +6,7 @@ from pathlib import Path
 import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
-from email_validator import validate_email
+from email_validator import validate_email, EmailSyntaxError
 
 from lime_comb.logger.logger import logger
 
@@ -29,6 +29,7 @@ class Config:
     keyring_dir.mkdir(exist_ok=True, parents=True, mode=0o700)
 
     comment = "lime comb"
+    __raised = False
 
     @property
     def oauth_gcp_conf(self):
@@ -126,8 +127,10 @@ class Config:
 
     def __read_property(self, name, default=None):
         conf = self.__read_config()
-        if not conf:
-            logger.warning("config is empty")
+        if not conf and not self.__raised:
+            logger.error(f"config is empty")
+            self.__raised = True
+            raise EmptyConfigError("Empty Config")
         if name in conf.keys():
             return conf[name]
         return default
@@ -151,21 +154,28 @@ class Config:
         self.username = (
             input(f"username (suggested {self.username}): ") or self.username
         )
-        self.email = input(f"email (suggested {self.email}) ") or self.email
-        self.export_password = (
-            self.get_bool("export_password: (suggested true)") or self.export_password
+        while True:
+            try:
+                self.email = input(f"email (suggested {self.email}) ") or self.email
+                break
+            except EmailSyntaxError as e:
+                logger.error(e)
+        self.export_password = self.get_bool(
+            "export_password: (suggested true)", default=self.export_password
         )
-        self.export_priv_key = (
-            self.get_bool("export_priv_key (suggested true)") or self.export_priv_key
+        self.export_priv_key = self.get_bool(
+            "export_priv_key (suggested true)", default=self.export_priv_key
         )
-        self.always_import = (
-            self.get_bool("always_import (suggested true)") or self.always_import
+        self.always_import = self.get_bool(
+            "always_import (suggested true)", default=self.always_import
         )
         print("-" * 44)
 
-    def get_bool(self, message):
+    def get_bool(self, message, *, default):
         while True:
             my_bool = input(f"{message} [True/False]: ")
+            if not my_bool and default:
+                return default
             try:
                 validate_bool(my_bool)
                 break
@@ -187,6 +197,10 @@ def validate_bool(my_bool):
         return True
     if my_bool.lower() not in ("true", "false"):
         raise ValueError
+
+
+class EmptyConfigError(Exception):
+    pass
 
 
 config = Config()

@@ -6,7 +6,9 @@ import pyperclip
 from tabulate import tabulate
 from tqdm import tqdm
 
+
 import lime_comb
+from lime_comb.config import EmptyConfigError, config
 from lime_comb.commands.config import ConfigCommand
 from lime_comb.commands.decrypt import DecryptCommand
 from lime_comb.commands.encrypt import EncryptCommand
@@ -120,17 +122,17 @@ def conf_exec(args, cmd):
 
 def main(cmdline_args):
     args, k_cmd, e_cmd, d_cmd, c_cmd = base_parser(cmdline_args)
-    for action in (
-        dec_exec(args, d_cmd),
-        enc_exec(args, e_cmd),
-        keys_exec(args, k_cmd),
-        conf_exec(args, c_cmd),
-    ):
-        if action:
-            print(action)
-            import pdb
-
-            # pdb.set_trace()
+    try:
+        for action in (
+            dec_exec(args, d_cmd),
+            enc_exec(args, e_cmd),
+            keys_exec(args, k_cmd),
+            conf_exec(args, c_cmd),
+        ):
+            if action:
+                print(action)
+    except EmptyConfigError:
+        config._gen_config()
 
 
 def run():

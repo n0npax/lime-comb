@@ -53,11 +53,13 @@ class KeysCommand(Command):
                     yield from import_gpg_key(p)
         elif args.command == "push":
             if not config.export_priv_key:
-                yield "configuration denies pushing priv key. Please update config first"
+                yield [
+                    "configuration denies pushing priv key. Please update config first"
+                ]
             password = None
             if config.export_password:
                 password = config.password
-                yield "exporting password with key"
+                yield ["exporting password with key"]
             email = config.email
             with get_cred(config.oauth_gcp_conf) as cred:
                 for k in get_existing_priv_keys():
