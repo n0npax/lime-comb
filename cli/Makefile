@@ -39,6 +39,8 @@ clean:
 	rm -fr cli.egg-info
 	find . -name __pycache__ | xargs rm -fr
 	find . -name '*.pyc' -delete
+	rm $${HOME}/.config/lime-comb/config.yml || true
+	rm $${HOME}/.local/share/lime-comb/credentials || true
 
 .PHONY: install
 install:
@@ -57,3 +59,4 @@ endif
 codecov_upload.sh:
 	curl -s https://codecov.io/bash -o codecov_upload.sh
 	chmod +x ./codecov_upload.sh
+

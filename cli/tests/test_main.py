@@ -52,41 +52,56 @@ class TestCommandObjects:
         assert expected in output
 
     def test_enc_cmd_plain_text_msg(
-        self, mocker, capsys, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
+        self,
+        mocker,
+        capsys,
+        mocked_db,
+        web_login,
+        pyperclip_copy,
+        oauth_gcp_conf,
+        email,
     ):
         args, _, e_cmd, _, _ = base_parser(
-            ["e", "-t", config.email, "-m", "test1", "-m", "test2"]
+            ["e", "-t", email, "-m", "test1", "-m", "test2"]
         )
         output = enc_exec(args, e_cmd)
         assert output.startswith("-----BEGIN PGP MESSAGE---")
         assert output.count("-----BEGIN PGP MESSAGE---") == 2
 
     def test_enc_cmd_plain_test_msg_merged(
-        self, mocker, capsys, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
+        self,
+        mocker,
+        capsys,
+        mocked_db,
+        web_login,
+        pyperclip_copy,
+        oauth_gcp_conf,
+        email,
     ):
         args, _, e_cmd, _, _ = base_parser(
-            ["e", "-t", config.email, "-m", "test1", "-m", "test2", "--mm"]
+            ["e", "-t", email, "-m", "test1", "-m", "test2", "--mm"]
         )
         output = enc_exec(args, e_cmd)
         assert output.startswith("-----BEGIN PGP MESSAGE---")
         assert output.count("-----BEGIN PGP MESSAGE---") == 1
 
     def test_enc_cmd_file_msg(
-        self, mocker, mocked_db, web_login, pyperclip_copy, temp_file, oauth_gcp_conf
+        self,
+        mocker,
+        mocked_db,
+        web_login,
+        pyperclip_copy,
+        temp_file,
+        oauth_gcp_conf,
+        email,
     ):
-        args, _, e_cmd, _, _ = base_parser(
-            ["e", "-t", config.email, "-f", temp_file.name]
-        )
+        args, _, e_cmd, _, _ = base_parser(["e", "-t", email, "-f", temp_file.name])
         output = enc_exec(args, e_cmd)
         assert output.startswith("-----BEGIN PGP MESSAGE---")
 
-    def test_dec_cmd(
-        self, mocker, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf
-    ):
+    def test_dec_cmd(self, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf, email):
         base_test_message = str(uuid4())
-        args, _, e_cmd, _, _ = base_parser(
-            ["e", "-t", config.email, "-m", base_test_message]
-        )
+        args, _, e_cmd, _, _ = base_parser(["e", "-t", email, "-m", base_test_message])
         enc_msg = enc_exec(args, e_cmd)
         args, _, _, d_cmd, _ = base_parser(["d", "-m", enc_msg])
         dec_msg = dec_exec(args, d_cmd)

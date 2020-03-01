@@ -1,19 +1,22 @@
 import builtins
 
-from lime_comb.config import config
+import yaml
 
+from lime_comb.config import config, validate_bool
+from collections import defaultdict
 from .conftest import *
 
 
 class TestConfig:
     def test_oauth_gcp_conf(self, oauth_gcp_conf, mocked_resp):
-        client_lime_comb_file = config.oauth_gcp_conf
-        with open(client_lime_comb_file) as f:
+        with open(config.oauth_gcp_conf) as f:
             client_lime_comb_mocker_resp = f.read()
         assert client_lime_comb_mocker_resp == mocked_resp
 
-    def test_get_config(self, mocker):
-        test_email = "llama@llama.net"
-        mocker.patch.object(builtins, "input", return_value=test_email)
+    def test_get_config(self, mocker, email):
+        mocker.patch.object(builtins, "input", return_value=email)
+        mocker.patch.object(lime_comb.config, "validate_bool", return_value=True)
+        mocker.patch.object(lime_comb.config, "validate_email", return_value=True)
+        mocker.patch.object(lime_comb.config, "convert_bool_string", return_value=True)
         config._gen_config()
-        assert config.email == test_email
+        assert config.email == email

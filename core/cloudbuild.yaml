@@ -9,4 +9,4 @@ steps:
       - |
         set -x
         npm install -g firebase-tools
-        firebase deploy --project $PROJECT_ID --debug
+        firebase deploy --project $PROJECT_ID

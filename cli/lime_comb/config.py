@@ -20,6 +20,7 @@ class Config:
 
     client_lime_comb_url = "http://lime-comb.web.app/_client-lime-comb.json"
     config_file = config_dir / "config.yml"
+    oauth_client_config = config_dir / "client-lime-comb.json"
     credentials_file = data_dir / "credentials"
     keyring_dir = data_dir / "keyring"
 
@@ -31,7 +32,7 @@ class Config:
 
     @property
     def oauth_gcp_conf(self):
-        path = self.config_dir / "client-lime-comb.json"
+        path = self.oauth_client_config
         if not path.exists():
             try:
                 logger.info(f"fetching {self.client_lime_comb_url}")
@@ -49,7 +50,12 @@ class Config:
             "email": self.email,
             "always_import": self.always_import,
             "password": self.password,
+            "export_priv_key": self.export_priv_key,
+            "export_password": self.export_password,
         }
+
+    def __repr__(self):
+        return f"Config: < {self.get_configurable()} > < + const inside>"
 
     @property
     def username(self):
@@ -76,12 +82,32 @@ class Config:
         self.__save_property("password", password)
 
     @property
+    def export_password(self):
+        return self.__read_property("export_password", True)
+
+    @export_password.setter
+    def export_password(self, value):
+        self.__save_property(
+            "export_password", convert_bool_string(value), validate_bool
+        )
+
+    @property
+    def export_priv_key(self):
+        return self.__read_property("export_priv_key", True)
+
+    @export_priv_key.setter
+    def export_priv_key(self, value):
+        self.__save_property(
+            "export_priv_key", convert_bool_string(value), validate_bool
+        )
+
+    @property
     def always_import(self):
         return self.__read_property("always_import", True)
 
     @always_import.setter
-    def always_import(self, always_import):
-        self.__save_property("always_import", bool(always_import))
+    def always_import(self, value):
+        self.__save_property("always_import", convert_bool_string(value), validate_bool)
 
     def __read_config(self):
         try:
@@ -101,8 +127,10 @@ class Config:
     def __read_property(self, name, default=None):
         conf = self.__read_config()
         if not conf:
-            self._gen_config()
-        return conf.get(name, default)
+            logger.warning("config is empty")
+        if name in conf.keys():
+            return conf[name]
+        return default
 
     def __save_property(self, name, value, validator=None):
         if validator:
@@ -112,14 +140,53 @@ class Config:
         self.__write_config(conf)
 
     def _gen_config(self):
+        print("-" * 44)
         print("Empty config detected. Setting up a new one")
-        alphabet = string.ascii_letters + string.digits
-        password = "".join(secrets.choice(alphabet) for i in range(32))
-        if self.password:
-            password = self.password
-        self.password = input(f"password: (suggested {password}): ")
-        self.username = input("username: ")
-        self.email = input("email: ")
+        if not self.password:
+            alphabet = string.ascii_letters + string.digits
+            self.password = "".join(secrets.choice(alphabet) for i in range(32))
+        self.password = (
+            input(f"password (suggested {self.password}): ") or self.password
+        )
+        self.username = (
+            input(f"username (suggested {self.username}): ") or self.username
+        )
+        self.email = input(f"email (suggested {self.email}) ") or self.email
+        self.export_password = (
+            self.get_bool("export_password: (suggested true)") or self.export_password
+        )
+        self.export_priv_key = (
+            self.get_bool("export_priv_key (suggested true)") or self.export_priv_key
+        )
+        self.always_import = (
+            self.get_bool("always_import (suggested true)") or self.always_import
+        )
+        print("-" * 44)
+
+    def get_bool(self, message):
+        while True:
+            my_bool = input(f"{message} [True/False]: ")
+            try:
+                validate_bool(my_bool)
+                break
+            except ValueError:
+                logger.warning(f"{my_bool} is not True or False")
+        return convert_bool_string(my_bool)
+
+
+def convert_bool_string(my_bool):
+    if isinstance(my_bool, bool):
+        return my_bool
+    if isinstance(my_bool, (str)):
+        return {"true": True, "false": False}[my_bool.lower()]
+    return False
+
+
+def validate_bool(my_bool):
+    if isinstance(my_bool, bool):
+        return True
+    if my_bool.lower() not in ("true", "false"):
+        raise ValueError
 
 
 config = Config()

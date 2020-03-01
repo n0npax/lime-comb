@@ -10,7 +10,7 @@ from mockfirestore.client import MockFirestore
 import lime_comb
 import lime_comb.firestore.database
 from lime_comb.auth.google import get_anon_cred
-from lime_comb.config import config
+import lime_comb.config
 from lime_comb.gpg import delete_gpg_key, geneate_keys
 
 
@@ -25,35 +25,18 @@ def domain():
     return "example.com"
 
 
-@pytest.yield_fixture(autouse=True)
-def email(config_file):
-    lime_comb.config.config.email = "example.example@example.com"
-    yield "example.example@example.com"
-
-
-@pytest.yield_fixture(autouse=True)
-def config_dir(config_file):
-    with tempfile.TemporaryDirectory() as dir_name:
-        lime_comb.config.config.config_dir = Path(dir_name)
-        yield
-
-
 @pytest.fixture
 def mocked_resp():
     return '{"some": "response"}'
 
 
 @pytest.yield_fixture
-def oauth_gcp_conf(mocked_resp):
+def oauth_gcp_conf(mocked_resp, oauth_client_config):
     with requests_mock.Mocker(real_http=True) as m:
-        m.register_uri("GET", config.client_lime_comb_url, text=mocked_resp)
+        m.register_uri(
+            "GET", lime_comb.config.config.client_lime_comb_url, text=mocked_resp
+        )
         yield
-
-
-@pytest.yield_fixture(autouse=True)
-def password(config_file):
-    lime_comb.config.config.password = "dupa.8Polska12"
-    yield lime_comb.config.config.password
 
 
 @pytest.yield_fixture
@@ -62,15 +45,152 @@ def temp_file():
         yield fp
 
 
-@pytest.yield_fixture(autouse=True)
-def config_file(temp_file):
-    lime_comb.config.config.config_file = Path(temp_file.name)
-    yield
+@pytest.fixture
+def key_id(uuid):
+    return uuid
 
 
 @pytest.fixture
-def key_id():
+def uuid():
     return uuid4()
+
+
+class Creds:
+    def __init__(self, uuid, expired=True):
+        self.expired = expired
+        self.uuid = uuid
+
+
+@pytest.fixture
+def valid_cred(uuid):
+    return Creds(expired=False, uuid=uuid)
+
+
+@pytest.yield_fixture(autouse=True)
+def credentials_file(mocker, config_file, uuid):
+    path = Path(f"{lime_comb.config.config.credentials_file}.test-{uuid}")
+    with patch(
+        "lime_comb.config.Config.credentials_file", new_callable=PropertyMock
+    ) as credentials_file_mock:
+        credentials_file_mock.return_value = path
+        yield
+
+
+@pytest.yield_fixture(autouse=True)
+def oauth_client_config(mocker, config_file, uuid):
+    path = Path(f"{lime_comb.config.config.oauth_client_config}.test-{uuid}")
+    with patch(
+        "lime_comb.config.Config.oauth_client_config", new_callable=PropertyMock
+    ) as password_mock:
+        password_mock.return_value = path
+        yield
+
+
+@pytest.yield_fixture(autouse=True)
+def email(mocker, config_file):
+    _email = "example.example@example.com"
+    with patch(
+        "lime_comb.config.Config.email", new_callable=PropertyMock
+    ) as password_mock:
+        password_mock.return_value = _email
+        yield _email
+
+
+@pytest.yield_fixture(autouse=True)
+def config_dir(mocker, config_file):
+    with tempfile.TemporaryDirectory() as dir_name:
+        mocker.PropertyMock(
+            lime_comb.config.config, "config_dir", return_value=Path(dir_name)
+        )
+        yield
+
+
+@pytest.yield_fixture(autouse=True)
+def no_cred(mocker, credentials_file):
+    mocker.PropertyMock(
+        lime_comb.config.config, "credentials_file", return_value=Path("/dev/null")
+    )
+    yield
+
+
+from unittest.mock import PropertyMock, patch
+
+
+@pytest.yield_fixture(autouse=True)
+def config_file(mocker, temp_file):
+    PropertyMock(
+        lime_comb.config.config, "config_file", return_value=Path(temp_file.name)
+    )
+    yield
+
+
+# TODO fix all mocks to use mocker
+@pytest.yield_fixture(autouse=True)
+def password(mocker, config_file):
+    with patch(
+        "lime_comb.config.Config.password", new_callable=PropertyMock
+    ) as password_mock:
+        password_mock.return_value = "dupa.8Polska12"
+        yield
+
+
+@pytest.fixture
+def invalid_cred(uuid):
+    return Creds(uuid=uuid)
+
+
+@pytest.yield_fixture()
+def pyperclip_copy(mocker):
+    mocker.patch.object(pyperclip, "copy")
+    yield
+
+
+@pytest.yield_fixture
+def web_login(mocker, uuid):
+    mocker.patch.object(
+        lime_comb.auth.google, "web_login", return_value=Creds(expired=False, uuid=uuid)
+    )
+    yield
+
+
+def fake_list_gpg_ids(key_id):
+    def list_gpg_ids(*args, **kwargs):
+        yield key_id
+
+    return list_gpg_ids
+
+
+@pytest.yield_fixture()
+def mocked_db(key_id, valid_cred, mocker):
+    db = MockFirestore()
+    mocker.patch.object(
+        lime_comb.firestore.database, "get_firestore_db", return_value=db
+    )
+    mocker.patch.object(
+        lime_comb.firestore.database,
+        "list_gpg_ids",
+        return_value=fake_list_gpg_ids(key_id)(),
+    )
+    yield db
+    db.reset()
+
+
+@pytest.yield_fixture
+def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
+    mocked_db.collection(domain).document(f"{email}/{key_id}/priv").set(
+        {"data": priv_key}
+    )
+    mocked_db.collection(domain).document(f"{email}/{key_id}/pub").set(
+        {"data": pub_key}
+    )
+    yield f"{key_id}"
+
+
+@pytest.yield_fixture
+def keypair():
+    keys = geneate_keys()
+    yield keys.fingerprint
+    delete_gpg_key(keys.fingerprint, lime_comb.config.config.password)
 
 
 @pytest.fixture
@@ -204,79 +324,3 @@ FYAf1ECKpop6c1MH8vEUoUkdiP5JPVbe7NUWzvueZ3s7pxLDbw==
 =JSru
 -----END PGP PUBLIC KEY BLOCK-----
 """
-
-
-class Creds:
-    def __init__(self, expired=True):
-        self.expired = expired
-        self.uuid = uuid4()
-
-
-@pytest.fixture
-def valid_cred():
-    return Creds(expired=False)
-
-
-@pytest.yield_fixture
-def no_cred():
-    config.credentials_file = "/dev/null"
-    yield
-
-
-@pytest.fixture
-def invalid_cred():
-    return Creds()
-
-
-@pytest.yield_fixture()
-def pyperclip_copy(mocker):
-    mocker.patch.object(pyperclip, "copy")
-    yield
-
-
-@pytest.yield_fixture
-def web_login(mocker):
-    mocker.patch.object(
-        lime_comb.auth.google, "web_login", return_value=Creds(expired=False)
-    )
-    yield
-
-
-def fake_list_gpg_ids(key_id):
-    def list_gpg_ids(*args, **kwargs):
-        yield key_id
-
-    return list_gpg_ids
-
-
-@pytest.yield_fixture()
-def mocked_db(key_id, valid_cred, mocker):
-    db = MockFirestore()
-    mocker.patch.object(
-        lime_comb.firestore.database, "get_firestore_db", return_value=db
-    )
-    mocker.patch.object(
-        lime_comb.firestore.database,
-        "list_gpg_ids",
-        return_value=fake_list_gpg_ids(key_id)(),
-    )
-    yield db
-    db.reset()
-
-
-@pytest.yield_fixture
-def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
-    mocked_db.collection(domain).document(f"{email}/{key_id}/priv").set(
-        {"data": priv_key}
-    )
-    mocked_db.collection(domain).document(f"{email}/{key_id}/pub").set(
-        {"data": pub_key}
-    )
-    yield f"{key_id}"
-
-
-@pytest.yield_fixture
-def keypair():
-    keys = geneate_keys()
-    yield keys.fingerprint
-    delete_gpg_key(keys.fingerprint, config.password)

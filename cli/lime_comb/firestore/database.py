@@ -31,12 +31,15 @@ def get_gpgs(cred, email, *, key_type="pub"):
         yield get_gpg(cred, email, key_type=key_type, key_name=key_name)
 
 
-def put_gpg(cred, email, data, key_name, *, key_type="pub"):
+def put_gpg(cred, email, data, key_name, *, key_type="pub", password=None):
     logger.debug(f"pushing gpg key for: {email} (firebase registry)")
     db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     pub_key = db.collection(collection_id).document(name)
-    pub_key.set({"data": data})
+    document = {"data": data}
+    if key_type == "priv" and password:
+        document["password"] = password
+    pub_key.set(document)
 
 
 def list_gpg_ids(cred, email, key_type="pub"):
