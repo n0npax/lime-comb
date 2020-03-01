@@ -3,16 +3,16 @@ from pathlib import Path
 from unittest.mock import PropertyMock, patch
 from uuid import uuid4
 
-import pyperclip
-import pytest
-import requests_mock
-from mockfirestore.client import MockFirestore
-
 import lime_comb
 import lime_comb.config
 import lime_comb.firestore.database
+import pyperclip
+import pytest
+import requests_mock
 from lime_comb.auth.google import get_anon_cred
 from lime_comb.gpg import delete_gpg_key, geneate_keys
+from mockfirestore.client import MockFirestore
+from yaml import dump
 
 
 @pytest.yield_fixture
@@ -101,7 +101,7 @@ def email(mocker, config_file):
 def config_dir(mocker, config_file):
     with tempfile.TemporaryDirectory() as dir_name:
         mocker.PropertyMock(
-            lime_comb.config.config, "config_dir", return_value=Path(dir_name)
+            lime_comb.config.Config, "config_dir", return_value=Path(dir_name)
         )
         yield
 
@@ -109,7 +109,7 @@ def config_dir(mocker, config_file):
 @pytest.yield_fixture(autouse=True)
 def no_cred(mocker, credentials_file):
     mocker.PropertyMock(
-        lime_comb.config.config, "credentials_file", return_value=Path("/dev/null")
+        lime_comb.config.Config, "credentials_file", return_value=Path("/dev/null")
     )
     yield
 
@@ -117,9 +117,15 @@ def no_cred(mocker, credentials_file):
 @pytest.yield_fixture(autouse=True)
 def config_file(mocker, temp_file):
     PropertyMock(
-        lime_comb.config.config, "config_file", return_value=Path(temp_file.name)
+        lime_comb.config.Config, "config_file", return_value=Path(temp_file.name)
     )
-    yield
+    yield temp_file.name
+
+
+@pytest.fixture
+def existing_config(config_file, email):
+    with open(config_file, "w") as f:
+        f.write(dump({"email": email}))
 
 
 # TODO fix all mocks to use mocker

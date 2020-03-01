@@ -9,5 +9,4 @@ steps:
       - |
         set -eo pipefail
         npm install -g firebase-tools
-        echo ${_CLIENT_SECRETS_JSON} | base64 -d > public/_client-lime-comb.json
         firebase deploy --project $PROJECT_ID

@@ -3,10 +3,9 @@ import tempfile
 from uuid import uuid4
 
 import google
+import lime_comb.auth.google
 import pytest
 from google.auth.credentials import AnonymousCredentials
-
-import lime_comb.auth.google
 from lime_comb.auth.google import get_anon_cred, get_cred, read_creds, save_creds
 from lime_comb.config import config
 
@@ -14,7 +13,7 @@ from .conftest import *
 
 
 class TestAuth:
-    def test_read_and_save_creds(self, valid_cred):
+    def test_read_and_save_creds(self, existing_config, valid_cred):
         save_creds(valid_cred)
         r_creds = read_creds()
         assert valid_cred.uuid == r_creds.uuid

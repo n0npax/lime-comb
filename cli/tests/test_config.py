@@ -2,7 +2,6 @@ import builtins
 from collections import defaultdict
 
 import yaml
-
 from lime_comb.config import EmptyConfigError, config, validate_bool
 
 from .conftest import *
@@ -21,7 +20,7 @@ class TestConfig:
         mocker.patch.object(lime_comb.config, "convert_bool_string", return_value=True)
         assert config.email == email
 
-    def test_get_empty_config(self, mocker, email):
+    def test_read_not_existing_property(self, mocker, email):
         mocker.patch.object(lime_comb.config.config, "_read_config", return_value={})
         with pytest.raises(EmptyConfigError):
             config._read_property("not_existing_property")

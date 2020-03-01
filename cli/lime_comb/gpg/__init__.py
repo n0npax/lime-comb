@@ -1,7 +1,6 @@
 import os
 
 import gnupg
-
 from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
