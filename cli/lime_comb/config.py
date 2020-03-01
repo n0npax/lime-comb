@@ -6,7 +6,7 @@ from pathlib import Path
 import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
-from email_validator import validate_email, EmailSyntaxError
+from email_validator import EmailSyntaxError, validate_email
 
 from lime_comb.logger.logger import logger
 
@@ -60,7 +60,7 @@ class Config:
 
     @property
     def username(self):
-        return self.__read_property("username")
+        return self._read_property("username")
 
     @username.setter
     def username(self, username):
@@ -68,7 +68,7 @@ class Config:
 
     @property
     def email(self):
-        return self.__read_property("email")
+        return self._read_property("email")
 
     @email.setter
     def email(self, email):
@@ -76,7 +76,7 @@ class Config:
 
     @property
     def password(self):
-        return self.__read_property("password")
+        return self._read_property("password")
 
     @password.setter
     def password(self, password):
@@ -84,7 +84,7 @@ class Config:
 
     @property
     def export_password(self):
-        return self.__read_property("export_password", True)
+        return self._read_property("export_password", True)
 
     @export_password.setter
     def export_password(self, value):
@@ -94,7 +94,7 @@ class Config:
 
     @property
     def export_priv_key(self):
-        return self.__read_property("export_priv_key", True)
+        return self._read_property("export_priv_key", True)
 
     @export_priv_key.setter
     def export_priv_key(self, value):
@@ -104,13 +104,13 @@ class Config:
 
     @property
     def always_import(self):
-        return self.__read_property("always_import", True)
+        return self._read_property("always_import", True)
 
     @always_import.setter
     def always_import(self, value):
         self.__save_property("always_import", convert_bool_string(value), validate_bool)
 
-    def __read_config(self):
+    def _read_config(self):
         try:
             with open(self.config_file, "r") as f:
                 _config = yaml.safe_load(f.read())
@@ -125,8 +125,8 @@ class Config:
         with open(self.config_file, "w") as f:
             f.write(yaml.dump(dict(conf)))
 
-    def __read_property(self, name, default=None):
-        conf = self.__read_config()
+    def _read_property(self, name, default=None):
+        conf = self._read_config()
         if not conf and not self.__raised:
             logger.error(f"config is empty")
             self.__raised = True
@@ -138,7 +138,7 @@ class Config:
     def __save_property(self, name, value, validator=None):
         if validator:
             validator(value)
-        conf = self.__read_config()
+        conf = self._read_config()
         conf[name] = value
         self.__write_config(conf)
 
