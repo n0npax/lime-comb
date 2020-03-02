@@ -3,18 +3,24 @@ import os
 import gnupg
 from lime_comb.config import config
 from lime_comb.logger.logger import logger
+import logging
+from functools import lru_cache
 
-GPGHOME = str(config.keyring_dir)
-KEYRING = None  # f"{GPGHOME}/../keyring-"+config.app_name
-SECRET_KEYRING = None  # f"{KEYRING}-secrets"
-gpg = gnupg.GPG(
-    gnupghome=GPGHOME,
-    keyring=KEYRING,
-    use_agent=False,
-    verbose=False,
-    secret_keyring=SECRET_KEYRING,
-)
-gpg.encoding = "utf-8"
+
+@lru_cache(maxsize=-1)
+def gpg_engine():
+    GPGHOME = str(config.keyring_dir)
+    KEYRING = None  # f"{GPGHOME}/../keyring-"+config.app_name
+    SECRET_KEYRING = None  # f"{KEYRING}-secrets"
+    gpg = gnupg.GPG(
+        gnupghome=GPGHOME,
+        keyring=KEYRING,
+        use_agent=False,
+        verbose=logger.level == logging.DEBUG,
+        secret_keyring=SECRET_KEYRING,
+    )
+    gpg.encoding = "utf-8"
+    return gpg
 
 
 class GPGException(Exception):
@@ -22,7 +28,7 @@ class GPGException(Exception):
 
 
 def decrypt(data, *args, **kwargs):
-    decrypted_data = gpg.decrypt(
+    decrypted_data = gpg_engine().decrypt(
         data, passphrase=config.password, extra_args=[f"--passphrase={config.password}"]
     )
     if not decrypted_data.ok:
@@ -32,7 +38,7 @@ def decrypt(data, *args, **kwargs):
 
 
 def encrypt(emails, data):
-    encrypted_data = gpg.encrypt(
+    encrypted_data = gpg_engine().encrypt(
         data, emails, always_trust=True, sign=False, passphrase=config.password
     )
     if not encrypted_data.ok:
@@ -42,7 +48,7 @@ def encrypt(emails, data):
 
 
 def geneate_keys():
-    key_input = gpg.gen_key_input(
+    key_input = gpg_engine().gen_key_input(
         key_type="RSA",
         key_length=4096,
         name_real=config.username,
@@ -50,7 +56,7 @@ def geneate_keys():
         name_comment=config.comment,
         passphrase=config.password,
     )
-    return gpg.gen_key(key_input)
+    return gpg_engine().gen_key(key_input)
 
 
 def get_existing_pub_keys(email=None):
@@ -60,7 +66,7 @@ def get_existing_pub_keys(email=None):
 def get_existing_keys(email=None, priv=False):
     if not email:
         email = config.email
-    pub_keys = gpg.list_keys(priv)
+    pub_keys = gpg_engine().list_keys(priv)
     for k, v in pub_keys.key_map.items():
         if email in v["uids"][0]:
             yield (k, v["uids"])
@@ -71,7 +77,7 @@ def get_existing_priv_keys():
 
 
 def import_gpg_key(data):
-    status = gpg.import_keys(data)
+    status = gpg_engine().import_keys(data)
     for r in status.results:
         if not r["fingerprint"]:
             logger.error("cannot import gpg key")
@@ -81,10 +87,12 @@ def import_gpg_key(data):
 
 def delete_gpg_key(fingerprint, passphrase):
     yield "priv", str(
-        gpg.delete_keys(fingerprint, secret=bool(passphrase), passphrase=passphrase)
+        gpg_engine().delete_keys(
+            fingerprint, secret=bool(passphrase), passphrase=passphrase
+        )
     )
-    yield "pub", str(gpg.delete_keys(fingerprint))
+    yield "pub", str(gpg_engine().delete_keys(fingerprint))
 
 
 def export_key(keyids, priv=False):
-    return gpg.export_keys(keyids, secret=priv, passphrase=config.password)
+    return gpg_engine().export_keys(keyids, secret=priv, passphrase=config.password)

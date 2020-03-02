@@ -32,7 +32,8 @@ Or -f before each file you want to encrypt"""
             with get_cred(config.oauth_gcp_conf) as cred:
                 # with get_anon_cred() as cred:
                 for email in recipients:
-                    import_keys(email, cred)
+                    for _ in import_keys(email, cred):
+                        pass
         for email in recipients:
             if not get_existing_pub_keys(email):
                 import_keys(email, cred)

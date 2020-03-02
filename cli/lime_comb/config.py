@@ -8,6 +8,7 @@ import yaml
 from appdirs import user_config_dir, user_data_dir
 from email_validator import EmailSyntaxError, validate_email
 from lime_comb.logger.logger import logger
+import logging
 
 
 @dataclass()

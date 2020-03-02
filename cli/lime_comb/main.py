@@ -55,7 +55,6 @@ def base_parser(input_args):
 
 def parse_common(parser, args):
     logger.setLevel(args.log_lvl)
-
     logger.info(f"log lvl {logger.getEffectiveLevel()}")
     if args.version:
         print(f"version: {lime_comb.__version__}")
