@@ -3,16 +3,17 @@ from pathlib import Path
 from unittest.mock import PropertyMock, patch
 from uuid import uuid4
 
-import lime_comb
-import lime_comb.config
-import lime_comb.firestore.database
 import pyperclip
 import pytest
 import requests_mock
-from lime_comb.auth.google import get_anon_cred
-from lime_comb.gpg import delete_gpg_key, geneate_keys
 from mockfirestore.client import MockFirestore
 from yaml import dump
+
+import lime_comb
+import lime_comb.config
+import lime_comb.firestore.database
+from lime_comb.auth.google import get_anon_cred
+from lime_comb.gpg import delete_gpg_key, geneate_keys
 
 
 @pytest.yield_fixture
@@ -53,7 +54,7 @@ def key_id(uuid):
 
 @pytest.fixture
 def uuid():
-    return uuid4()
+    return str(uuid4())
 
 
 class Creds:
@@ -129,7 +130,7 @@ def existing_config(config_file, email):
 
 
 # TODO fix all mocks to use mocker
-@pytest.yield_fixture(autouse=True)
+@pytest.yield_fixture
 def password(mocker, config_file):
     with patch(
         "lime_comb.config.Config.password", new_callable=PropertyMock

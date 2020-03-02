@@ -1,3 +1,4 @@
+import logging
 import secrets
 import string
 from dataclasses import dataclass
@@ -7,8 +8,8 @@ import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
 from email_validator import EmailSyntaxError, validate_email
+
 from lime_comb.logger.logger import logger
-import logging
 
 
 @dataclass()
@@ -56,7 +57,7 @@ class Config:
         }
 
     def __repr__(self):
-        return f"Config: < {self.get_configurable()} > < + const inside>"
+        return f"Config: ({self.get_configurable()}) & constant values"
 
     @property
     def username(self):
@@ -67,20 +68,20 @@ class Config:
         self.__save_property("username", username)
 
     @property
-    def email(self):
-        return self._read_property("email")
-
-    @email.setter
-    def email(self, email):
-        self.__save_property("email", email, validate_email)
-
-    @property
     def password(self):
         return self._read_property("password")
 
     @password.setter
     def password(self, password):
         self.__save_property("password", password)
+
+    @property
+    def email(self):
+        return self._read_property("email")
+
+    @email.setter
+    def email(self, email):
+        self.__save_property("email", email, validate_email)
 
     @property
     def export_password(self):

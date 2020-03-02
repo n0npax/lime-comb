@@ -29,6 +29,7 @@ class KeysCommand(Command):
         self.parser.add_argument("argument", nargs="?", help="ID filter (optional)")
 
     def __call__(self, args):
+
         email = config.email
 
         if args.command == "generate":
