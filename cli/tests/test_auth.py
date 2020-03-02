@@ -29,7 +29,7 @@ class TestAuth:
         with get_cred(config.credentials_file) as cred:
             assert not cred.expired
 
-    def test_get_no_saved_creds(self, no_cred, web_login):
+    def test_get_no_saved_creds(self, credentials_file, web_login):
         with get_cred(config.credentials_file) as cred:
             assert not cred.expired
 

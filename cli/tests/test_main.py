@@ -104,14 +104,19 @@ class TestCommandObjects:
 
     def test_dec_cmd(
         self,
+        mocker,
+        existing_config,
+        config_file,
         mocked_db,
         mocked_gpg_key,
         web_login,
         pyperclip_copy,
         oauth_gcp_conf,
         email,
+        uuid,
     ):
-        base_test_message = str(uuid4())
+        print("aaaaa", config.config_file)
+        base_test_message = (uuid,)
         args, _, e_cmd, _, _ = base_parser(["e", "-t", email, "-m", base_test_message])
         enc_msg = enc_exec(args, e_cmd)
         args, _, _, d_cmd, _ = base_parser(["d", "-m", enc_msg])

@@ -101,26 +101,20 @@ def email(mocker, config_file):
 @pytest.yield_fixture(autouse=True)
 def config_dir(mocker, config_file):
     with tempfile.TemporaryDirectory() as dir_name:
-        mocker.PropertyMock(
-            lime_comb.config.Config, "config_dir", return_value=Path(dir_name)
-        )
-        yield
-
-
-@pytest.yield_fixture(autouse=True)
-def no_cred(mocker, credentials_file):
-    mocker.PropertyMock(
-        lime_comb.config.Config, "credentials_file", return_value=Path("/dev/null")
-    )
-    yield
+        with patch(
+            "lime_comb.config.Config.config_dir", new_callable=PropertyMock
+        ) as config_dir_mock:
+            config_dir_mock.return_value = Path(dir_name)
+            yield dir_name
 
 
 @pytest.yield_fixture(autouse=True)
 def config_file(mocker, temp_file):
-    PropertyMock(
-        lime_comb.config.Config, "config_file", return_value=Path(temp_file.name)
-    )
-    yield temp_file.name
+    with patch(
+        "lime_comb.config.Config.config_file", new_callable=PropertyMock
+    ) as config_file_mock:
+        config_file_mock.return_value = Path(temp_file.name)
+        yield temp_file.name
 
 
 @pytest.fixture
@@ -129,13 +123,21 @@ def existing_config(config_file, email):
         f.write(dump({"email": email}))
 
 
-# TODO fix all mocks to use mocker
 @pytest.yield_fixture
 def password(mocker, config_file):
     with patch(
         "lime_comb.config.Config.password", new_callable=PropertyMock
     ) as password_mock:
         password_mock.return_value = "dupa.8Polska12"
+        yield
+
+
+@pytest.yield_fixture
+def username(mocker, config_file):
+    with patch(
+        "lime_comb.config.Config.username", new_callable=PropertyMock
+    ) as username_mock:
+        username_mock.return_value = "example"
         yield
 
 
