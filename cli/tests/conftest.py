@@ -1,18 +1,20 @@
+import ast
 import tempfile
 from pathlib import Path
 from unittest.mock import PropertyMock, patch
 from uuid import uuid4
 
-import lime_comb
-import lime_comb.config
-import lime_comb.firestore.database
 import pyperclip
 import pytest
 import requests_mock
-from lime_comb.auth.google import get_anon_cred
-from lime_comb.gpg import delete_gpg_key, geneate_keys, gpg_engine
 from mockfirestore.client import MockFirestore
 from yaml import dump
+
+import lime_comb
+import lime_comb.config
+import lime_comb.firestore.database
+from lime_comb.auth.google import get_anon_cred
+from lime_comb.gpg import delete_gpg_key, geneate_keys, gpg_engine
 
 
 @pytest.yield_fixture
@@ -194,13 +196,9 @@ def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
     yield f"{key_id}"
 
 
-import ast
-
-
 @pytest.yield_fixture
 def keypair(mocker, password, username):
     keys = geneate_keys()
-    print("T" * 55, password)
     pub = gpg_engine().export_keys(keys.fingerprint)
     priv = gpg_engine().export_keys(keys.fingerprint, True, passphrase=password)
     yield pub, priv, keys.fingerprint
