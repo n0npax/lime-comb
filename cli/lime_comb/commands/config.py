@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from email_validator import EmailSyntaxError
-
 from lime_comb.commands.base import Command
 from lime_comb.config import config
 from lime_comb.logger.logger import logger

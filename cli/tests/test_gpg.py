@@ -2,7 +2,6 @@ import os
 import tempfile
 
 import pytest
-
 from lime_comb.config import config
 from lime_comb.gpg import (
     GPGException,
@@ -61,7 +60,8 @@ class TestGpg:
         import_gpg_key(pub_key)
 
     def test_export_key(self, mocker, username, password, keypair):
-        assert export_key(keypair).startswith("-----BEGIN PGP")
+        _, _, fingerprint = keypair
+        assert export_key(fingerprint).startswith("-----BEGIN PGP")
 
     def test_delete_gpg_key(self, mocker, username, password, keypair):
         for k in delete_gpg_key(keypair, config.password):

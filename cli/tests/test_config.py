@@ -2,7 +2,6 @@ import builtins
 from collections import defaultdict
 
 import yaml
-
 from lime_comb.config import EmptyConfigError, config, validate_bool
 
 from .conftest import *
