@@ -56,6 +56,7 @@ class TestCommandObjects:
         mocker,
         capsys,
         mocked_db,
+        mocked_gpg_key,
         web_login,
         pyperclip_copy,
         oauth_gcp_conf,
@@ -73,6 +74,7 @@ class TestCommandObjects:
         mocker,
         capsys,
         mocked_db,
+        mocked_gpg_key,
         web_login,
         pyperclip_copy,
         oauth_gcp_conf,
@@ -89,6 +91,7 @@ class TestCommandObjects:
         self,
         mocker,
         mocked_db,
+        mocked_gpg_key,
         web_login,
         pyperclip_copy,
         temp_file,
@@ -99,7 +102,15 @@ class TestCommandObjects:
         output = enc_exec(args, e_cmd)
         assert output.startswith("-----BEGIN PGP MESSAGE---")
 
-    def test_dec_cmd(self, mocked_db, web_login, pyperclip_copy, oauth_gcp_conf, email):
+    def test_dec_cmd(
+        self,
+        mocked_db,
+        mocked_gpg_key,
+        web_login,
+        pyperclip_copy,
+        oauth_gcp_conf,
+        email,
+    ):
         base_test_message = str(uuid4())
         args, _, e_cmd, _, _ = base_parser(["e", "-t", email, "-m", base_test_message])
         enc_msg = enc_exec(args, e_cmd)
