@@ -176,7 +176,7 @@ class Config:
     def get_bool(self, message, *, default=None):
         while True:
             my_bool = input(f"{message} [True/False]: ")
-            if not my_bool and default:
+            if my_bool == "" and default != None:
                 return default
             try:
                 validate_bool(my_bool)

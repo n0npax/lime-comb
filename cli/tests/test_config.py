@@ -78,10 +78,16 @@ class TestConfig:
             assert config.export_password == value
 
     @pytest.mark.parametrize(
-        "input_value,expected_value",
-        [("False", False), ("false", False), ("True", True),],
+        "input_value,expected_value,default",
+        [
+            ("False", False, None),
+            ("false", False, None),
+            ("True", True, None),
+            ("", True, True),
+            ("", False, False),
+        ],
     )
-    def test_get_bool(self, mocker, input_value, expected_value):
+    def test_get_bool(self, mocker, input_value, expected_value, default):
         mocker.patch.object(builtins, "input", return_value=input_value)
-        actual_value = config.get_bool("")
+        actual_value = config.get_bool("", default=default)
         assert actual_value == expected_value
