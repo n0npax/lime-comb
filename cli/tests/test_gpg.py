@@ -2,6 +2,7 @@ import os
 import tempfile
 
 import pytest
+
 from lime_comb.config import config
 from lime_comb.gpg import (
     GPGException,
