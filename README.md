@@ -15,8 +15,6 @@ People are often afraid of `gpg` and asymmetric cryptography.
 -   If you want to share secret with your teammates,
 but your company has no procedures
 
--   If storing secret in external system like `1password` is not an option
-
 -   If you want to share secrets in secure way and use managed key registry.
 Here we are!
 
@@ -26,12 +24,12 @@ still safe solution for everyone(including non technical staff)
 
 ## How
 
-Lime-comb is basically public key registry and set of the tools.
+Lime-comb is basically public key registry and set of the gpg based tools.
 Public keys are stored in the database.
 End user can easily import existing public key and encrypt message.
 No `gpg` nor cryptography knowledge required.
 
-### Public key registry (WEB)
+### Public key registry (CORE)
 
 We believe we shouldn't reinvent wheel.
 Lime-comb key registry is secured with authorization from google(`firebase auth`).
@@ -40,8 +38,9 @@ We believe smart people provides good solutions and we should utilize them.
 ### Command line tools
 
 What was the syntax for `gpg`? Should I use `base64` or `armor mode`?
+Can I trust Jamie uploaded this particular key?
 It's not your problem anymore, we will do it for you.
-The only thing you need to know is receiver email and message itself.
+The only thing you need to know is receiver email.
 
 #### Smart defaults
 We are offering flexible solution with 2 main default profiles.
@@ -52,6 +51,8 @@ We are offering flexible solution with 2 main default profiles.
 Many other configuration option can be adjusted by an user
 
 ### GUI - TODO
+
+### WEB - TODO
 
 ## Install
 
