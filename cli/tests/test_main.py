@@ -16,10 +16,11 @@ class TestHelperFunctions:
         assert captured.out.startswith("version")
 
     def test_get_recipients(self, mocker):
-        mocker.patch.object(builtins, "input", return_value="test_input")
+        _email = "test_get_recipients@example.com"
+        mocker.patch.object(builtins, "input", return_value=_email)
         args, _, _, _, _ = base_parser(["e"])
         recipients = get_recipients(args)
-        assert recipients == ["test_input"]
+        assert recipients == [_email]
 
 
 class TestCommandObjects:

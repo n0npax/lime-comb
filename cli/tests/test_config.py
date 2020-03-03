@@ -3,7 +3,7 @@ from collections import defaultdict
 
 import yaml
 
-from lime_comb.config import EmptyConfigError, config, validate_bool
+from lime_comb.config import EmptyConfigError, config
 
 from .conftest import *
 
@@ -18,7 +18,9 @@ class TestConfig:
         new_username = uuid
         mocker.patch.object(builtins, "input", return_value=new_username)
         mocker.patch.object(lime_comb.config, "validate_bool", return_value=True)
-        mocker.patch.object(lime_comb.config, "validate_email", return_value=True)
+        mocker.patch.object(
+            lime_comb.validators.email, "lc_validate_email", return_value=True
+        )
         mocker.patch.object(lime_comb.config, "convert_bool_string", return_value=True)
         config._gen_config()
         assert config.username == new_username
@@ -27,6 +29,9 @@ class TestConfig:
         mocker.patch.object(lime_comb.config.config, "_read_config", return_value={})
         with pytest.raises(EmptyConfigError):
             config._read_property("not_existing_property")
+
+    def test_read_not_existing_config(self):
+        assert {} == config._read_config()
 
     def test_rptr(self):
         assert "Config" in str(config)
@@ -41,12 +46,7 @@ class TestConfig:
 
     @pytest.mark.parametrize(
         "email,raises",
-        [
-            ("llama", True),
-            ("llama@llama", True),
-            ("llama@llama.llama", True),
-            ("llama@llama.net", False),
-        ],
+        [("llama", True), ("llama@llama", True), ("llama@llama.net", False),],
     )
     def test_save_email(self, email, raises):
         if raises:

@@ -7,9 +7,10 @@ from pathlib import Path
 import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
-from email_validator import EmailSyntaxError, validate_email
+from email_validator import EmailSyntaxError
 
 from lime_comb.logger.logger import logger
+from lime_comb.validators.email import lc_validate_email
 
 
 @dataclass()
@@ -81,7 +82,7 @@ class Config:
 
     @email.setter
     def email(self, email):
-        self.__save_property("email", email, validate_email)
+        self.__save_property("email", email, lc_validate_email)
 
     @property
     def export_password(self):

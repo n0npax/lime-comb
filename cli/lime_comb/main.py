@@ -3,6 +3,7 @@ import argparse
 import sys
 
 import pyperclip
+from email_validator import EmailNotValidError, EmailSyntaxError
 from tabulate import tabulate
 from tqdm import tqdm
 
@@ -13,6 +14,7 @@ from lime_comb.commands.encrypt import EncryptCommand
 from lime_comb.commands.keys import KeysCommand
 from lime_comb.config import EmptyConfigError, config
 from lime_comb.logger.logger import logger
+from lime_comb.validators.email import lc_validate_email
 
 
 def base_parser(input_args):
@@ -69,6 +71,12 @@ def get_recipients(args):
     if not getattr(args, "recipients", None):
         logger.info("No recipients. Asking user to type in")
         args.recipients = input("please specify recipients(space separated)\n").split()
+        for email in args.recipients:
+            try:
+                lc_validate_email(email)
+            except Exception as e:
+                logger.critical(e)
+                sys.exit(1)
     return args.recipients
 
 

@@ -1,4 +1,5 @@
-from lime_comb.commands.base import validate_email, validate_filepath
+from lime_comb.validators.email import lc_validate_email
+from lime_comb.validators.file import validate_filepath
 
 
 def add_message_parameters(parser):
@@ -32,7 +33,7 @@ def add_msg_recv(parser):
         action="append",
         default=[],
         help="recipient of the message",
-        type=validate_email,
+        type=lc_validate_email,
     )
 
 
