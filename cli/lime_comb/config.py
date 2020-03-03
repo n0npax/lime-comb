@@ -172,7 +172,7 @@ class Config:
         )
         print("-" * 44)
 
-    def get_bool(self, message, *, default):
+    def get_bool(self, message, *, default=None):
         while True:
             my_bool = input(f"{message} [True/False]: ")
             if not my_bool and default:

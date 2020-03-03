@@ -14,13 +14,14 @@ class TestConfig:
             client_lime_comb_mocker_resp = f.read()
         assert client_lime_comb_mocker_resp == mocked_resp
 
-    def test_get_config(self, mocker, email):
-        mocker.patch.object(builtins, "input", return_value=email)
+    def test_get_config(self, mocker, uuid, existing_config):
+        new_username = uuid
+        mocker.patch.object(builtins, "input", return_value=new_username)
         mocker.patch.object(lime_comb.config, "validate_bool", return_value=True)
         mocker.patch.object(lime_comb.config, "validate_email", return_value=True)
         mocker.patch.object(lime_comb.config, "convert_bool_string", return_value=True)
-        assert config.email == email
-        # config._gen_config()
+        config._gen_config()
+        assert config.username == new_username
 
     def test_read_not_existing_property(self, mocker, email):
         mocker.patch.object(lime_comb.config.config, "_read_config", return_value={})
@@ -63,6 +64,7 @@ class TestConfig:
             ("false", False, False),
             ("True", False, True),
             ("true", False, True),
+            ("llama", True, None),
             (True, False, True),
             (False, False, False),
         ],
@@ -74,3 +76,12 @@ class TestConfig:
         else:
             config.export_password = export_password
             assert config.export_password == value
+
+    @pytest.mark.parametrize(
+        "input_value,expected_value",
+        [("False", False), ("false", False), ("True", True),],
+    )
+    def test_get_bool(self, mocker, input_value, expected_value):
+        mocker.patch.object(builtins, "input", return_value=input_value)
+        actual_value = config.get_bool("")
+        assert actual_value == expected_value
