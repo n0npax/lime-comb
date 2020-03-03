@@ -2,10 +2,11 @@ import builtins
 from collections import defaultdict
 
 import yaml
-
 from lime_comb.config import EmptyConfigError, config
+import lime_comb
 
 from .conftest import *
+from unittest.mock import patch, MagicMock
 
 
 class TestConfig:
@@ -17,13 +18,15 @@ class TestConfig:
     def test_get_config(self, mocker, uuid, existing_config):
         new_username = uuid
         mocker.patch.object(builtins, "input", return_value=new_username)
-        mocker.patch.object(lime_comb.config, "validate_bool", return_value=True)
-        mocker.patch.object(
-            lime_comb.validators.email, "lc_validate_email", return_value=True
-        )
         mocker.patch.object(lime_comb.config, "convert_bool_string", return_value=True)
-        config._gen_config()
-        assert config.username == new_username
+
+        with patch("lime_comb.config.validate_bool") as validate_bool_mock, patch(
+            "lime_comb.config.lc_validate_email"
+        ) as validate_email_mock:
+            validate_bool_mock.return_value = True
+            validate_email_mock.return_value = True
+            config._gen_config()
+            assert config.username == new_username
 
     def test_read_not_existing_property(self, mocker, email):
         mocker.patch.object(lime_comb.config.config, "_read_config", return_value={})

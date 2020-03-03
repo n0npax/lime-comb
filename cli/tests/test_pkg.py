@@ -1,7 +1,6 @@
 import pytest
-from semver import parse
-
 from lime_comb import __version__
+from semver import parse
 
 
 @pytest.mark.parametrize(

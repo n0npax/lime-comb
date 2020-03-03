@@ -1,4 +1,3 @@
-import logging
 import secrets
 import string
 from dataclasses import dataclass
@@ -8,9 +7,9 @@ import requests
 import yaml
 from appdirs import user_config_dir, user_data_dir
 from email_validator import EmailSyntaxError
-
 from lime_comb.logger.logger import logger
 from lime_comb.validators.email import lc_validate_email
+from lime_comb.validators.bool import validate_bool
 
 
 @dataclass()
@@ -173,7 +172,8 @@ class Config:
         )
         print("-" * 44)
 
-    def get_bool(self, message, *, default=None):
+    @classmethod
+    def get_bool(cls, message, *, default=None):
         while True:
             my_bool = input(f"{message} [True/False]: ")
             if my_bool == "" and default != None:
@@ -192,13 +192,6 @@ def convert_bool_string(my_bool):
     if isinstance(my_bool, (str)):
         return {"true": True, "false": False}[my_bool.lower()]
     return False
-
-
-def validate_bool(my_bool):
-    if isinstance(my_bool, bool):
-        return True
-    if my_bool.lower() not in ("true", "false"):
-        raise ValueError
 
 
 class EmptyConfigError(Exception):
