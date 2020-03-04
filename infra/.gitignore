@@ -1,1 +1,2 @@
-lime-comb-tf-sa.json
+*.pyc
+venv/
