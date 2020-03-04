@@ -14,6 +14,7 @@ from lime_comb.commands.keys import KeysCommand
 from lime_comb.config import EmptyConfigError, config
 from lime_comb.logger.logger import logger
 from lime_comb.validators.email import lc_validate_email
+from tenacity import retry, stop_after_attempt
 
 
 def base_parser(input_args):

@@ -144,21 +144,25 @@ class Config:
         conf[name] = value
         self.__write_config(conf)
 
+    @classmethod
+    def _config_input(cls, property_name, *, default=None):
+        value = None
+        while True:
+            value = input(f"{property_name} (suggested {default}): ") or default
+            if value:
+                return value
+
     def _gen_config(self):
         print("-" * 44)
         print("Empty config detected. Setting up a new one")
         if not self.password:
             alphabet = string.ascii_letters + string.digits
             self.password = "".join(secrets.choice(alphabet) for i in range(32))
-        self.password = (
-            input(f"password (suggested {self.password}): ") or self.password
-        )
-        self.username = (
-            input(f"username (suggested {self.username}): ") or self.username
-        )
+        self.password = self._config_input("password", default=self.password)
+        self.username = self._config_input("username", default=self.username)
         while True:
             try:
-                self.email = input(f"email (suggested {self.email}) ") or self.email
+                self._config_input("email", default=self.email)
                 break
             except EmailSyntaxError as e:
                 logger.error(e)

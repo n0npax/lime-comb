@@ -7,18 +7,6 @@ python-versions = "*"
 version = "1.4.3"
 
 [[package]]
-category = "main"
-description = "Conversion between protobuf3 and srcML."
-name = "ast"
-optional = false
-python-versions = "*"
-version = "0.0.2"
-
-[package.extras]
-faster-signatures = ["ed25519ll"]
-signatures = ["keyring", "keyrings.alt", "importlib", "pyxdg"]
-
-[[package]]
 category = "dev"
 description = "An abstract syntax tree for Python with inference support."
 name = "astroid"
@@ -825,17 +813,13 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "cdb0bfbca173419665313fca00181f8fe6bed1b30354f03057585dba96c6baad"
+content-hash = "9e2a67cfd21b2300e7ace19d925a9ab7583c518dd05c87b36160a5b254d0de5c"
 python-versions = "^3.7"
 
 [metadata.files]
 appdirs = [
     {file = "appdirs-1.4.3-py2.py3-none-any.whl", hash = "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"},
     {file = "appdirs-1.4.3.tar.gz", hash = "sha256:9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92"},
-]
-ast = [
-    {file = "AST-0.0.2-py2-none-any.whl", hash = "sha256:04cf2827c4048d18635ca8f85357a4285d140424ac26028be0dc585f824e07cd"},
-    {file = "AST-0.0.2.tar.gz", hash = "sha256:dc5b79c6ba11aea72c59c791a0bc5ae483b4c18fec6f643002d6fae24361eba0"},
 ]
 astroid = [
     {file = "astroid-2.3.3-py3-none-any.whl", hash = "sha256:840947ebfa8b58f318d42301cf8c0a20fd794a33b61cc4638e28e9e61ba32f42"},
