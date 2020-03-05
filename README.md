@@ -3,20 +3,21 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![codecov](https://codecov.io/gh/n0npax/lime-comb/branch/master/graph/badge.svg)](https://codecov.io/gh/n0npax/lime-comb)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f46eccc192ce4347b7a6596175c960ee)](https://www.codacy.com/manual/n0npax/lime-comb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=n0npax/lime-comb&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f46eccc192ce4347b7a6596175c960ee)](https://www.codacy.com/manual/n0npax/lime-comb?utm_source=github.com&utm_medium=referral&utm_content=n0npax/lime-comb&utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
 
 # Lets treat secrets like we should and don't be to nerdy
 
 ## Why
+
 People are often afraid of `gpg` and asymmetric cryptography.
 `gpg` key-server doesn't validate a key ownership.
 
--   If you want to share secret with your teammates,
-but your company has no procedures
+- If you want to share secret with your teammates,
+  but your company has no procedures
 
--   If you want to share secrets in secure way and use managed key registry.
-Here we are!
+- If you want to share secrets in secure way and use managed key registry.
+  Here we are!
 
 `LIME-COMB` is set of tools and services designed to make sharing secrets easy.
 Given solution aims to be an easy,
@@ -44,28 +45,26 @@ The only thing you need to know is Bobs(receiver) email.
 
 ![demo](https://github.com/n0npax/lime-comb/blob/master/images/lime-comb-animation.gif)
 
-
 #### Smart defaults
+
 We are offering flexible solution with 2 main default profiles.
 
--   Locked (keeps private key just locally)
--   Glass-break (store private key and password in registry. This data are accessible just for given user)
+- Locked (keeps private key just locally)
+- Glass-break (store private key and password in registry. This data are accessible just for given user)
 
 Many other configuration option can be adjusted by an user
-
-### GUI - TODO
-
-### WEB - TODO
 
 ## Install
 
 ### Key registry
+
 it's [here](https://lime-comb.web.app/).
 Please register yourself directly or preferably via provided command line tool.
 
 ## Requirements
--   `python3.7+`
--   `gpg`
+
+- `python3.7+`
+- `gpg`
 
 ## Design
 
