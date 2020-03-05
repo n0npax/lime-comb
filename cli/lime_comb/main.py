@@ -15,7 +15,6 @@ from tabulate import tabulate
 from tqdm import tqdm
 
 
-
 def base_parser(input_args):
     parser = argparse.ArgumentParser(description="lime comb tool.")
 

@@ -1,0 +1,21 @@
+---
+steps:
+  - name: 'pulumi/pulumi'
+    id: deploy infra
+    dir: /workspace/infra
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      pip3 install -r requirements.txt
+      pulumi stack select master
+      pulumi up -y
+    secretEnv:
+    - PULUMI_ACCESS_TOKEN
+
+timeout: 900s
+secrets:
+- kmsKeyName: projects/lime-comb/locations/global/keyRings/ci-keyring-29ec094/cryptoKeys/ci-cryptokey-1ef48c7
+  secretEnv:
+    PULUMI_ACCESS_TOKEN: CiQAxUJzV/hmQwi9rPsPrv3laqs9PVub3aD0DyBGXG58uKkn2EISVQCJK84ABbm/Fs22H2Xoq1zqK9/3KEbpEOUXIz7hGXoePMHfXQg+8sQrZJe7G5l0nFQ+o0GRSIC/P6tTJrux8l7BXQ8Eslvj2abBPuphu8CKbqqAhk4=
+
