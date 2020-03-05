@@ -35,12 +35,15 @@ We believe we shouldn't reinvent wheel.
 Lime-comb key registry is secured with authorization from google(`firebase auth`).
 We believe smart people provides good solutions and we should utilize them.
 
-### Command line tools
+### Command line tools (cli)
 
 What was the syntax for `gpg`? Should I use `base64` or `armor mode`?
-Can I trust Jamie uploaded this particular key?
+Can I trust Bob uploaded this particular key?
 It's not your problem anymore, we will do it for you.
-The only thing you need to know is receiver email.
+The only thing you need to know is Bobs(receiver) email.
+
+![demo](https://github.com/n0npax/lime-comb/blob/master/images/lime-comb-animation.gif)
+
 
 #### Smart defaults
 We are offering flexible solution with 2 main default profiles.
