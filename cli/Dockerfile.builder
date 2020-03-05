@@ -12,5 +12,4 @@ WORKDIR /build
 COPY pyproject.toml .
 COPY poetry.lock .
 COPY poetry.toml .
-RUN poetry env use python3
 RUN poetry install
