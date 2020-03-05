@@ -61,7 +61,7 @@ it's [here](https://lime-comb.web.app/).
 Please register yourself directly or preferably via provided command line tool.
 
 ## Requirements
--   `python3.6+`
+-   `python3.7+`
 -   `gpg`
 
 ## Design
