@@ -23,9 +23,10 @@ steps:
         make release
         poetry version | cut -f2 -d ' ' > .version
     env:
-      - CODECOV_TOKEN=${_CODECOV_TOKEN}
       - COMMIT_SHA=$COMMIT_SHA
-      - PYPI_TOKEN=${_PYPI_TOKEN}
+    secretEnv:
+      - PYPI_TOKEN
+      - CODECOV_TOKEN
 
   - name: gcr.io/cloud-builders/git
     entrypoint: 'bash'
@@ -34,16 +35,25 @@ steps:
       - |
         set -e
         git init
-        git remote add origin https://n0npax:${_GITHUB_TOKEN}@github.com/n0npax/lime-comb.git
+        git remote add origin https://n0npax:$${GITHUB_TOKEN}@github.com/n0npax/lime-comb.git
         git fetch
         git tag $(cat ./cli/.version) $COMMIT_SHA || exit 0
         git push origin $(cat ./cli/.version) -f
     env:
-      - GITHUB_TOKEN=${_GITHUB_TOKEN}
       - COMMIT_SHA=$COMMIT_SHA
+    secretEnv:
+      - GITHUB_TOKEN
 
 substitutions:
   _BUILDER: lime-comb-builder
 images:
   - 'gcr.io/$PROJECT_ID/${_BUILDER}'
 timeout: 900s
+
+secrets:
+- kmsKeyName: projects/lime-comb/locations/global/keyRings/ci-keyring-29ec094/cryptoKeys/ci-cryptokey-1ef48c7
+  secretEnv:
+    CODECOV_TOKEN: CiQAxUJzVxPLBBLyGjoINzP+vCFUNyKY+6ZxQ17+w7n6o7GkXiwSTQCJK84AWpDEnBe+WCRmJiaNFjrgsnpLzYnHJ1T34x26EQUoI+vVn1ShxbEtizLSQG5YxnFWQbG+vxQFTXniKj3KvzEEb6OGi3Xr8A+G
+    GITHUB_TOKEN: CiQAxUJzV7wHHXqXDRyKS60XpKZQMc99RzIvejHvAiEf3Y1Mm5MSUQCJK84AmUVB8d3ZGIdUE5m6qtZ1D0q71CL2wPkAAO8RG6cMn8YtBdv6no4J8lhcE3Wa0WJL/iGI6uZxnPV3OrjooylMix4ZPQHQD7xsp7d6xA==
+    PYPI_TOKEN: CiQAxUJzVzEXDbYwRtuGqz2IrPLxpUdN5feJ9wlZ3KNK9rYabxwS8gEAiSvOAO/1BHXZjCF2alEbz1gghy5fwTrE5HA4v0EsDSKFYpkWU3saQWxF4GQmlwAoUAJngaG6wyDCm+aNNPBpzQGUiNcjbKRv/KKNs5hSjts6ptu3PUDpDJhXl66Qsfq091+DRjrEo2Z0zjeR2pYtRjw46YLCn9LFky9yBH06b93irma0a5pOhMMOeGXd8ODulIqKwZPa7IWr4KC+DmQKdwAlcoXMeEaw4fsR9SBoNU0oHyu/w12a2IOmuhT2RgGfsNiBb+r4xbqAt0heb75o/ybgEJfWq6PxZG83GqMK4ma8ln5P1lAPkaIUABN22VJong==
+

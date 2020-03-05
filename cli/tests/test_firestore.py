@@ -3,10 +3,9 @@ from uuid import uuid4
 
 import google
 import grpc
+import lime_comb
 import pytest
 from google.cloud.firestore_v1.types import Document, Value
-
-import lime_comb
 from lime_comb.auth.google import get_anon_cred
 from lime_comb.config import config
 from lime_comb.firestore import database
