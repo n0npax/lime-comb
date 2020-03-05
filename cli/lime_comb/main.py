@@ -14,7 +14,6 @@ from lime_comb.validators.email import lc_validate_email
 from tabulate import tabulate
 from tqdm import tqdm
 
-from tenacity import retry, stop_after_attempt
 
 
 def base_parser(input_args):
