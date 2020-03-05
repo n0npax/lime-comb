@@ -1,4 +1,2 @@
 [virtualenvs]
-create = true
-cache-dir = "/build/cache"
-path = "/build/virtualenvs"
+create = false

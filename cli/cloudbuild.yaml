@@ -19,7 +19,6 @@ steps:
       - |
         set -x
         set -e
-        . /build/virtualenvs/*/bin/activate
         make release
         poetry version | cut -f2 -d ' ' > .version
     env:
