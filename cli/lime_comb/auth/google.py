@@ -49,6 +49,7 @@ def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
         creds = None
     if creds and creds.expired and creds.refresh_token:
         try:
+            #TODO fix scopes
             creds.refresh(Request())
             logger.info("refreshing creds")
         except Exception as e:

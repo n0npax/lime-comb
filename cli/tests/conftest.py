@@ -44,7 +44,7 @@ def oauth_gcp_conf(mocked_resp, oauth_client_config):
 
 @pytest.yield_fixture
 def temp_file():
-    with tempfile.NamedTemporaryFile() as fp:
+    with tempfile.NamedTemporaryFile(mode='w') as fp:
         yield fp
 
 
@@ -62,6 +62,7 @@ class Creds:
     def __init__(self, uuid, expired=True):
         self.expired = expired
         self.uuid = uuid
+        self.refresh_token = False
 
 
 @pytest.fixture
