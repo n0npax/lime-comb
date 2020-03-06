@@ -43,6 +43,10 @@ Can I trust Bob uploaded this particular key?
 It's not your problem anymore, we will do it for you.
 The only thing you need to know is Bobs(receiver) email.
 
+#### How easy is that?
+
+Just type message and receiver and confirm you are not a machine. Easy like that.
+
 ![demo](https://github.com/n0npax/lime-comb/blob/master/images/lime-comb-animation.gif)
 
 #### Smart defaults

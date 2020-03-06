@@ -1,5 +1,5 @@
 import pulumi
-from pulumi_gcp import cloudbuild, kms, storage
+from pulumi_gcp import cloudbuild, kms
 
 # Create a KMS KeyRing and CryptoKey to use with the Bucket
 keyRing = kms.KeyRing("ci-keyring", location="global")

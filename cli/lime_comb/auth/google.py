@@ -5,6 +5,8 @@ from contextlib import contextmanager
 
 import google
 from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
@@ -32,12 +34,15 @@ def web_login(conf: str):
 @contextmanager
 def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
     try:
-        cred = read_creds()
+        creds = read_creds()
     except Exception as e:
         logger.warning(e)
-        cred = None
-    if cred and not cred.expired:
-        yield cred
+        creds = None
+    if creds and creds.expired and creds.refresh_token:
+        logger.info("refreshing creds")
+        creds.refresh(Request())
+    if creds and not creds.expired:
+        yield creds
     else:
         logger.warning(f"Error, fallback to fresh login")
         cred = web_login(conf)

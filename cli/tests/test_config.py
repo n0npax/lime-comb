@@ -2,8 +2,9 @@ import builtins
 from collections import defaultdict
 from unittest.mock import MagicMock, patch
 
-import lime_comb
 import yaml
+
+import lime_comb
 from lime_comb.config import EmptyConfigError, config
 
 from .conftest import *

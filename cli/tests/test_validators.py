@@ -2,8 +2,9 @@ import builtins
 from collections import defaultdict
 from unittest.mock import MagicMock, patch
 
-import lime_comb
 import yaml
+
+import lime_comb
 from lime_comb.validators.bool import validate_bool
 from lime_comb.validators.email import lc_validate_email
 from lime_comb.validators.file import validate_filepath
