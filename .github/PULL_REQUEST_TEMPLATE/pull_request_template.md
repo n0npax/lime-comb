@@ -5,4 +5,3 @@ Please ensure that:
 * [ ] Tests are passing
 * [ ] Code coverage is on simillar level
 * [ ] Linters are passing
-* [ ] Labels were added to this PR
