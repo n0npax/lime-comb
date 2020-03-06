@@ -1,0 +1,32 @@
+web:
+  - web/**/*
+  - web/*
+
+cli:
+  - cli/**/*
+  - cli/*
+
+core:
+  - core/**/*
+  - core/*
+
+infra:
+  - infra/**/*
+  - infra/*
+
+lambda:
+  - lambda/**
+  - lambda/*
+
+tools:
+  - .github/**/*
+  - .github/*
+  - .vscode/**
+  - .vscode/*
+  - .gitignoree
+  - codecov.yml
+
+docs:
+  - images/**
+  - images/*
+  - README.md
