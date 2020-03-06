@@ -4,5 +4,12 @@
         "120"
     ],
     "python.sortImports.args": ["-rc", "--atomic"],
-    "python.formatting.autopep8Path": "black"
+    "python.formatting.autopep8Path": "black",
+    "git.autofetch": true,
+    "terminal.explorerKind": "external",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true
 }
