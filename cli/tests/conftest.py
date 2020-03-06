@@ -3,7 +3,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import PropertyMock, patch
 from uuid import uuid4
-
+import os
 import pyperclip
 import pytest
 from mockfirestore.client import MockFirestore
@@ -44,8 +44,13 @@ def oauth_gcp_conf(mocked_resp, oauth_client_config):
 
 @pytest.yield_fixture
 def temp_file():
-    with tempfile.NamedTemporaryFile(mode='w') as fp:
-        yield fp
+    fp = tempfile.NamedTemporaryFile(delete=False)
+    Path(fp.name).touch()
+    yield fp
+    try:
+        os.unlink(fp.name)
+    except OSError:
+        pass
 
 
 @pytest.fixture
