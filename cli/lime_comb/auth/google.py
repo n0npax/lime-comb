@@ -2,10 +2,10 @@ __author__ = "marcin.niemira@gmail.com (n0npax)"
 
 import pickle  # nosec
 from contextlib import contextmanager
-
+import socket
 import google
-from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 from lime_comb.config import config
 from lime_comb.logger.logger import logger
@@ -22,13 +22,22 @@ __scopes = " ".join(
 
 def web_login(conf: str):
     flow = InstalledAppFlow.from_client_secrets_file(conf, scopes=__scopes)
+
     return flow.run_local_server(
         host="localhost",
-        port=5000,
+        port=get_free_tcp_port(),
         authorization_prompt_message="Please visit this URL: {url}",
         success_message="The auth flow is complete; you may close this window.",
         open_browser=True,
     )
+
+
+def get_free_tcp_port():
+    tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp.bind(("", 0))
+    _, port = tcp.getsockname()
+    tcp.close()
+    return port
 
 
 @contextmanager
@@ -39,8 +48,11 @@ def get_cred(conf: str) -> google.oauth2.credentials.Credentials:
         logger.warning(e)
         creds = None
     if creds and creds.expired and creds.refresh_token:
-        logger.info("refreshing creds")
-        creds.refresh(Request())
+        try:
+            creds.refresh(Request())
+            logger.info("refreshing creds")
+        except Exception as e:
+            logger.warning(e)
     if creds and not creds.expired:
         yield creds
     else:

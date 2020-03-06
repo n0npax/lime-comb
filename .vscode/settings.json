@@ -1,7 +1,8 @@
 {
     "python.formatting.blackArgs": [
         "--line-length",
-        "100"
+        "120"
     ],
+    "python.sortImports.args": ["-rc", "--atomic"],
     "python.formatting.autopep8Path": "black"
 }
