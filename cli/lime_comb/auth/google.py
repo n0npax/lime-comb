@@ -1,8 +1,9 @@
 __author__ = "marcin.niemira@gmail.com (n0npax)"
 
 import pickle  # nosec
-from contextlib import contextmanager
 import socket
+from contextlib import contextmanager
+
 import google
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow

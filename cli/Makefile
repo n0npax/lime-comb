@@ -7,7 +7,7 @@ deps:
 	poetry install --no-root
 
 .PHONY: lint
-lint: deps
+lint:
 	sed -i 's/[ \t]*$$//' $(shell find . -name "*.md")
 	sed -i 's/[ \t]*$$//' $(shell find . -name "*.py")
 	isort $(shell find . -name "*.py") -qy

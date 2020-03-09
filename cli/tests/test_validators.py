@@ -1,4 +1,5 @@
 import builtins
+import sys
 from collections import defaultdict
 from unittest.mock import MagicMock, patch
 
@@ -13,6 +14,7 @@ from .conftest import *
 
 
 class TestValidator:
+    @pytest.mark.skipif(sys.platform == "win32", reason="does not run on windows")
     @pytest.mark.parametrize(
         "file_path,raises", [("/etc/hosts", False), ("/no/such/file", True),],
     )
