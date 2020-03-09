@@ -1,3 +1,6 @@
 import logging
+import sys
 
-logger = logging.getLogger()
+logging.basicConfig(stream=sys.stdout)
+
+logger = logging.getLogger("lime-comb")

@@ -11,13 +11,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
-__scopes = " ".join(
-    [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/datastore",
-        "openid",
-    ]
-)
+__scopes = [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/datastore",
+    "openid",
+]
 
 
 def web_login(conf: str):

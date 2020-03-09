@@ -1,7 +1,6 @@
 import base64
 
 from google.cloud import firestore
-
 from lime_comb.config import config
 from lime_comb.logger.logger import logger
 
@@ -16,13 +15,16 @@ def get_firestore_db(cred):
 
 
 def get_gpg(cred, email, key_name, *, key_type="pub"):
-    logger.debug(f"fetching gpg key for: {email} (firebase registry)")
     db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
+    logger.info(
+        f"(firebase registry) pull gpgs for {email} as {name} from {collection_id}"
+    )
     key = db.collection(collection_id).document(name).get().to_dict()
     try:
         return key["data"]
     except KeyError:
+        logger.error("Cannot fetch gpg key")
         return None
 
 
@@ -32,9 +34,11 @@ def get_gpgs(cred, email, *, key_type="pub"):
 
 
 def put_gpg(cred, email, data, key_name, *, key_type="pub", password=None):
-    logger.debug(f"pushing gpg key for: {email} (firebase registry)")
     db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
+    logger.info(
+        f"(firebase registry) push gpg for {email} as {name} from {collection_id}"
+    )
     pub_key = db.collection(collection_id).document(name)
     document = {"data": data}
     if key_type == "priv" and password:
@@ -47,14 +51,19 @@ def list_gpg_ids(cred, email, key_type="pub"):
     collection_id, _ = doc_path(
         email=email, key_type=key_type, key_name="key_id_placeholder"
     )
+    logger.info(
+        f"(firebase registry) list gpgs for {email}(just email) from {collection_id}"
+    )
     for d in db.collection(collection_id).document(email).collections():
         yield d.id
 
 
 def delete_gpg(cred, email, key_name, *, key_type="pub"):
-    logger.debug(f"deleting gpg key for: {email} (firebase registry)")
     db = get_firestore_db(cred)
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
+    logger.info(
+        f"(firebase registry) rm gpg for {email} as {name} from {collection_id}"
+    )
     return db.collection(collection_id).document(name).delete()
 
 
