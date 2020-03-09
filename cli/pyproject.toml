@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lime_comb"
-version = "0.0.14"
+version = "0.0.15"
 description = "lime-comb cli"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
 readme = 'README.md'

@@ -12,9 +12,8 @@ from lime_comb.logger.logger import logger
 
 __scopes = " ".join(
     [
-        "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/datastore",
         "openid",
     ]
 )
