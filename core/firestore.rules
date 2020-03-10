@@ -9,17 +9,14 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid != null;
     }
 
-    match /{domain}/{email}/priv/{key_name} {
+    match /{domain}/{email}/{key_name}/priv {
       allow read,write: if isSignedIn() && isDocOwner(email);
     }
-    match /{domain}/{email}/pub/{key_name} {
+    match /{domain}/{email}/{key_name}/pub {
       allow write: if isSignedIn() && isDocOwner(email);
       allow read: if true;
     }
-    match /{domain}/{email}/priv {
-      allow read,write: if isSignedIn() && isDocOwner(email);
-    }
-    match /{domain}/{email}/pub {
+    match /{domain}/{email} {
       allow write: if isSignedIn() && isDocOwner(email);
       allow read: if true;
     }
