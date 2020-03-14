@@ -2,10 +2,20 @@ import graphene
 
 from data import get_priv_key, get_keys, get_pub_key
 import data
+from database import list_gpg_ids
 
 
 class GpgKey(graphene.Interface):
     id = graphene.ID()
+    email = graphene.String()
+
+
+class GpgKeys(graphene.ObjectType):
+    class Meta:
+        description = "gpg key id"
+
+    id = graphene.ID()
+    ids = graphene.List(graphene.String)
     email = graphene.String()
 
 
@@ -22,12 +32,15 @@ class PrivKey(graphene.ObjectType):
 
 
 class Query(graphene.ObjectType):
-    keys = graphene.Field(GpgKey, email=graphene.String())
+    keys = graphene.Field(GpgKeys, email=graphene.String())
     pub_key = graphene.Field(PubKey, id=graphene.String())
     priv_key = graphene.Field(PrivKey, id=graphene.String())
 
-    def resolve_keys(self, info, email=None):
-        return get_keys(email)
+    def resolve_keys(self, info, email):
+        keys = []
+        for k in list_gpg_ids(email):
+            keys.append(k)
+        return GpgKeys(ids=keys, email=email)
 
     def resolve_pub_key(self, info, id):
         return get_pub_key(id)
