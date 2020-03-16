@@ -24,17 +24,18 @@ def get_gpg(email, key_name, *, key_type="pub"):
     logger.info(
         f"(firebase registry) pull gpgs for {email} as {name} from {collection_id}"
     )
-    key = db.collection(collection_id).document(name).get().to_dict()
-    try:
-        return key["data"]
-    except KeyError:
+    document = db.collection(collection_id).document(name).get().to_dict()
+    if not "data" in document:
         logger.error("Cannot fetch gpg key")
         return None
+    document["id"] = key_name
+    document["email"] = email
+    return document
 
 
 def get_gpgs(email, *, key_type="pub"):
-    for key_name in list_gpg_ids(cred, email, key_type=key_type):
-        yield get_gpg(cred, email, key_type=key_type, key_name=key_name)
+    for key_name in list_gpg_ids(email, key_type=key_type):
+        yield get_gpg(email, key_type=key_type, key_name=key_name)
 
 
 def put_gpg(email, data, key_name, *, key_type="pub", password=None):
