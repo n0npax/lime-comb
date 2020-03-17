@@ -6,3 +6,4 @@ node_modules
 package-lock.json
 lime-comb-tf-sa.json
 api/env
+.pytest_cache
