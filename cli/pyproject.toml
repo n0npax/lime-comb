@@ -39,6 +39,7 @@ requests = "^2.23.0"
 requests_mock = "^1.7.0"
 password_generator = "^0.1.0"
 pyyaml = "^5.3"
+gql = "^0.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3.2"

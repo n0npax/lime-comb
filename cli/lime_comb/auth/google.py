@@ -13,7 +13,6 @@ from lime_comb.logger.logger import logger
 
 __scopes = [
     "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/datastore",
     "openid",
 ]
 

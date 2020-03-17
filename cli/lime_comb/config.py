@@ -20,6 +20,7 @@ class Config:
     data_dir = Path(user_data_dir(app_name))
     config_dir = Path(user_config_dir(app_name))
 
+    api_url = "https://lime-comb.appspot.com/"
     client_lime_comb_url = "http://lime-comb.web.app/_client-lime-comb.json"
     config_file = config_dir / "config.yml"
     oauth_client_config = config_dir / "client-lime-comb.json"
@@ -130,9 +131,10 @@ class Config:
     def _read_property(self, name, default=None):
         conf = self._read_config()
         if not conf and not self.__raised:
-            logger.error(f"config is empty")
-            self.__raised = True
-            raise EmptyConfigError("Empty Config")
+            if not self.email:  # FIXME empty config for mocked values
+                logger.error(f"config is empty")
+                self.__raised = True
+                raise EmptyConfigError("Empty Config")
         if name in conf.keys():
             return conf[name]
         return default

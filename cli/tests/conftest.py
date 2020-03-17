@@ -7,12 +7,10 @@ from uuid import uuid4
 
 import pyperclip
 import pytest
-from mockfirestore.client import MockFirestore
 from yaml import dump
 
 import lime_comb
 import lime_comb.config
-import lime_comb.firestore.database
 import requests_mock
 from lime_comb.auth.google import get_anon_cred
 from lime_comb.gpg import delete_gpg_key, geneate_keys, gpg_engine
@@ -107,6 +105,16 @@ def email(mocker, config_file):
 
 
 @pytest.yield_fixture(autouse=True)
+def always_import(mocker, config_file):
+    _always_import = True
+    with patch(
+        "lime_comb.config.Config.email", new_callable=PropertyMock
+    ) as password_mock:
+        password_mock.return_value = _always_import
+        yield _always_import
+
+
+@pytest.yield_fixture(autouse=True)
 def config_dir(mocker, config_file):
     with tempfile.TemporaryDirectory() as dir_name:
         with patch(
@@ -165,42 +173,12 @@ def pyperclip_copy(mocker):
 @pytest.yield_fixture
 def web_login(mocker, uuid):
     mocker.patch.object(
-        lime_comb.auth.google, "web_login", return_value=Creds(expired=False, uuid=uuid)
+        lime_comb.auth.google,
+        "web_login",
+        spec=True,
+        return_value=Creds(expired=False, uuid=uuid),
     )
     yield
-
-
-def fake_list_gpg_ids(key_id):
-    def list_gpg_ids(*args, **kwargs):
-        yield key_id
-
-    return list_gpg_ids
-
-
-@pytest.yield_fixture()
-def mocked_db(key_id, valid_cred, mocker):
-    db = MockFirestore()
-    mocker.patch.object(
-        lime_comb.firestore.database, "get_firestore_db", return_value=db
-    )
-    mocker.patch.object(
-        lime_comb.firestore.database,
-        "list_gpg_ids",
-        return_value=fake_list_gpg_ids(key_id)(),
-    )
-    yield db
-    db.reset()
-
-
-@pytest.yield_fixture
-def mocked_gpg_key(mocked_db, key_id, email, domain, priv_key, pub_key):
-    mocked_db.collection(domain).document(f"{email}/{key_id}/priv").set(
-        {"data": priv_key}
-    )
-    mocked_db.collection(domain).document(f"{email}/{key_id}/pub").set(
-        {"data": pub_key}
-    )
-    yield f"{key_id}"
 
 
 @pytest.yield_fixture
@@ -220,3 +198,25 @@ def priv_key(keypair):
 @pytest.fixture
 def pub_key(keypair):
     return keypair[0]
+
+
+@pytest.yield_fixture
+def mocked_api(key_id, valid_cred, mocker, priv_key, pub_key, email, always_import):
+    def fake_get_gpgs(*args, **kwargs):
+        k = kwargs.get("key_type", None)
+        if k:
+            return [{"data": {"priv": priv_key, "pub": pub_key}[k]}]
+        return [{"data": pub_key}]
+
+    mocker.patch.object(
+        lime_comb.api, "get_gpgs", spec=True, return_value=fake_get_gpgs,
+    )
+    yield
+
+
+@pytest.yield_fixture
+def mocked_gpg_key(
+    mocked_api, key_id, email, domain,
+):
+
+    yield f"{key_id}"

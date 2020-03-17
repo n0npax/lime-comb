@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-import lime_comb.firestore.database as database
+from lime_comb.api import get_gpgs, delete_gpg, put_gpg
 from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command
 from lime_comb.config import config
@@ -37,7 +37,7 @@ class KeysCommand(Command):
         elif args.command == "delete":
             with get_cred(config.oauth_gcp_conf) as cred:
                 yield from delete_gpg_key(args.argument, config.password)
-                database.delete_gpg(cred, email, args.argument)
+                delete_gpg(cred, email, args.argument)
         elif args.command == "list-pub":
             yield from get_existing_pub_keys(args.argument)
         elif args.command == "list-priv":
@@ -46,12 +46,12 @@ class KeysCommand(Command):
             with get_cred(config.oauth_gcp_conf) as cred:
                 if args.argument:
                     email = args.argument
-                privs = database.get_gpgs(cred, email, key_type="priv")
-                pubs = database.get_gpgs(cred, email, key_type="pub")
+                privs = get_gpgs(cred, email, key_type="priv")
+                pubs = get_gpgs(cred, email, key_type="pub")
                 for p in privs:
-                    yield from import_gpg_key(p)
+                    yield from import_gpg_key(p["data"])
                 for p in pubs:
-                    yield from import_gpg_key(p)
+                    yield from import_gpg_key(p["data"])
         elif args.command == "push":
             if not config.export_priv_key:
                 yield [
@@ -66,7 +66,7 @@ class KeysCommand(Command):
                 for k in get_existing_priv_keys():
                     key_id = k[0]
                     priv_key = export_key(key_id, True)
-                    database.put_gpg(
+                    put_gpg(
                         cred,
                         email,
                         priv_key,
@@ -78,9 +78,7 @@ class KeysCommand(Command):
                 for k in get_existing_pub_keys(config.email):
                     key_id = k[0]
                     pub_key = export_key(key_id, False)
-                    database.put_gpg(
-                        cred, email, pub_key, key_type="pub", key_name=key_id
-                    )
+                    put_gpg(cred, email, pub_key, key_type="pub", key_name=key_id)
                     yield key_id, email
 
         else:
