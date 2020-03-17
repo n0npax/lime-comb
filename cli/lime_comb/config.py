@@ -131,10 +131,9 @@ class Config:
     def _read_property(self, name, default=None):
         conf = self._read_config()
         if not conf and not self.__raised:
-            if not self.email:  # FIXME empty config for mocked values
-                logger.error(f"config is empty")
-                self.__raised = True
-                raise EmptyConfigError("Empty Config")
+            logger.error(f"config is empty")
+            self.__raised = True
+            raise EmptyConfigError("Empty Config")
         if name in conf.keys():
             return conf[name]
         return default

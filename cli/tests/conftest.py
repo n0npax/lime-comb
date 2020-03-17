@@ -95,23 +95,16 @@ def oauth_client_config(mocker, config_file, uuid):
 
 
 @pytest.yield_fixture(autouse=True)
-def email(mocker, config_file):
-    _email = "example.example@example.com"
-    with patch(
-        "lime_comb.config.Config.email", new_callable=PropertyMock
-    ) as password_mock:
-        password_mock.return_value = _email
-        yield _email
-
-
-@pytest.yield_fixture(autouse=True)
-def always_import(mocker, config_file):
-    _always_import = True
-    with patch(
-        "lime_comb.config.Config.email", new_callable=PropertyMock
-    ) as password_mock:
-        password_mock.return_value = _always_import
-        yield _always_import
+def email(request, mocker, config_file):
+    if "noautofixt" in request.keywords:
+        yield None
+    else:
+        _email = "example.example@example.com"
+        with patch(
+            "lime_comb.config.Config.email", new_callable=PropertyMock
+        ) as email_mock:
+            email_mock.return_value = _email
+            yield _email
 
 
 @pytest.yield_fixture(autouse=True)
@@ -125,10 +118,13 @@ def config_dir(mocker, config_file):
 
 
 @pytest.yield_fixture(autouse=True)
-def config_file(mocker, temp_file):
+def config_file(request, mocker, temp_file):
     with patch(
         "lime_comb.config.Config.config_file", new_callable=PropertyMock
     ) as config_file_mock:
+        if "noautofixt" not in request.keywords:
+            with open(temp_file.name, "w") as f:
+                f.write("always_import: True")
         config_file_mock.return_value = Path(temp_file.name)
         yield temp_file.name
 
@@ -201,7 +197,7 @@ def pub_key(keypair):
 
 
 @pytest.yield_fixture
-def mocked_api(key_id, valid_cred, mocker, priv_key, pub_key, email, always_import):
+def mocked_api(key_id, valid_cred, mocker, priv_key, pub_key, email):
     def fake_get_gpgs(*args, **kwargs):
         k = kwargs.get("key_type", None)
         if k:

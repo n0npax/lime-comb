@@ -21,19 +21,19 @@ class TestConfig:
         mocker.patch.object(builtins, "input", return_value=new_username)
         mocker.patch.object(lime_comb.config, "convert_bool_string", return_value=True)
 
-        with patch("lime_comb.config.validate_bool") as validate_bool_mock, patch(
-            "lime_comb.config.lc_validate_email"
-        ) as validate_email_mock:
-            validate_bool_mock.return_value = True
-            validate_email_mock.return_value = True
-            config._gen_config()
-            assert config.username == new_username
+        with patch("lime_comb.config.validate_bool") as validate_bool_mock:
+            with patch("lime_comb.config.lc_validate_email") as validate_email_mock:
+                validate_bool_mock.return_value = True
+                validate_email_mock.return_value = True
+                config._gen_config()
+                assert config.username == new_username
 
     def test_read_not_existing_property(self, mocker, email):
         mocker.patch.object(lime_comb.config.config, "_read_config", return_value={})
         with pytest.raises(EmptyConfigError):
             config._read_property("not_existing_property")
 
+    @pytest.mark.noautofixt
     def test_read_not_existing_config(self):
         assert {} == config._read_config()
 
@@ -49,16 +49,17 @@ class TestConfig:
         assert config.password == uuid
 
     @pytest.mark.parametrize(
-        "email,raises",
-        [("llama", True), ("llama@llama", True), ("llama@llama.net", False),],
+        "input_email,raises",
+        [("llama@llama.net", False), ("llama", True), ("llama@llama", True),],
     )
-    def test_save_email(self, email, raises):
+    @pytest.mark.noautofixt
+    def test_save_email(self, input_email, raises):
         if raises:
             with pytest.raises(Exception):
-                config.email = email
+                config.email = input_email
         else:
-            config.email = email
-            assert config.email == email
+            config.email = input_email
+            assert config.email == input_email
 
     @pytest.mark.parametrize(
         "export_password,raises,value",
