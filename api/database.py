@@ -28,8 +28,7 @@ def get_gpg(email, key_name, *, key_type="pub"):
     if not "data" in document:
         logger.error("Cannot fetch gpg key")
         return None
-    document["id"] = key_name
-    document["email"] = email
+    document.update({"id": key_name, "email": email})
     return document
 
 

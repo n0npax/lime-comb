@@ -30,10 +30,10 @@ class GpgKeys(graphene.ObjectType):
     keys = graphene.List(lambda: PubKey)
 
     def resolve_keys(self, info):
+        # TODO lazyloading for not id fields?
         pub_keys = []
         for document in database.get_gpgs(self.email):
             pub_keys.append(PubKey(**document))
-        print(pub_keys[0], type(pub_keys[0]))
         return pub_keys
 
 

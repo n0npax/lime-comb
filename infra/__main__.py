@@ -9,7 +9,7 @@ cryptoKey = kms.CryptoKey("ci-cryptokey", key_ring=keyRing.self_link)
 _github = {"name": "lime-comb", "owner": "n0npax", "push": {"branch": "^master$"}}
 _substitutions = {}
 cloudbuilds = {}
-for component in ("core", "infra", "web", "cli", "lambda"):
+for component in ("core", "infra", "web", "cli", "lambda", "api"):
     cloudbuilds[component] = cloudbuild.Trigger(
         component,
         description=component,
