@@ -2,3 +2,4 @@ flask==1.1.1
 flask-graphql==2.0.1
 graphene==2.1.8
 google-cloud-firestore==1.6.1
+google-auth

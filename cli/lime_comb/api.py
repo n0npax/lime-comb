@@ -25,6 +25,15 @@ get_gpg_query = """{
 }
 """
 
+create_gpg_query = """
+mutation {
+  createPubKey(key: {data: "%s", id: "%s", email: "%s"})
+  {
+    id
+  }
+}
+"""
+
 
 def get_gpgs(cred, email, key_type="pub"):
     query = get_gpg_query % email

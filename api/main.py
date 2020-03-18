@@ -2,13 +2,13 @@ from flask import Flask
 import graphene
 from flask_graphql import GraphQLView
 
-from schema import Query
+from schema import Query, Mutation
 
 schema = graphene.Schema(query=Query)
 
 
 view_func = GraphQLView.as_view(
-    "graphql", schema=graphene.Schema(query=Query), graphiql=True
+    "graphql", schema=graphene.Schema(query=Query, mutation=Mutation), graphiql=True
 )
 
 app = Flask(__name__)
