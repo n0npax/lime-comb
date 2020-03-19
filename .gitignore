@@ -2,6 +2,7 @@
 **/__pycache__
 **/*.log
 **/nohup.out
+**/coverage.xml
 node_modules
 package-lock.json
 lime-comb-tf-sa.json

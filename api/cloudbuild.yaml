@@ -8,7 +8,7 @@ steps:
       - -ex
       - "-c"
       - |
-        poetry export -f requirements.txt --dev --without-hashes > requirements.txt
+        poetry export -f requirements.txt --without-hashes > requirements.txt
         pip3 install -r requirements.txt
         # make build
     env:
