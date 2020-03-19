@@ -20,7 +20,7 @@ class Config:
     data_dir = Path(user_data_dir(app_name))
     config_dir = Path(user_config_dir(app_name))
 
-    api_url = "https://lime-comb.appspot.com/"
+    api_url = "http://localhost:5000/"  # "https://lime-comb.appspot.com/"
     client_lime_comb_url = "http://lime-comb.web.app/_client-lime-comb.json"
     config_file = config_dir / "config.yml"
     oauth_client_config = config_dir / "client-lime-comb.json"
