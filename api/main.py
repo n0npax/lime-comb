@@ -13,7 +13,7 @@ googlecloudprofiler.start(
     service_version="0.0.0",
     # verbose is the logging level. 0-error, 1-warning, 2-info,
     # 3-debug. It defaults to 0 (error) if not set.
-    verbose=2,
+    verbose=3,
     # project_id must be set if not running on GCP.
     # project_id='lime-comb',
 )

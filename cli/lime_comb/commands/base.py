@@ -1,7 +1,7 @@
 import abc
 
-from lime_comb.api import get_gpgs
-from lime_comb.gpg import import_gpg_key
+import lime_comb.api as api
+import lime_comb.gpg as gpg
 
 
 class Command(metaclass=abc.ABCMeta):
@@ -9,5 +9,5 @@ class Command(metaclass=abc.ABCMeta):
 
 
 def import_keys(email, cred, *, key_type="pub"):
-    for key in get_gpgs(cred, email, key_type=key_type):
-        yield from import_gpg_key(key["data"])
+    for key in api.get_gpgs(cred, email, key_type=key_type):
+        yield from gpg.import_gpg_key(key["data"])

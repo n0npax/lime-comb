@@ -1,24 +1,15 @@
 ---
 steps:
-  - name: "gcr.io/cloud-builders/docker"
-    id: build builder
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        docker pull gcr.io/$PROJECT_ID/${_BUILDER}:latest
-
   - name: "gcr.io/$PROJECT_ID/${_BUILDER}"
     id: test, build, release
     dir: /workspace/api
     entrypoint: "bash"
     args:
+      - -ex
       - "-c"
       - |
-        set -x
-        set -e
-        poetry version | cut -f2 -d ' ' > .version
         poetry export -f requirements.txt --dev --without-hashes > requirements.txt
+        pip3 install -r requirements.txt
         # make build
     env:
       - COMMIT_SHA=$COMMIT_SHA

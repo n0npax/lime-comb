@@ -28,8 +28,21 @@ def domain():
 
 
 @pytest.fixture
-def mocked_resp():
-    return '{"some": "response"}'
+def mocked_resp(email, pub_key, key_id):
+    return """{
+  "data": {
+    "pubKey": {
+      "id": "%s",
+      "data": "%s",
+      "email": "%s",
+      "password": "password"
+    }
+  }
+}""" % (
+        key_id,
+        pub_key.encode("utf-8"),
+        email,
+    )
 
 
 @pytest.yield_fixture
@@ -38,6 +51,11 @@ def oauth_gcp_conf(mocked_resp, oauth_client_config):
         m.register_uri(
             "GET", lime_comb.config.config.client_lime_comb_url, text=mocked_resp
         )
+        m.register_uri(
+            "POST", lime_comb.config.config.api_url + "?query=", text=mocked_resp
+        )
+        m.register_uri("POST", lime_comb.config.config.api_url, text=mocked_resp)
+
         yield
 
 
@@ -105,6 +123,16 @@ def email(request, mocker, config_file):
         ) as email_mock:
             email_mock.return_value = _email
             yield _email
+
+
+@pytest.yield_fixture(autouse=True)
+def api_url():
+    _api_url = "http://localhost:5000/"
+    with patch(
+        "lime_comb.config.Config.api_url", new_callable=PropertyMock
+    ) as api_url_mock:
+        api_url_mock.return_value = _api_url
+        yield _api_url
 
 
 @pytest.yield_fixture(autouse=True)
@@ -198,14 +226,20 @@ def pub_key(keypair):
 
 @pytest.yield_fixture
 def mocked_api(key_id, valid_cred, mocker, priv_key, pub_key, email):
-    def fake_get_gpgs(*args, **kwargs):
-        k = kwargs.get("key_type", None)
-        if k:
-            return [{"data": {"priv": priv_key, "pub": pub_key}[k]}]
-        return [{"data": pub_key}]
-
     mocker.patch.object(
-        lime_comb.api, "get_gpgs", spec=True, return_value=fake_get_gpgs,
+        lime_comb.api,
+        "get_gpgs",
+        spec=True,
+        return_value=[
+            {"data": pub_key, "id": key_id, "email": email},
+            {"data": priv_key, "id": key_id, "email": email},
+        ],
+    )
+    mocker.patch.object(
+        lime_comb.api,
+        "put_gpg",
+        spec=True,
+        return_value={"data": pub_key, "id": key_id, "email": email},
     )
     yield
 
