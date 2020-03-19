@@ -1,7 +1,8 @@
 import graphene
 
-from database import list_gpg_ids
+from database import list_gpg_ids, delete_gpg, put_gpg
 import database
+from flask import request
 
 
 class GpgKey(graphene.Interface):
@@ -96,6 +97,7 @@ class DeleteKey(graphene.Mutation):
     Output = PubKey
 
     def mutate(root, info, id):
+        # delete_gpg(email, key_name=id)
         return PubKey(id=id)
 
 

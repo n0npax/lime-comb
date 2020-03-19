@@ -4,11 +4,29 @@ from flask_graphql import GraphQLView
 
 from schema import Query, Mutation
 
+import googleclouddebugger
+import googlecloudprofiler
+
+googleclouddebugger.enable()
+googlecloudprofiler.start(
+    service="lime-comb-api",
+    service_version="0.0.0",
+    # verbose is the logging level. 0-error, 1-warning, 2-info,
+    # 3-debug. It defaults to 0 (error) if not set.
+    verbose=2,
+    # project_id must be set if not running on GCP.
+    # project_id='lime-comb',
+)
+
+
 schema = graphene.Schema(query=Query)
 
 
 view_func = GraphQLView.as_view(
-    "graphql", schema=graphene.Schema(query=Query, mutation=Mutation), graphiql=True
+    "graphql",
+    schema=graphene.Schema(query=Query, mutation=Mutation),
+    graphiql=True,
+    # get_context=lambda: {"session": db_session},
 )
 
 app = Flask(__name__)

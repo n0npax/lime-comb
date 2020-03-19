@@ -29,8 +29,6 @@ create_gpg_query = """mutation {
   put%sKey(key: {data: "%s", id: "%s", email: "%s", password: "%s"})
   {
     id
-    data
-    email
   }
 }
 """
