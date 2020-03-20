@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lime_comb"
-version = "0.0.18"
+version = "0.0.19"
 description = "lime-comb cli"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
 readme = 'README.md'
@@ -25,13 +25,10 @@ black = "^19.10b0"
 tqdm = "^4.41.1"
 email_validator = "^1.0.5"
 grpcio-gcp = "^0.2.2"
-google-cloud-firestore = "^1.6.1"
 python-gnupg = "^0.4.5"
 appdirs = "^1.4.3"
 email-validator = "^1.0.5"
-google-cloud-datastore = "^1.10.0"
 pyperclip = "^1.7.0"
-mock-firestore = "^0.6.0"
 tabulate = "^0.8.6"
 mock = "^4.0.1"
 semver = "^2.9.1"

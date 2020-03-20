@@ -67,8 +67,8 @@ codecov_upload.sh:
 
 .PHONY: requirements-dev.txt
 requirements-dev.txt:
-	echo $(shell poetry export -f requirements.txt --without-hashes 2>/dev/null > requirements-dev.txt)
+	echo $(shell poetry export -f requirements.txt --without-hashes 2>/dev/null | grep -v Warning > requirements-dev.txt)
 
 .PHONY: requirements.txt
 requirements.txt:
-	echo $(shell poetry export -f requirements.txt --dev --without-hashes 2>/dev/null > requirements.txt)
+	echo $(shell poetry export -f requirements.txt --dev --without-hashes 2>/dev/null | grep -v Warning > requirements.txt)
