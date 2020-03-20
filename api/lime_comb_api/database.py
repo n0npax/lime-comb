@@ -1,10 +1,8 @@
 import base64
-
-from google.cloud import firestore
-
-
 import logging
 import sys
+
+from google.cloud import firestore
 
 logging.basicConfig(stream=sys.stdout)
 app_name = "lime-comb"

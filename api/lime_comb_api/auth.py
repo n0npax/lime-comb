@@ -1,9 +1,8 @@
 import os
-
 from functools import wraps
 
 import google.oauth2.id_token
-from flask import request, g, current_app
+from flask import current_app, g, request
 from google.auth.transport import requests
 from werkzeug.exceptions import Unauthorized
 

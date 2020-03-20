@@ -13,6 +13,7 @@ steps:
         make cover
     env:
       - COMMIT_SHA=$COMMIT_SHA
+      - PYTHONPATH=/workspace/api
     secretEnv:
       - PYPI_TOKEN
       - CODECOV_TOKEN
