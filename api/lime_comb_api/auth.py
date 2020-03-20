@@ -1,4 +1,3 @@
-import os
 from functools import wraps
 
 import google.oauth2.id_token
@@ -6,7 +5,7 @@ from flask import current_app, g, request
 from google.auth.transport import requests
 from werkzeug.exceptions import Unauthorized
 
-firebase_request_adapter = requests.Request()
+google_requests = requests.Request()
 
 
 def jwt_validate(f):
@@ -15,18 +14,17 @@ def jwt_validate(f):
         id_token = request.cookies.get("token", None) or request.headers.get(
             "X-API-KEY", None
         )
+
         if not id_token:
             raise Unauthorized("Token is missing")
         try:
-            claims = google.oauth2.id_token.verify_firebase_token(
-                id_token,
-                firebase_request_adapter
-                # , 'wiatrolap.web.app'
+            claims = google.oauth2.id_token.verify_oauth2_token(
+                id_token, google_requests,  # TODO add audience
             )
-            g.user_id = claims["user_id"]
+            g.email = claims["email"]
         except Exception as e:
             current_app.logger.info(f"login failed: {e}")
-            raise Unauthorized("Auth failed")
+            raise Unauthorized(f"Auth failed {e}")
         return f(*args, **kwargs)
 
     return decorated_function

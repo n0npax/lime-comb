@@ -5,11 +5,13 @@ from functools import lru_cache
 
 
 @lru_cache()
-def get_client():
+def get_client(cred):
+
     sample_transport = RequestsHTTPTransport(
         url=config.api_url,
         use_json=True,
         headers={"Content-type": "application/json",},
+        cookies={"token": cred.id_token},
         verify=False,
     )
     return Client(
@@ -39,7 +41,7 @@ create_gpg_query = """mutation {
 
 def get_gpgs(cred, email, key_type="pub"):
     query = get_gpg_query % email
-    client = get_client()
+    client = get_client(cred)
     document = client.execute(gql(query))
     return document["keys"]["keys"]
 
@@ -56,5 +58,5 @@ def put_gpg(cred, email, data, key_name, key_type="pub", password=""):
         email,
         password,
     )
-    client = get_client()
+    client = get_client(cred)
     return client.execute(gql(query))

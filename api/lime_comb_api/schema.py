@@ -1,5 +1,6 @@
 import graphene
-from flask import request
+
+# from flask import request
 
 import lime_comb_api.database as database
 
