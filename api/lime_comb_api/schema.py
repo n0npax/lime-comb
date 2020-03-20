@@ -1,7 +1,6 @@
 import graphene
 
-from database import list_gpg_ids, delete_gpg, put_gpg
-import database
+import lime_comb_api.database as database
 from flask import request
 
 

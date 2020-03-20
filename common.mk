@@ -41,6 +41,9 @@ clean:
 	rm -fr cli.egg-info
 	find . -name __pycache__ | xargs rm -fr
 	find . -name '*.pyc' -delete
+
+.PHONY: full-clean
+full-clean: clean
 	rm $${HOME}/.config/lime-comb/ -fr || true
 	rm $${HOME}/.local/share/lime-comb/ -fr || true
 

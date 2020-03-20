@@ -10,7 +10,7 @@ from werkzeug.exceptions import Unauthorized
 firebase_request_adapter = requests.Request()
 
 
-def token_required(f):
+def jwt_validate(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         id_token = request.cookies.get("token", None) or request.headers.get(

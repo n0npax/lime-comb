@@ -10,7 +10,7 @@ steps:
       - |
         poetry export -f requirements.txt --without-hashes > requirements.txt
         pip3 install -r requirements.txt
-        # make build
+        make cover
     env:
       - COMMIT_SHA=$COMMIT_SHA
     secretEnv:

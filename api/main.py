@@ -2,7 +2,7 @@ from flask import Flask
 import graphene
 from flask_graphql import GraphQLView
 
-from schema import Query, Mutation
+from lime_comb_api.schema import Query, Mutation
 
 import googleclouddebugger
 import googlecloudprofiler
