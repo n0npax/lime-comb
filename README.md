@@ -6,8 +6,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f46eccc192ce4347b7a6596175c960ee)](https://www.codacy.com/manual/n0npax/lime-comb?utm_source=github.com&utm_medium=referral&utm_content=n0npax/lime-comb&utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
 
-# Under heavy development. Please do not expect this project to work yet.
-
 # Lets treat secrets like we should and don't be to nerdy
 
 ## Why
@@ -32,10 +30,10 @@ Public keys are stored in the database.
 End user can easily import existing public key and encrypt message.
 No `gpg` nor cryptography knowledge required.
 
-### Public key registry (CORE)
+### Public key registry (api/core)
 
 We believe we shouldn't reinvent wheel.
-Lime-comb key registry is secured with authorization from google(`firebase auth`).
+Lime-comb key registry is secured with authorization from google oauth.
 We believe smart people provides good solutions and we should utilize them.
 
 ### Command line tools (cli)
@@ -62,10 +60,10 @@ Many other configuration option can be adjusted by an user
 
 ## Install
 
-### Key registry
-
-it's [here](https://lime-comb.web.app/).
-Please register yourself directly or preferably via provided command line tool.
+Use `pip`. Simple like that!
+```zsh
+python3 -m pip install lime-comb
+```
 
 ## Requirements
 
@@ -76,16 +74,10 @@ Please register yourself directly or preferably via provided command line tool.
 
 ![Design diagram](https://github.com/n0npax/lime-comb/blob/master/images/arch_diagram.svg)
 
-### Flow
-
-All clients are connecting to `firestore` database using `oauth2`.
-By default unauthorized user is allowed to read any key,
-and authenticated user is allowed to modify just his own key.
-
 ### Infra
 
 Deployment is done via cloud build jobs which are triggered
-by GitHub repository event.
+by GitHub repository event. Infra is managed by pulumi scripts.
 
 ## Other
 
@@ -95,4 +87,4 @@ Just raise a pull request on GitHub.
 
 ### Feedback
 
-leave a star or raise an issue on GutHub
+leave a star or raise an issue on GutHub.
