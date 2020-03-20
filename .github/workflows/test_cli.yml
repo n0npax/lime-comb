@@ -33,4 +33,5 @@ jobs:
         shell: bash
         run: |
           pip install pytest
+          cd cli
           pytest -v
