@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "api"
-version = "0.0.1"
+version = "0.0.2"
 description = "lime comb api"
 authors = ["Marcin Niemira <marcin.niemira@gmail.com>"]
 license = "MIT"

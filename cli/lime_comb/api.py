@@ -1,7 +1,10 @@
-from gql import gql, Client
-from lime_comb.config import config
-from gql.transport.requests import RequestsHTTPTransport
 from functools import lru_cache
+
+from gql import Client, gql
+from gql.transport.requests import RequestsHTTPTransport
+
+from lime_comb.config import config
+from lime_comb.logger.logger import logger
 
 
 @lru_cache()
@@ -59,4 +62,5 @@ def put_gpg(cred, email, data, key_name, key_type="pub", password=""):
         password,
     )
     client = get_client(cred)
+    logger.debug(query)
     return client.execute(gql(query))

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from lime_comb.api import get_gpgs, delete_gpg, put_gpg
+from lime_comb.api import delete_gpg, get_gpgs, put_gpg
 from lime_comb.auth.google import get_cred
 from lime_comb.commands.base import Command
 from lime_comb.config import config

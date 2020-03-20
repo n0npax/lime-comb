@@ -1,8 +1,8 @@
 import graphene
 
-# from flask import request
-
 import lime_comb_api.database as database
+
+# from flask import request
 
 
 class GpgKey(graphene.Interface):
@@ -77,6 +77,13 @@ class PutPubKey(graphene.Mutation):
     Output = PubKey
 
     def mutate(root, info, key):
+        database.put_gpg(
+            email=key.email,
+            data=key.data,
+            key_type="pub",
+            password=None,
+            key_name=key.id,
+        )
         return PubKey(email=key.email, id=key.id, data=key.data)
 
 
@@ -87,17 +94,27 @@ class PutPrivKey(graphene.Mutation):
     Output = PrivKey
 
     def mutate(root, info, key):
+        database.put_gpg(
+            email=key.email,
+            data=key.data,
+            key_type="priv",
+            password=key.password,
+            key_name=key.id,
+        )
         return PrivKey(email=key.email, id=key.id, data=key.data, password=key.password)
 
 
 class DeleteKey(graphene.Mutation):
     class Arguments:
         id = graphene.String()
+        email = graphene.String()
 
     Output = PubKey
 
-    def mutate(root, info, id):
-        # delete_gpg(email, key_name=id)
+    def mutate(root, info, id, email):
+        database.delete_gpg(
+            email=email, key_name=id,
+        )
         return PubKey(id=id)
 
 

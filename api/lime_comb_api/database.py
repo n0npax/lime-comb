@@ -2,7 +2,9 @@ import base64
 import logging
 import sys
 
+from flask import g
 from google.cloud import firestore
+from werkzeug.exceptions import Unauthorized
 
 logging.basicConfig(stream=sys.stdout)
 app_name = "lime-comb"
@@ -18,6 +20,8 @@ db = firestore.Client(project=app_name)
 
 
 def get_gpg(email, key_name, *, key_type="pub"):
+    if email != g.email and key_type == "priv":
+        raise Unauthorized("Tried to query not owned and private data")
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     logger.info(
         f"(firebase registry) pull gpgs for {email} as {name} from {collection_id}"
@@ -36,6 +40,9 @@ def get_gpgs(email, *, key_type="pub"):
 
 
 def put_gpg(email, data, key_name, *, key_type="pub", password=None):
+    print("a" * 55, g.email)
+    if email != g.email:
+        raise Unauthorized("Tried to mutate not owned data")
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     logger.info(
         f"(firebase registry) push gpg for {email} as {name} from {collection_id}"
@@ -59,6 +66,8 @@ def list_gpg_ids(email, key_type="pub"):
 
 
 def delete_gpg(email, key_name, *, key_type="pub"):
+    if email != g.email:
+        raise Unauthorized("Tried to mutate not owned data")
     collection_id, name = doc_path(email=email, key_type=key_type, key_name=key_name)
     logger.info(
         f"(firebase registry) rm gpg for {email} as {name} from {collection_id}"
