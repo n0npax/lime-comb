@@ -8,13 +8,21 @@ cryptoKey = kms.CryptoKey("ci-cryptokey", key_ring=keyRing.self_link)
 # https://www.pulumi.com/docs/reference/pkg/python/pulumi_gcp/cloudbuild/
 _github = {"name": "lime-comb", "owner": "n0npax", "push": {"branch": "^master$"}}
 _substitutions = {}
-cloudbuilds = {}
-for component in ("core", "infra", "web", "cli", "lambda", "api"):
+cloudbuilds = {
+    "core": {},
+    "infra": {},
+    "web": {},
+    "cli": {"included_files": ["cli", "api"]},
+    "lambda": {},
+    "api": {"included_files": ["cli", "api"]},
+}
+
+for component, config in cloudbuilds.items():
     cloudbuilds[component] = cloudbuild.Trigger(
         component,
         description=component,
         filename=f"{component}/cloudbuild.yaml",
         github=_github,
-        included_files=[f"{component}/**"],
+        included_files=config.get("included_files", [f"{component}/**"]),
         substitutions=_substitutions,
     )
