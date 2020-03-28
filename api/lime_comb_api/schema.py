@@ -66,9 +66,6 @@ class GpgKeyInput(graphene.InputObjectType):
     password = graphene.String()
 
 
-class IdInput(graphene.InputObjectType):
-    id = graphene.ID(required=True)
-
 
 class PutPubKey(graphene.Mutation):
     class Arguments:
