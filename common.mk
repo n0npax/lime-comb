@@ -1,4 +1,4 @@
-EXECUTABLES := poetry curl isort bandit
+EXECUTABLES := poetry curl isort bandit sed
 K := $(foreach exec,$(EXECUTABLES),\
         $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))
 
