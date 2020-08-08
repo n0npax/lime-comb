@@ -6,6 +6,10 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f46eccc192ce4347b7a6596175c960ee)](https://www.codacy.com/manual/n0npax/lime-comb?utm_source=github.com&utm_medium=referral&utm_content=n0npax/lime-comb&utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
 
+# Deprecated/Abandoned
+
+project is abandoned and can be treated just as proof of concept.
+
 # Lets treat secrets like we should and don't be to nerdy
 
 ## Why
