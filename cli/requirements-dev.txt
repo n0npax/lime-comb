@@ -31,7 +31,7 @@ pyasn1-modules==0.2.8
 pyperclip==1.7.0
 python-gnupg==0.4.5
 pytz==2019.3
-pyyaml==5.3
+pyyaml==5.4
 regex==2020.1.8
 requests==2.23.0
 requests-mock==1.7.0
