@@ -41,7 +41,7 @@ pathspec==0.7.0
 pbr==5.4.4
 pluggy==0.13.1
 promise==2.3
-protobuf==3.11.3
+protobuf==3.18.3
 py==1.8.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
