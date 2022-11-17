@@ -33,7 +33,7 @@ more-itertools==8.2.0
 packaging==20.3
 pluggy==0.13.1
 promise==2.3
-protobuf==3.11.3
+protobuf==3.18.3
 py==1.8.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -51,3 +51,4 @@ urllib3==1.25.9
 wcwidth==0.1.8
 werkzeug==1.0.0
 zipp==3.1.0; python_version < "3.8"
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
