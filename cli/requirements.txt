@@ -14,7 +14,7 @@ coverage==5.0.3
 dnspython==1.16.0
 email-validator==1.0.5
 gitdb2==3.0.2
-gitpython==3.0.8
+gitpython==3.1.41
 google-api-core==1.16.0
 google-auth==1.11.2
 google-auth-oauthlib==0.4.1
@@ -45,7 +45,7 @@ protobuf==3.11.3
 py==1.8.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pylint==2.5.0
+pylint==2.7.0
 pyparsing==2.4.6
 pyperclip==1.7.0
 pytest==5.3.5
